@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Isle Connect – community resources, country by country</title>
+<meta name="description" content="Find jobs, food, transport, education and emergency help posted by people in your country.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+
+<style>
+:root{
+  --ink:#0a2f3c; --ink-2:#14485a; --palm:#1f7a4d; --palm-d:#165a39;
+  --sun:#f5b82e; --sun-d:#e0a114; --bg:#f0f6f4; --card:#ffffff; --line:#d7e3e0;
+  --muted:#53707c; --danger:#b4332b; --ok:#1f7a4d;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);font-size:1rem;line-height:1.55;color:var(--ink);background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
+main{flex:1}
+img{max-width:100%}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{width:min(1120px,100% - 2.5rem);margin-inline:auto}
+[hidden]{display:none!important}
+
+/* Header */
+.site-header{position:absolute;inset:0 0 auto 0;z-index:20}
+.site-header.solid{position:static;background:var(--ink)}
+.site-header .wrap{display:flex;align-items:center;gap:.75rem;padding:1rem 0}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:#fff;font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.01em}
+.logo svg{width:34px;height:34px}
+.nav{margin-left:auto;display:flex;align-items:center;gap:.5rem}
+.nav .link{color:#cfe3e6;text-decoration:none;font-weight:600;font-size:.92rem;padding:.5rem .7rem;border-radius:10px;background:none;border:0;cursor:pointer;font-family:inherit}
+.nav .link:hover{color:#fff;background:rgba(255,255,255,.1)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;font:600 .98rem/1 var(--body);padding:.8rem 1.15rem;border-radius:12px;border:2px solid transparent;cursor:pointer;background:var(--palm);color:#fff;text-decoration:none;transition:background .15s,transform .1s}
+.btn:hover{background:var(--palm-d)}
+.btn:active{transform:translateY(1px)}
+.btn.accent{background:var(--sun);color:var(--ink)}
+.btn.accent:hover{background:var(--sun-d)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{background:#e6efec}
+.btn.danger{background:transparent;color:var(--danger);border-color:#e7c3c0}
+.btn.danger:hover{background:#fbeceb}
+.btn.small{padding:.55rem .8rem;font-size:.87rem;border-radius:10px}
+.btn[disabled]{opacity:.6;cursor:progress}
+
+/* Hero */
+.hero{background:var(--ink);color:#fff;position:relative;padding:7.5rem 0 0}
+.hero h1{font-size:clamp(2.2rem,5.6vw,4rem);font-weight:800;letter-spacing:-.025em;max-width:16ch}
+.hero p{font-size:1.12rem;color:#c3dadd;max-width:52ch;margin:1.1rem 0 1.8rem}
+.search{position:relative;max-width:560px}
+.search svg{position:absolute;left:1rem;top:50%;translate:0 -50%;width:20px;height:20px;color:var(--muted);pointer-events:none}
+.search input{width:100%;font:500 1.05rem var(--body);padding:1rem 1rem 1rem 2.9rem;border-radius:14px;border:2px solid transparent;background:#fff;color:var(--ink)}
+.search input::placeholder{color:#7b929b}
+.search.small input{font-size:.97rem;padding:.75rem .9rem .75rem 2.5rem;border-color:var(--line);border-radius:12px}
+.search.small svg{left:.8rem;width:18px;height:18px}
+.recent{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:1rem;color:#9fc0c6;font-size:.9rem}
+.recent a{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.1);color:#fff;text-decoration:none;padding:.3rem .7rem .3rem .4rem;border-radius:99px;font-weight:600}
+.recent a:hover{background:rgba(255,255,255,.2)}
+.wave{display:block;width:100%;height:56px;margin-top:2.5rem;color:var(--bg)}
+.demo-note{background:var(--sun);color:var(--ink);font-size:.88rem;font-weight:600;text-align:center;padding:.5rem 1rem}
+.demo-note code{background:rgba(0,0,0,.08);padding:.05rem .35rem;border-radius:5px}
+
+/* Country picker */
+.picker{padding:1.5rem 0 3rem}
+.regions{display:flex;gap:.5rem;overflow-x:auto;padding:.25rem 0 .75rem;scrollbar-width:thin}
+.chip{flex:none;font:600 .92rem var(--body);padding:.5rem .95rem;border-radius:99px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+.chip:hover{border-color:var(--palm)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip .n{opacity:.65;font-weight:500;margin-left:.3rem}
+.chip.zero{opacity:.55}
+.region-title{font-size:1.15rem;margin:1.8rem 0 .8rem;color:var(--ink-2)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:.7rem}
+.ccard{display:flex;align-items:center;gap:.8rem;padding:.8rem .95rem;background:#fff;border:1.5px solid var(--line);border-radius:14px;text-decoration:none;font-weight:600;transition:border-color .15s,box-shadow .15s}
+.ccard:hover{border-color:var(--palm);box-shadow:0 4px 14px rgba(10,47,60,.1)}
+.flag{width:40px;height:30px;object-fit:cover;border-radius:5px;background:#dfe9e6;box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:none}
+.flag.lg{width:72px;height:54px;border-radius:8px}
+.empty-grid{padding:2rem 0;color:var(--muted)}
+
+/* Country page */
+.band{background:var(--ink);color:#fff;padding:1rem 0 2rem}
+.band .back{display:inline-block;color:#b6d2d6;text-decoration:none;font-weight:600;font-size:.92rem;margin-bottom:1rem}
+.band .back:hover{color:#fff}
+.band-row{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
+.band h1{font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:800;letter-spacing:-.02em}
+.band .sub{color:#b6d2d6;font-size:.95rem}
+.band .grow{flex:1;min-width:200px}
+.band .actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.switch{font:600 .92rem var(--body);padding:.7rem .8rem;border-radius:12px;border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;max-width:200px}
+.switch option{color:#000}
+.toolbar{display:flex;flex-direction:column;gap:.9rem;padding:1.25rem 0 .5rem}
+.toolbar-row{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
+.toolbar-row .search{flex:1;min-width:220px;max-width:none}
+.cats{display:flex;gap:.5rem;overflow-x:auto;padding:.1rem 0 .4rem;scrollbar-width:thin}
+
+/* Posts */
+.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.1rem;padding:1rem 0 1.5rem;align-items:start}
+.post{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.post .pic{display:block;aspect-ratio:16/9;background:#e3ecea}
+.post .pic img{width:100%;height:100%;object-fit:cover;display:block}
+.pbody{padding:1.1rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:.65rem}
+.pmeta{display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-size:.82rem;color:var(--muted)}
+.tag{display:inline-flex;align-items:center;gap:.3rem;font-weight:700;font-size:.8rem;padding:.25rem .65rem;border-radius:99px;background:hsl(var(--h) 55% 92%);color:hsl(var(--h) 60% 22%)}
+.post h3{font-size:1.25rem;font-weight:700;letter-spacing:-.01em}
+.desc{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#2c4852}
+.desc.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.linkbtn{align-self:flex-start;background:none;border:0;padding:0;font:600 .9rem var(--body);color:var(--palm);cursor:pointer;text-decoration:underline}
+.contact{background:#eef6f2;border-radius:12px;padding:.6rem .8rem;font-size:.93rem;overflow-wrap:anywhere}
+.contact b{color:var(--palm-d)}
+.post audio{width:100%;height:40px}
+.stars{color:#c98a00;letter-spacing:.05em;font-size:.95rem}
+.stars small{color:var(--muted);letter-spacing:0;margin-left:.3rem}
+.more{text-align:center;padding:.5rem 0 2.5rem}
+
+.skeleton{height:200px;border-radius:18px;background:linear-gradient(100deg,#e3ecea 30%,#f2f8f6 50%,#e3ecea 70%);background-size:200% 100%;animation:sh 1.3s infinite linear}
+@keyframes sh{to{background-position:-200% 0}}
+.state{text-align:center;max-width:460px;margin:2.5rem auto 3.5rem;padding:0 1rem}
+.state .big{font-size:3rem;line-height:1}
+.state h2{font-size:1.5rem;margin:.8rem 0 .4rem}
+.state p{color:var(--muted);margin:0 0 1.2rem}
+
+/* Dialogs & forms */
+dialog{border:0;border-radius:20px;padding:0;width:min(580px,100% - 1.5rem);max-height:calc(100vh - 2rem);color:var(--ink);background:#fff;box-shadow:0 24px 60px rgba(5,25,32,.4)}
+dialog::backdrop{background:rgba(5,25,32,.6)}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.4rem .2rem}
+.dlg-head h2{font-size:1.45rem}
+.x{background:none;border:0;font-size:1.7rem;line-height:1;cursor:pointer;color:var(--muted);padding:.2rem .5rem;border-radius:8px}
+.x:hover{background:#eef3f2}
+form.f{padding:.6rem 1.4rem 1.4rem;display:grid;gap:1rem}
+.field label,.field .lbl{display:block;font-weight:600;font-size:.93rem;margin-bottom:.35rem}
+.field .hint{font-weight:400;color:var(--muted)}
+.field input,.field select,.field textarea{width:100%;font:500 1rem var(--body);padding:.75rem .85rem;border-radius:12px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--palm);outline:3px solid rgba(31,122,77,.2)}
+.field input[type=file]{padding:.55rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+details.media{border:1.5px dashed #bfd0cd;border-radius:14px;padding:.75rem .9rem}
+details.media summary{cursor:pointer;font-weight:600}
+details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
+.form-actions{display:flex;gap:.6rem;justify-content:flex-end;flex-wrap:wrap}
+.counter{font-size:.8rem;color:var(--muted);text-align:right;margin-top:.2rem}
+.err{color:var(--danger);font-size:.9rem;font-weight:600;min-height:1.2em;margin:0}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+/* Admin */
+.admin{padding:2rem 0 3rem}
+.admin h1{font-size:2rem;margin-bottom:.4rem}
+.login-card{max-width:420px;margin:1.5rem 0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.4rem}
+.afilters{display:flex;gap:.7rem;flex-wrap:wrap;margin:1.2rem 0}
+.afilters select{font:600 .93rem var(--body);padding:.65rem .8rem;border-radius:12px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.alist{display:grid;gap:.8rem}
+.arow{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1rem 1.15rem;display:grid;gap:.5rem}
+.arow-top{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;font-size:.86rem;color:var(--muted)}
+.arow h3{font-size:1.1rem}
+.status{font-weight:700;font-size:.78rem;padding:.2rem .6rem;border-radius:99px}
+.status.Pending{background:#fff1cc;color:#7a5400}
+.status.Approved{background:#d9f1e2;color:#165a39}
+.status.Rejected{background:#fbe0de;color:#8a2820}
+.arow-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem}
+
+/* Footer & toast */
+footer{background:var(--ink);color:#9fc0c6;padding:1.6rem 0;font-size:.9rem;margin-top:auto}
+footer .wrap{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:space-between}
+footer b{color:#fff}
+#toasts{position:fixed;bottom:1rem;left:50%;translate:-50% 0;z-index:100;display:grid;gap:.5rem;width:min(460px,100% - 2rem)}
+.toast{background:var(--ink);color:#fff;padding:.85rem 1.1rem;border-radius:14px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.3);border-left:6px solid var(--sun)}
+.toast.error{border-left-color:#ff7a70}
+.toast.ok{border-left-color:#5fd18d}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div id="demoNote" class="demo-note" hidden>
+  Demo mode: sample data, nothing is saved. Add your Supabase URL and key in the <code>CONFIG</code> block to go live.
+</div>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap">
+    <a class="logo" href="#/" aria-label="Isle Connect home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#f5b82e"/><path d="M5 27c4 0 5-3 7.5-3s3.500 3 7.500 3 5-3 7.500-3 3.500 3 7.500 3v8H5z" fill="#1f7a4d"/><path d="M20 24V12" stroke="#0a2f3c" stroke-width="2.200" stroke-linecap="round"/><path d="M20 12c-5-.500-8 1.500-9 4 3-1.500 6-1.500 9-.500zM20 12c5-.500 8 1.500 9 4-3-1.500-6-1.500-9-.500z" fill="#0a2f3c"/></svg>
+      Isle Connect
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a class="link" href="#/" id="navCountries">Countries</a>
+      <a class="link" href="#/admin" id="navAdmin">Admin</a>
+      <button class="btn accent small" data-act="post" type="button">+ Post</button>
+    </nav>
+  </div>
+</header>
+
+<main id="app" tabindex="-1"></main>
+
+<footer>
+  <div class="wrap">
+    <div><b>JSur</b> copyright &copy;2023</div>
+    <div>Silver sponsor: JnBaptiste Foundation &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
+  </div>
+</footer>
+
+<!-- New post dialog -->
+<dialog id="postDlg" aria-labelledby="postDlgTitle">
+  <div class="dlg-head"><h2 id="postDlgTitle">Share a post</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
+  <form class="f" id="postForm" novalidate>
+    <div class="row2">
+      <div class="field"><label for="pf-country">Country</label><select id="pf-country" required></select></div>
+      <div class="field"><label for="pf-cat">Category</label><select id="pf-cat" required></select></div>
+    </div>
+    <div class="field">
+      <label for="pf-title">What do you need or offer?</label>
+      <input id="pf-title" maxlength="120" placeholder="e.g. Looking for a part-time job" required>
+    </div>
+    <div class="field">
+      <label for="pf-desc">Details</label>
+      <textarea id="pf-desc" maxlength="1500" placeholder="Tell people what's happening, when and where." required></textarea>
+    </div>
+    <div class="field">
+      <label for="pf-contact">How should people reach you? <span class="hint">(phone, email or WhatsApp)</span></label>
+      <input id="pf-contact" maxlength="200" placeholder="e.g. +1 555 123 4567">
+    </div>
+    <details class="media">
+      <summary>Add a photo or audio (optional)</summary>
+      <div class="inner">
+        <div class="field"><label for="pf-imgfile">Photo <span class="hint">(JPG, PNG, WebP – up to 5 MB)</span></label><input id="pf-imgfile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
+        <div class="field"><label for="pf-imgurl">…or paste a photo link</label><input id="pf-imgurl" type="url" placeholder="https://"></div>
+        <div class="field"><label for="pf-audfile">Audio <span class="hint">(MP3, WAV, M4A, OGG – up to 10 MB)</span></label><input id="pf-audfile" type="file" accept="audio/mpeg,audio/wav,audio/mp4,audio/x-m4a,audio/ogg"></div>
+        <div class="field"><label for="pf-audurl">…or paste an audio link</label><input id="pf-audurl" type="url" placeholder="https://"></div>
+      </div>
+    </details>
+    <input class="hp" id="pf-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="err" id="pf-err" role="alert"></p>
+    <div class="form-actions">
+      <button class="btn ghost" type="button" data-close>Cancel</button>
+      <button class="btn" type="submit" id="pf-submit">Share post</button>
+    </div>
+    <p class="counter" style="text-align:left;margin:0">Posts are reviewed by an administrator before they appear on the board.</p>
+  </form>
+</dialog>
+
+<!-- Edit dialog (admin) -->
+<dialog id="editDlg" aria-labelledby="editDlgTitle">
+  <div class="dlg-head"><h2 id="editDlgTitle">Edit post</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
+  <form class="f" id="editForm" novalidate>
+    <div class="field"><label for="ef-title">Title</label><input id="ef-title" maxlength="120" required></div>
+    <div class="row2">
+      <div class="field"><label for="ef-cat">Category</label><select id="ef-cat"></select></div>
+      <div class="field"><label for="ef-rating">Rating <span class="hint">(0–5, optional)</span></label><input id="ef-rating" type="number" min="0" max="5" step="0.5"></div>
+    </div>
+    <div class="field"><label for="ef-desc">Details</label><textarea id="ef-desc" maxlength="1500" required></textarea></div>
+    <div class="field"><label for="ef-contact">Contact</label><input id="ef-contact" maxlength="200"></div>
+    <p class="err" id="ef-err" role="alert"></p>
+    <div class="form-actions">
+      <button class="btn ghost" type="button" data-close>Cancel</button>
+      <button class="btn" type="submit">Save changes</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   CONFIG – paste your Supabase project values here
+   Supabase dashboard → Project Settings → API
+   (The anon key is safe in the browser; your Row Level Security rules
+   in supabase_setup.sql are what protect the data.)
+   ===================================================================== */
+const CONFIG = {
+  SUPABASE_URL: "YOUR_SUPABASE_URL",
+  SUPABASE_ANON_KEY: "YOUR_SUPABASE_ANON_KEY",
+  MEDIA_BUCKET: "post-media"
+};
+
+const DEMO = CONFIG.SUPABASE_URL.startsWith("YOUR_") || !window.supabase;
+const sb = DEMO ? null : window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+
+/* ---------- Static data ---------- */
+const CATEGORIES = [
+  {id:"Jobs",icon:"💼",h:215},{id:"Food",icon:"🍲",h:25},{id:"Education",icon:"🎓",h:265},
+  {id:"Transport",icon:"🚌",h:190},{id:"Emergency",icon:"🚨",h:5},{id:"Holiday",icon:"🌴",h:150},
+  {id:"Advertisement",icon:"📣",h:320},{id:"Sports",icon:"⚽",h:100},{id:"Other",icon:"✨",h:45}
+];
+const REPORT = {id:"Report a problem",icon:"🚩",h:0};
+const ALL_CATS = [...CATEGORIES, REPORT];
+const catInfo = id => ALL_CATS.find(c => c.id === id) || CATEGORIES[CATEGORIES.length-1];
+
+/* Fallback country list (used if the `countries` table can't be read). Format: code:Name|… */
+const COUNTRY_DATA = {
+  "Caribbean":"ag:Antigua and Barbuda|aw:Aruba|bs:Bahamas|bb:Barbados|bz:Belize|bm:Bermuda|vg:British Virgin Islands|ky:Cayman Islands|cu:Cuba|cw:Curaçao|dm:Dominica|do:Dominican Republic|gd:Grenada|gy:Guyana|ht:Haiti|jm:Jamaica|pr:Puerto Rico|kn:Saint Kitts and Nevis|lc:Saint Lucia|vc:Saint Vincent and the Grenadines|sr:Suriname|tt:Trinidad and Tobago|tc:Turks and Caicos Islands",
+  "Americas":"ar:Argentina|bo:Bolivia|br:Brazil|ca:Canada|cl:Chile|co:Colombia|cr:Costa Rica|ec:Ecuador|sv:El Salvador|gt:Guatemala|hn:Honduras|mx:Mexico|ni:Nicaragua|pa:Panama|py:Paraguay|pe:Peru|us:United States|uy:Uruguay|ve:Venezuela",
+  "Africa":"cv:Cabo Verde|eg:Egypt|et:Ethiopia|gh:Ghana|ke:Kenya|ma:Morocco|mu:Mauritius|ng:Nigeria|sn:Senegal|sc:Seychelles|za:South Africa|tz:Tanzania|ug:Uganda",
+  "Europe":"fr:France|de:Germany|ie:Ireland|it:Italy|nl:Netherlands|pt:Portugal|es:Spain|gb:United Kingdom",
+  "Asia":"cn:China|in:India|id:Indonesia|jp:Japan|ph:Philippines|sg:Singapore|lk:Sri Lanka|ae:United Arab Emirates",
+  "Oceania":"au:Australia|fj:Fiji|nz:New Zealand|pg:Papua New Guinea|ws:Samoa"
+};
+const LOCAL_COUNTRIES = Object.entries(COUNTRY_DATA).flatMap(([region, s]) =>
+  s.split("|").map(x => { const i = x.indexOf(":"); return {code:x.slice(0,i), name:x.slice(i+1), region}; }));
+const REGION_ORDER = Object.keys(COUNTRY_DATA);
+
+/* ---------- Helpers ---------- */
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeUrl = u => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : ""; } catch { return ""; } };
+const flag = (code, cls="") => `<img class="flag ${cls}" src="https://flagcdn.com/w160/${esc(code)}.png" alt="" width="40" height="30" loading="lazy">`;
+const store = {
+  get(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+const rtf = new Intl.RelativeTimeFormat(undefined, {numeric:"auto"});
+function ago(iso){
+  const s = (new Date(iso) - Date.now()) / 1000, a = Math.abs(s);
+  if (a < 60) return "just now";
+  if (a < 3600) return rtf.format(Math.round(s/60), "minute");
+  if (a < 86400) return rtf.format(Math.round(s/3600), "hour");
+  if (a < 2592000) return rtf.format(Math.round(s/86400), "day");
+  return new Date(iso).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+}
+function toast(msg, type=""){
+  const t = document.createElement("div");
+  t.className = "toast " + type; t.textContent = msg;
+  $("#toasts").appendChild(t);
+  setTimeout(() => t.remove(), 5500);
+}
+const stars = r => { if (r == null || r === "") return ""; const n = Math.round(Number(r)); return `<span class="stars" aria-label="Rated ${esc(r)} out of 5">${"★".repeat(n)}${"☆".repeat(5-n)}<small>${Number(r).toFixed(1)}</small></span>`; };
+
+/* ---------- Data layer (Supabase, with an in-memory demo fallback) ---------- */
+const daysAgo = d => new Date(Date.now() - d*86400000).toISOString();
+const demoDb = {
+  posts: [
+    {id:"d1",country_code:"jm",title:"Hiring: front-desk receptionist",category:"Jobs",description:"Small hotel in Negril needs a friendly receptionist, weekdays 8am–4pm. Experience helpful but not required.",contact:"jobs@example.com",rating:4.5,status:"Approved",created_at:daysAgo(1)},
+    {id:"d2",country_code:"jm",title:"Free hot meals every Saturday",category:"Food",description:"Community kitchen at the Half-Way Tree church hall serves lunch from 12 noon. Everyone is welcome.",contact:"876 555 0142",rating:5,status:"Approved",created_at:daysAgo(3)},
+    {id:"d3",country_code:"jm",title:"Maths and English lessons, grades 7–11",category:"Education",description:"Qualified teacher offering after-school lessons in Kingston. Small groups, affordable rates.",contact:"WhatsApp 876 555 0177",rating:null,status:"Approved",created_at:daysAgo(6)},
+    {id:"d4",country_code:"jm",title:"Shared ride Montego Bay → Kingston",category:"Transport",description:"Leaving Fridays at 6am, 3 seats free. Split fuel cost.",contact:"876 555 0199",rating:null,status:"Approved",created_at:daysAgo(2)},
+    {id:"d5",country_code:"jm",title:"Hurricane shelter locations updated",category:"Emergency",description:"Schools in St. Andrew and St. Catherine are open as shelters. Bring ID, water and medication.",contact:"",rating:null,status:"Approved",created_at:daysAgo(0.2)},
+    {id:"d6",country_code:"jm",title:"Weekend football league sign-ups",category:"Sports",description:"Mixed teams, all ages. Season starts next month.",contact:"league@example.com",rating:null,status:"Pending",created_at:daysAgo(0.1)},
+    {id:"d7",country_code:"tt",title:"Carnival costume pick-up schedule",category:"Holiday",description:"Pick-ups at the Savannah on Thursday and Friday from 10am. Bring your confirmation email.",contact:"",rating:4,status:"Approved",created_at:daysAgo(4)},
+    {id:"d8",country_code:"tt",title:"Doubles stall looking for a helper",category:"Jobs",description:"Early mornings in Port of Spain, 5am–10am. Pay is daily.",contact:"868 555 0123",rating:null,status:"Approved",created_at:daysAgo(5)},
+    {id:"d9",country_code:"bb",title:"Surf lessons for beginners",category:"Sports",description:"Bathsheba, Saturdays and Sundays. Boards provided.",contact:"surf@example.com",rating:4.5,status:"Approved",created_at:daysAgo(7)},
+    {id:"d10",country_code:"gd",title:"Spice farm tours",category:"Holiday",description:"Half-day tours with tastings. Transport from St. George's can be arranged.",contact:"473 555 0188",rating:5,status:"Approved",created_at:daysAgo(9)},
+    {id:"d11",country_code:"lc",title:"Fresh fish at Gros Islet market",category:"Food",description:"Daily catch, from 6am. Order ahead for large amounts.",contact:"758 555 0166",rating:null,status:"Approved",created_at:daysAgo(2)}
+  ]
+};
+const api = {
+  async countries(){
+    if (DEMO) return LOCAL_COUNTRIES;
+    const {data, error} = await sb.from("countries").select("code,name,region").order("name");
+    if (error || !data?.length) return LOCAL_COUNTRIES;
+    return data;
+  },
+  async posts(code){
+    if (DEMO) return demoDb.posts.filter(p => p.country_code === code && p.status === "Approved" && p.category !== REPORT.id).sort((a,b) => b.created_at.localeCompare(a.created_at));
+    const {data, error} = await sb.from("posts").select("*").eq("country_code", code).eq("status","Approved").neq("category", REPORT.id).order("created_at",{ascending:false}).limit(300);
+    if (error) throw error;
+    return data;
+  },
+  async create(p){
+    if (DEMO) { demoDb.posts.unshift({...p, id:"d"+Date.now(), rating:null, status:"Pending", created_at:new Date().toISOString()}); return; }
+    const {error} = await sb.from("posts").insert(p);
+    if (error) throw error;
+  },
+  async upload(file, code){
+    if (DEMO) return URL.createObjectURL(file);
+    const ext = (file.name.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,5);
+    const path = `${code}/${crypto.randomUUID()}.${ext}`;
+    const {error} = await sb.storage.from(CONFIG.MEDIA_BUCKET).upload(path, file, {contentType:file.type, upsert:false});
+    if (error) throw error;
+    return sb.storage.from(CONFIG.MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
+  },
+  /* admin */
+  async session(){
+    if (DEMO) return state.demoAdmin ? {email:"demo@admin"} : null;
+    const {data:{session}} = await sb.auth.getSession();
+    if (!session) return null;
+    const {data} = await sb.from("admins").select("user_id").eq("user_id", session.user.id).maybeSingle();
+    return data ? session.user : null;
+  },
+  async signIn(email, password){
+    if (DEMO) { state.demoAdmin = true; return; }
+    const {error} = await sb.auth.signInWithPassword({email, password});
+    if (error) throw error;
+    if (!(await api.session())) { await sb.auth.signOut(); throw new Error("This account isn't an administrator."); }
+  },
+  async signOut(){ if (DEMO) state.demoAdmin = false; else await sb.auth.signOut(); },
+  async adminPosts({status, country}){
+    if (DEMO) return demoDb.posts.filter(p => (status==="All"||p.status===status) && (country==="All"||p.country_code===country)).sort((a,b)=>b.created_at.localeCompare(a.created_at));
+    let q = sb.from("posts").select("*").order("created_at",{ascending:false}).limit(200);
+    if (status !== "All") q = q.eq("status", status);
+    if (country !== "All") q = q.eq("country_code", country);
+    const {data, error} = await q;
+    if (error) throw error;
+    return data;
+  },
+  async update(id, patch){
+    if (DEMO) { Object.assign(demoDb.posts.find(p => p.id === id), patch); return; }
+    const {error} = await sb.from("posts").update(patch).eq("id", id);
+    if (error) throw error;
+  },
+  async remove(id){
+    if (DEMO) { demoDb.posts = demoDb.posts.filter(p => p.id !== id); return; }
+    const {error} = await sb.from("posts").delete().eq("id", id);
+    if (error) throw error;
+  }
+};
+
+/* ---------- State ---------- */
+const state = {
+  countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24,
+  admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All"}, adminPosts:[],
+  region:"All", cq:""
+};
+const app = $("#app");
+function setView(html, title, solidHeader){
+  app.innerHTML = html;
+  $("#siteHeader").classList.toggle("solid", !!solidHeader);
+  document.title = title ? `${title} – Isle Connect` : "Isle Connect – community resources, country by country";
+  window.scrollTo(0,0);
+  const h = app.querySelector("h1"); if (h){ h.tabIndex = -1; h.focus({preventScroll:true}); }
+}
+
+/* ---------- Router ---------- */
+function route(){
+  const h = location.hash || "#/";
+  let m;
+  if (h === "#/" || h === "#") return showHome();
+  if ((m = h.match(/^#\/c\/([a-z]{2})$/))) return showCountry(m[1]);
+  if (h === "#/admin") return showAdmin();
+  location.hash = "#/";
+}
+window.addEventListener("hashchange", route);
+
+/* ---------- Home: country picker ---------- */
+const searchIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.500-3.500"/></svg>`;
+function showHome(){
+  state.country = null;
+  const recent = store.get("recent", []).map(c => state.byCode[c]).filter(Boolean);
+  setView(`
+    <section class="hero">
+      <div class="wrap">
+        <h1>What does your community need today?</h1>
+        <p>Jobs, meals, rides, school notices and emergency help, shared by people in each country. Start by choosing where you are.</p>
+        <div class="search">
+          ${searchIcon}
+          <label class="sr-only" for="cq">Search countries</label>
+          <input id="cq" type="search" placeholder="Search for a country, e.g. Jamaica" autocomplete="off" value="${esc(state.cq)}">
+        </div>
+        ${recent.length ? `<div class="recent">Recently visited: ${recent.slice(0,4).map(c => `<a href="#/c/${esc(c.code)}">${flag(c.code)}${esc(c.name)}</a>`).join("")}</div>` : ""}
+      </div>
+      <svg class="wave" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 28C120 56 240 56 360 36s240-36 360-20 240 40 360 36 240-40 360-24v40H0z"/></svg>
+    </section>
+    <section class="wrap picker" aria-label="Choose a country">
+      <div class="regions" id="regions" role="group" aria-label="Filter by region"></div>
+      <div id="cgrid"></div>
+    </section>`, null, false);
+  renderRegions(); renderGrid();
+  $("#cq").addEventListener("input", e => { state.cq = e.target.value; renderGrid(); });
+  $("#cq").addEventListener("keydown", e => {
+    if (e.key === "Enter") { const r = filteredCountries(); if (r.length === 1) location.hash = "#/c/" + r[0].code; }
+  });
+}
+function filteredCountries(){
+  const q = state.cq.trim().toLowerCase();
+  return state.countries.filter(c => (state.region === "All" || c.region === state.region) && (!q || c.name.toLowerCase().includes(q)));
+}
+function regionList(){
+  const set = [...new Set(state.countries.map(c => c.region))];
+  return set.sort((a,b) => (REGION_ORDER.indexOf(a)+1||99) - (REGION_ORDER.indexOf(b)+1||99));
+}
+function renderRegions(){
+  const el = $("#regions"); if (!el) return;
+  el.innerHTML = ["All", ...regionList()].map(r => `<button class="chip" type="button" data-region="${esc(r)}" aria-pressed="${state.region===r}">${esc(r === "All" ? "All regions" : r)}</button>`).join("");
+}
+function renderGrid(){
+  const list = filteredCountries(), el = $("#cgrid"); if (!el) return;
+  if (!list.length) { el.innerHTML = `<div class="empty-grid">No country matches “${esc(state.cq)}”. Check the spelling or clear the search to see every country.</div>`; return; }
+  const card = c => `<a class="ccard" href="#/c/${esc(c.code)}">${flag(c.code)}<span>${esc(c.name)}</span></a>`;
+  if (state.region === "All" && !state.cq.trim()) {
+    el.innerHTML = regionList().map(r => `<h2 class="region-title">${esc(r)}</h2><div class="cgrid">${list.filter(c => c.region === r).map(card).join("")}</div>`).join("");
+  } else {
+    el.innerHTML = `<div class="cgrid" style="margin-top:.6rem">${list.map(card).join("")}</div>`;
+  }
+}
+
+/* ---------- Country page ---------- */
+function showCountry(code){
+  const c = state.byCode[code];
+  if (!c) { location.hash = "#/"; return; }
+  state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = [];
+  store.set("recent", [code, ...store.get("recent", []).filter(x => x !== code)].slice(0,6));
+  setView(`
+    <section class="band">
+      <div class="wrap">
+        <a class="back" href="#/">&lsaquo; All countries</a>
+        <div class="band-row">
+          ${flag(c.code, "lg")}
+          <div class="grow"><h1>${esc(c.name)}</h1><div class="sub">${esc(c.region)}</div></div>
+          <div class="actions">
+            <label class="sr-only" for="switch">Switch country</label>
+            <select class="switch" id="switch">${state.countries.map(x => `<option value="${esc(x.code)}" ${x.code===code?"selected":""}>${esc(x.name)}</option>`).join("")}</select>
+            <button class="btn accent" type="button" data-act="post">+ Post in ${esc(c.name)}</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="wrap toolbar">
+      <div class="toolbar-row">
+        <div class="search small">${searchIcon}<label class="sr-only" for="pq">Search posts</label><input id="pq" type="search" placeholder="Search posts in ${esc(c.name)}"></div>
+        <button class="btn ghost small" type="button" data-act="refresh">Refresh</button>
+      </div>
+      <div class="cats" id="cats" role="group" aria-label="Filter by category"></div>
+    </section>
+    <section class="wrap" aria-live="polite"><div id="posts" class="posts"></div><div id="postState"></div><div id="more" class="more" hidden></div></section>
+  `, c.name, true);
+  $("#switch").addEventListener("change", e => location.hash = "#/c/" + e.target.value);
+  $("#pq").addEventListener("input", e => { state.q = e.target.value; state.shown = 24; renderPosts(); });
+  renderCats(); loadPosts();
+}
+async function loadPosts(){
+  const code = state.country.code;
+  $("#postState").innerHTML = ""; $("#more").hidden = true;
+  $("#posts").innerHTML = '<div class="skeleton"></div>'.repeat(6);
+  try {
+    const rows = await api.posts(code);
+    if (state.country?.code !== code) return;
+    state.posts = rows; renderCats(); renderPosts();
+  } catch (e) {
+    console.error(e);
+    $("#posts").innerHTML = "";
+    $("#postState").innerHTML = `<div class="state"><div class="big">📡</div><h2>We couldn't load the posts</h2><p>Check your connection and try again.</p><button class="btn" type="button" data-act="refresh">Try again</button></div>`;
+  }
+}
+function renderCats(){
+  const el = $("#cats"); if (!el) return;
+  const count = id => state.posts.filter(p => p.category === id).length;
+  el.innerHTML = [`<button class="chip" type="button" data-cat="All" aria-pressed="${state.cat==="All"}">All<span class="n">${state.posts.length}</span></button>`,
+    ...CATEGORIES.map(c => `<button class="chip ${count(c.id)?"":"zero"}" type="button" data-cat="${c.id}" aria-pressed="${state.cat===c.id}">${c.icon} ${c.id}<span class="n">${count(c.id)}</span></button>`)].join("");
+}
+function renderPosts(){
+  const q = state.q.trim().toLowerCase();
+  const list = state.posts.filter(p => (state.cat === "All" || p.category === state.cat) && (!q || (p.title + " " + p.description).toLowerCase().includes(q)));
+  const name = state.country.name;
+  $("#posts").innerHTML = list.slice(0, state.shown).map(postCard).join("");
+  $("#more").hidden = list.length <= state.shown;
+  $("#more").innerHTML = `<button class="btn ghost" type="button" data-act="more">Show more posts</button>`;
+  let s = "";
+  if (!list.length) {
+    s = state.posts.length === 0
+      ? `<div class="state"><div class="big">🌱</div><h2>Nothing here yet</h2><p>No one has posted in ${esc(name)} so far. Be the first to share a need or an offer.</p><button class="btn accent" type="button" data-act="post">+ Post in ${esc(name)}</button></div>`
+      : `<div class="state"><div class="big">🔎</div><h2>No matching posts</h2><p>Try another category, or clear your search.</p><button class="btn ghost" type="button" data-act="clear">Show all posts</button></div>`;
+  }
+  $("#postState").innerHTML = s;
+}
+function postCard(p){
+  const ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url);
+  const long = (p.description || "").length > 220;
+  return `<article class="post">
+    ${img ? `<a class="pic" href="${esc(img)}" target="_blank" rel="noopener"><img src="${esc(img)}" alt="" loading="lazy"></a>` : ""}
+    <div class="pbody">
+      <div class="pmeta"><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><time datetime="${esc(p.created_at)}">${esc(ago(p.created_at))}</time></div>
+      <h3>${esc(p.title)}</h3>
+      <p class="desc ${long ? "clamp" : ""}">${esc(p.description)}</p>
+      ${long ? `<button class="linkbtn" type="button" data-act="toggle">Read more</button>` : ""}
+      ${p.contact ? `<div class="contact"><b>Contact:</b> ${esc(p.contact)}</div>` : ""}
+      ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
+      ${stars(p.rating)}
+    </div>
+  </article>`;
+}
+
+/* ---------- Posting ---------- */
+const postDlg = $("#postDlg");
+function openPost(){
+  $("#pf-country").innerHTML = state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("");
+  $("#pf-country").value = state.country?.code || store.get("recent", [])[0] || "";
+  if (!$("#pf-country").value) $("#pf-country").selectedIndex = -1;
+  $("#pf-cat").innerHTML = ALL_CATS.map(c => `<option value="${esc(c.id)}">${c.icon} ${esc(c.id)}</option>`).join("");
+  $("#pf-cat").value = state.cat !== "All" ? state.cat : "Jobs";
+  $("#pf-err").textContent = "";
+  postDlg.showModal();
+  (state.country ? $("#pf-title") : $("#pf-country")).focus();
+}
+const FILE_RULES = {img:{max:5*1024*1024, types:["image/jpeg","image/png","image/webp","image/gif"], label:"Photo"}, aud:{max:10*1024*1024, types:["audio/mpeg","audio/wav","audio/mp4","audio/x-m4a","audio/ogg"], label:"Audio file"}};
+function checkFile(f, rule){
+  if (!f) return "";
+  if (!rule.types.includes(f.type)) return `${rule.label} must be one of the supported file types.`;
+  if (f.size > rule.max) return `${rule.label} is too large. The limit is ${rule.max/1048576} MB.`;
+  return "";
+}
+let lastPost = 0;
+$("#postForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = $("#pf-err"), btn = $("#pf-submit"); err.textContent = "";
+  if ($("#pf-website").value) return;                       // honeypot
+  const code = $("#pf-country").value, title = $("#pf-title").value.trim(), desc = $("#pf-desc").value.trim(), contact = $("#pf-contact").value.trim();
+  if (!code) return err.textContent = "Choose the country this post is for.";
+  if (title.length < 3) return err.textContent = "Add a short title (at least 3 characters).";
+  if (desc.length < 3) return err.textContent = "Add some details so people know how to help.";
+  const imgFile = $("#pf-imgfile").files[0], audFile = $("#pf-audfile").files[0];
+  const fe = checkFile(imgFile, FILE_RULES.img) || checkFile(audFile, FILE_RULES.aud);
+  if (fe) return err.textContent = fe;
+  const imgUrlIn = $("#pf-imgurl").value.trim(), audUrlIn = $("#pf-audurl").value.trim();
+  if ((imgUrlIn && !safeUrl(imgUrlIn)) || (audUrlIn && !safeUrl(audUrlIn))) return err.textContent = "Links must start with http:// or https://";
+  if (Date.now() - lastPost < 15000) return err.textContent = "Please wait a few seconds before posting again.";
+  btn.disabled = true; btn.textContent = "Sharing…";
+  try {
+    const image_url = imgFile ? await api.upload(imgFile, code) : (safeUrl(imgUrlIn) || null);
+    const audio_url = audFile ? await api.upload(audFile, code) : (safeUrl(audUrlIn) || null);
+    await api.create({country_code:code, title, category:$("#pf-cat").value, description:desc, contact:contact || null, image_url, audio_url});
+    lastPost = Date.now();
+    $("#postForm").reset(); postDlg.close();
+    toast("Thanks! Your post will appear once an administrator has reviewed it.", "ok");
+  } catch (ex) {
+    console.error(ex);
+    err.textContent = "We couldn't share your post. Check your connection and try again.";
+  } finally { btn.disabled = false; btn.textContent = "Share post"; }
+});
+
+/* ---------- Admin ---------- */
+async function showAdmin(){
+  state.admin = await api.session();
+  if (!state.admin) {
+    setView(`<section class="wrap admin">
+      <a class="back" href="#/" style="text-decoration:none;font-weight:600;color:var(--palm)">&lsaquo; Back to countries</a>
+      <h1 style="margin-top:1rem">Administrator sign in</h1>
+      <p style="color:var(--muted)">Sign in to approve, edit or remove posts.${DEMO ? " <b>Demo mode:</b> any email and password will work." : ""}</p>
+      <form class="login-card f" id="loginForm" style="padding:1.4rem">
+        <div class="field"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="li-pass">Password</label><input id="li-pass" type="password" autocomplete="current-password" required></div>
+        <p class="err" id="li-err" role="alert"></p>
+        <button class="btn" type="submit">Sign in</button>
+      </form></section>`, "Admin", true);
+    $("#loginForm").addEventListener("submit", async e => {
+      e.preventDefault();
+      try { await api.signIn($("#li-email").value.trim(), $("#li-pass").value); showAdmin(); }
+      catch (ex) { $("#li-err").textContent = ex.message?.includes("administrator") ? ex.message : "Email or password is incorrect."; }
+    });
+    return;
+  }
+  const f = state.adminFilter;
+  setView(`<section class="wrap admin">
+    <div style="display:flex;gap:1rem;justify-content:space-between;align-items:flex-start;flex-wrap:wrap">
+      <div><h1>Review posts</h1><p style="color:var(--muted);margin:0">Approved posts appear on the board straight away.</p></div>
+      <button class="btn ghost small" type="button" data-act="signout">Sign out</button>
+    </div>
+    <div class="afilters">
+      <label class="sr-only" for="af-status">Status</label>
+      <select id="af-status">${["Pending","Approved","Rejected","All"].map(s => `<option ${s===f.status?"selected":""}>${s}</option>`).join("")}</select>
+      <label class="sr-only" for="af-country">Country</label>
+      <select id="af-country"><option value="All">All countries</option>${state.countries.map(c => `<option value="${esc(c.code)}" ${c.code===f.country?"selected":""}>${esc(c.name)}</option>`).join("")}</select>
+    </div>
+    <div id="alist" class="alist"></div></section>`, "Admin", true);
+  $("#af-status").addEventListener("change", e => { f.status = e.target.value; loadAdmin(); });
+  $("#af-country").addEventListener("change", e => { f.country = e.target.value; loadAdmin(); });
+  loadAdmin();
+}
+async function loadAdmin(){
+  const el = $("#alist"); if (!el) return;
+  el.innerHTML = '<div class="skeleton" style="height:120px"></div>'.repeat(3);
+  try {
+    state.adminPosts = await api.adminPosts(state.adminFilter);
+    el.innerHTML = state.adminPosts.length ? state.adminPosts.map(adminRow).join("") :
+      `<div class="state"><div class="big">✅</div><h2>All caught up</h2><p>No ${state.adminFilter.status === "All" ? "" : state.adminFilter.status.toLowerCase() + " "}posts match these filters.</p></div>`;
+  } catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load posts</h2><p>Check your connection and try again.</p></div>`; }
+}
+function adminRow(p){
+  const c = state.byCode[p.country_code], ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url);
+  return `<div class="arow" data-id="${esc(p.id)}">
+    <div class="arow-top"><span class="status ${esc(p.status)}">${esc(p.status)}</span>${c ? flag(c.code) : ""}<strong>${esc(c?.name || p.country_code)}</strong><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><span>${esc(ago(p.created_at))}</span></div>
+    <h3>${esc(p.title)}</h3>
+    <p class="desc">${esc(p.description)}</p>
+    ${p.contact ? `<div class="contact"><b>Contact:</b> ${esc(p.contact)}</div>` : ""}
+    ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener">View photo</a>` : ""} ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
+    <div class="arow-actions">
+      ${p.status !== "Approved" ? `<button class="btn small" type="button" data-act="approve">Approve</button>` : ""}
+      ${p.status !== "Rejected" ? `<button class="btn ghost small" type="button" data-act="reject">Reject</button>` : ""}
+      <button class="btn ghost small" type="button" data-act="edit">Edit</button>
+      <button class="btn danger small" type="button" data-act="delete">Delete</button>
+    </div></div>`;
+}
+let editingId = null;
+$("#editForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const title = $("#ef-title").value.trim(), description = $("#ef-desc").value.trim();
+  if (title.length < 3 || description.length < 3) return $("#ef-err").textContent = "Title and details can't be empty.";
+  const r = $("#ef-rating").value;
+  try {
+    await api.update(editingId, {title, description, category:$("#ef-cat").value, contact:$("#ef-contact").value.trim() || null, rating: r === "" ? null : Number(r)});
+    $("#editDlg").close(); toast("Changes saved.", "ok"); loadAdmin();
+  } catch (ex) { console.error(ex); $("#ef-err").textContent = "Couldn't save your changes. Try again."; }
+});
+async function adminAct(act, id){
+  const p = state.adminPosts.find(x => x.id === id); if (!p) return;
+  try {
+    if (act === "approve") { await api.update(id, {status:"Approved"}); toast("Approved. It's now on the board.", "ok"); }
+    if (act === "reject")  { await api.update(id, {status:"Rejected"}); toast("Rejected."); }
+    if (act === "delete")  { if (!confirm("Delete this post permanently?")) return; await api.remove(id); toast("Deleted."); }
+    if (act === "edit") {
+      editingId = id;
+      $("#ef-cat").innerHTML = ALL_CATS.map(c => `<option value="${esc(c.id)}">${c.icon} ${esc(c.id)}</option>`).join("");
+      $("#ef-title").value = p.title; $("#ef-desc").value = p.description; $("#ef-contact").value = p.contact || "";
+      $("#ef-cat").value = p.category; $("#ef-rating").value = p.rating ?? ""; $("#ef-err").textContent = "";
+      $("#editDlg").showModal(); return;
+    }
+    loadAdmin();
+  } catch (ex) { console.error(ex); toast("That didn't work. Check your connection and permissions, then try again.", "error"); }
+}
+
+/* ---------- Global events ---------- */
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close]"); if (!t) return;
+  if (t.dataset.close !== undefined) return t.closest("dialog").close();
+  if (t.dataset.region) { state.region = t.dataset.region; renderRegions(); return renderGrid(); }
+  if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
+  switch (t.dataset.act) {
+    case "post": return openPost();
+    case "refresh": return loadPosts();
+    case "more": state.shown += 24; return renderPosts();
+    case "clear": state.cat = "All"; state.q = ""; $("#pq").value = ""; renderCats(); return renderPosts();
+    case "toggle": { const d = t.previousElementSibling; const open = d.classList.toggle("clamp") === false; t.textContent = open ? "Show less" : "Read more"; return; }
+    case "signout": return api.signOut().then(() => { state.admin = null; location.hash = "#/"; toast("Signed out."); updateNav(); });
+    default: { const row = t.closest(".arow"); if (row) adminAct(t.dataset.act, row.dataset.id); }
+  }
+});
+document.addEventListener("error", e => { if (e.target.matches?.("img.flag")) e.target.style.visibility = "hidden"; }, true);
+for (const d of document.querySelectorAll("dialog")) d.addEventListener("click", e => { if (e.target === d) d.close(); });
+
+async function updateNav(){
+  const a = await api.session().catch(() => null);
+  $("#navAdmin").textContent = a ? "Review posts" : "Admin";
+}
+
+/* ---------- Start ---------- */
+(async function init(){
+  if (DEMO) $("#demoNote").hidden = false;
+  try { state.countries = (await api.countries()).slice().sort((a,b) => a.name.localeCompare(b.name)); }
+  catch { state.countries = LOCAL_COUNTRIES; }
+  state.byCode = Object.fromEntries(state.countries.map(c => [c.code, c]));
+  if (!DEMO) sb.auth.onAuthStateChange(() => updateNav());
+  updateNav(); route();
+})();
+</script>
+</body>
+</html>
