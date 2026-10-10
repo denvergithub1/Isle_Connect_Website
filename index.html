@@ -745,7 +745,7 @@ async function updateNav(){
   try { state.countries = (await api.countries()).slice().sort((a,b) => a.name.localeCompare(b.name)); }
   catch { state.countries = LOCAL_COUNTRIES; }
   state.byCode = Object.fromEntries(state.countries.map(c => [c.code, c]));
-  if (!DEMO) sb.auth.onAuthStateChange(() => updateNav());
+  if (!DEMO) sb.auth.onAuthStateChange(() => { setTimeout(updateNav, 0); });
   updateNav(); route();
 })();
 </script>
