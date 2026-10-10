@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Isle Connect – community resources, country by country</title>
-<meta name="description" content="Find jobs, food, transport, education and emergency help posted by people in your country.">
+<title>Isle Connect – community resources across the Caribbean</title>
+<meta name="description" content="Find jobs, food, transport, education and emergency help posted by people across the Caribbean.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -283,6 +283,7 @@ const CONFIG = {
   MEDIA_BUCKET: "post-media"
 };
 
+
 const DEMO = CONFIG.SUPABASE_URL.startsWith("YOUR_") || !window.supabase;
 const sb = DEMO ? null : window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
 
@@ -296,14 +297,12 @@ const REPORT = {id:"Report a problem",icon:"🚩",h:0};
 const ALL_CATS = [...CATEGORIES, REPORT];
 const catInfo = id => ALL_CATS.find(c => c.id === id) || CATEGORIES[CATEGORIES.length-1];
 
-/* Fallback country list (used if the `countries` table can't be read). Format: code:Name|… */
+/* Fallback list of Caribbean countries and territories (used if the `countries` table can't be read). Format: code:Name|… */
 const COUNTRY_DATA = {
-  "Caribbean":"ag:Antigua and Barbuda|aw:Aruba|bs:Bahamas|bb:Barbados|bz:Belize|bm:Bermuda|vg:British Virgin Islands|ky:Cayman Islands|cu:Cuba|cw:Curaçao|dm:Dominica|do:Dominican Republic|gd:Grenada|gy:Guyana|ht:Haiti|jm:Jamaica|pr:Puerto Rico|kn:Saint Kitts and Nevis|lc:Saint Lucia|vc:Saint Vincent and the Grenadines|sr:Suriname|tt:Trinidad and Tobago|tc:Turks and Caicos Islands",
-  "Americas":"ar:Argentina|bo:Bolivia|br:Brazil|ca:Canada|cl:Chile|co:Colombia|cr:Costa Rica|ec:Ecuador|sv:El Salvador|gt:Guatemala|hn:Honduras|mx:Mexico|ni:Nicaragua|pa:Panama|py:Paraguay|pe:Peru|us:United States|uy:Uruguay|ve:Venezuela",
-  "Africa":"cv:Cabo Verde|eg:Egypt|et:Ethiopia|gh:Ghana|ke:Kenya|ma:Morocco|mu:Mauritius|ng:Nigeria|sn:Senegal|sc:Seychelles|za:South Africa|tz:Tanzania|ug:Uganda",
-  "Europe":"fr:France|de:Germany|ie:Ireland|it:Italy|nl:Netherlands|pt:Portugal|es:Spain|gb:United Kingdom",
-  "Asia":"cn:China|in:India|id:Indonesia|jp:Japan|ph:Philippines|sg:Singapore|lk:Sri Lanka|ae:United Arab Emirates",
-  "Oceania":"au:Australia|fj:Fiji|nz:New Zealand|pg:Papua New Guinea|ws:Samoa"
+  "Greater Antilles":"ky:Cayman Islands|cu:Cuba|do:Dominican Republic|ht:Haiti|jm:Jamaica|pr:Puerto Rico",
+  "Lesser Antilles":"ai:Anguilla|ag:Antigua and Barbuda|aw:Aruba|bb:Barbados|vg:British Virgin Islands|cw:Curaçao|dm:Dominica|gd:Grenada|gp:Guadeloupe|mq:Martinique|ms:Montserrat|kn:Saint Kitts and Nevis|lc:Saint Lucia|vc:Saint Vincent and the Grenadines|sx:Sint Maarten|tt:Trinidad and Tobago|vi:U.S. Virgin Islands",
+  "Bahamas and Turks & Caicos":"bs:Bahamas|tc:Turks and Caicos Islands",
+  "Mainland Caribbean":"bz:Belize|gy:Guyana|sr:Suriname"
 };
 const LOCAL_COUNTRIES = Object.entries(COUNTRY_DATA).flatMap(([region, s]) =>
   s.split("|").map(x => { const i = x.indexOf(":"); return {code:x.slice(0,i), name:x.slice(i+1), region}; }));
@@ -424,7 +423,7 @@ const app = $("#app");
 function setView(html, title, solidHeader){
   app.innerHTML = html;
   $("#siteHeader").classList.toggle("solid", !!solidHeader);
-  document.title = title ? `${title} – Isle Connect` : "Isle Connect – community resources, country by country";
+  document.title = title ? `${title} – Isle Connect` : "Isle Connect – community resources across the Caribbean";
   window.scrollTo(0,0);
   const h = app.querySelector("h1"); if (h){ h.tabIndex = -1; h.focus({preventScroll:true}); }
 }
@@ -449,17 +448,17 @@ function showHome(){
     <section class="hero">
       <div class="wrap">
         <h1>What does your community need today?</h1>
-        <p>Jobs, meals, rides, school notices and emergency help, shared by people in each country. Start by choosing where you are.</p>
+        <p>Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island or country.</p>
         <div class="search">
           ${searchIcon}
           <label class="sr-only" for="cq">Search countries</label>
-          <input id="cq" type="search" placeholder="Search for a country, e.g. Jamaica" autocomplete="off" value="${esc(state.cq)}">
+          <input id="cq" type="search" placeholder="Search your island or country, e.g. Barbados" autocomplete="off" value="${esc(state.cq)}">
         </div>
         ${recent.length ? `<div class="recent">Recently visited: ${recent.slice(0,4).map(c => `<a href="#/c/${esc(c.code)}">${flag(c.code)}${esc(c.name)}</a>`).join("")}</div>` : ""}
       </div>
       <svg class="wave" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 28C120 56 240 56 360 36s240-36 360-20 240 40 360 36 240-40 360-24v40H0z"/></svg>
     </section>
-    <section class="wrap picker" aria-label="Choose a country">
+    <section class="wrap picker" aria-label="Choose an island or country">
       <div class="regions" id="regions" role="group" aria-label="Filter by region"></div>
       <div id="cgrid"></div>
     </section>`, null, false);
@@ -479,11 +478,11 @@ function regionList(){
 }
 function renderRegions(){
   const el = $("#regions"); if (!el) return;
-  el.innerHTML = ["All", ...regionList()].map(r => `<button class="chip" type="button" data-region="${esc(r)}" aria-pressed="${state.region===r}">${esc(r === "All" ? "All regions" : r)}</button>`).join("");
+  el.innerHTML = ["All", ...regionList()].map(r => `<button class="chip" type="button" data-region="${esc(r)}" aria-pressed="${state.region===r}">${esc(r === "All" ? "All Caribbean" : r)}</button>`).join("");
 }
 function renderGrid(){
   const list = filteredCountries(), el = $("#cgrid"); if (!el) return;
-  if (!list.length) { el.innerHTML = `<div class="empty-grid">No country matches “${esc(state.cq)}”. Check the spelling or clear the search to see every country.</div>`; return; }
+  if (!list.length) { el.innerHTML = `<div class="empty-grid">Nothing matches “${esc(state.cq)}”. Check the spelling or clear the search to see every Caribbean island and country.</div>`; return; }
   const card = c => `<a class="ccard" href="#/c/${esc(c.code)}">${flag(c.code)}<span>${esc(c.name)}</span></a>`;
   if (state.region === "All" && !state.cq.trim()) {
     el.innerHTML = regionList().map(r => `<h2 class="region-title">${esc(r)}</h2><div class="cgrid">${list.filter(c => c.region === r).map(card).join("")}</div>`).join("");
@@ -501,7 +500,7 @@ function showCountry(code){
   setView(`
     <section class="band">
       <div class="wrap">
-        <a class="back" href="#/">&lsaquo; All countries</a>
+        <a class="back" href="#/">&lsaquo; All Caribbean</a>
         <div class="band-row">
           ${flag(c.code, "lg")}
           <div class="grow"><h1>${esc(c.name)}</h1><div class="sub">${esc(c.region)}</div></div>
@@ -631,7 +630,7 @@ async function showAdmin(){
   state.admin = await api.session();
   if (!state.admin) {
     setView(`<section class="wrap admin">
-      <a class="back" href="#/" style="text-decoration:none;font-weight:600;color:var(--palm)">&lsaquo; Back to countries</a>
+      <a class="back" href="#/" style="text-decoration:none;font-weight:600;color:var(--palm)">&lsaquo; Back to the Caribbean</a>
       <h1 style="margin-top:1rem">Administrator sign in</h1>
       <p style="color:var(--muted)">Sign in to approve, edit or remove posts.${DEMO ? " <b>Demo mode:</b> any email and password will work." : ""}</p>
       <form class="login-card f" id="loginForm" style="padding:1.4rem">
