@@ -191,6 +191,10 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 /* Admin */
 .admin{padding:2rem 0 3rem}
 .admin h1{font-size:2rem;margin-bottom:.4rem}
+.pw{position:relative}
+.pw input{padding-right:4.6rem}
+.pwbtn{position:absolute;right:.4rem;top:50%;translate:0 -50%;background:none;border:0;font:600 .85rem var(--body);color:var(--palm-d);cursor:pointer;padding:.45rem .65rem;border-radius:8px}
+.pwbtn:hover{background:#eef6f2}
 .login-card{max-width:420px;margin:1.5rem 0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.4rem}
 .afilters{display:flex;gap:.7rem;flex-wrap:wrap;margin:1.2rem 0}
 .afilters select,.afilters input{font:600 .93rem var(--body);padding:.65rem .8rem;border-radius:12px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
@@ -813,14 +817,22 @@ async function showAdmin(){
       <p style="color:var(--muted)">Sign in to approve, edit, boost or remove posts.${DEMO ? " <b>Demo mode:</b> any email and password will work." : ""}</p>
       <form class="login-card f" id="loginForm" style="padding:1.4rem">
         <div class="field"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="username" required></div>
-        <div class="field"><label for="li-pass">Password</label><input id="li-pass" type="password" autocomplete="current-password" required></div>
+        <div class="field"><label for="li-pass">Password</label><div class="pw"><input id="li-pass" type="password" autocomplete="current-password" required><button class="pwbtn" type="button" data-act="togglepw" aria-pressed="false" aria-controls="li-pass">Show</button></div></div>
         <p class="err" id="li-err" role="alert"></p>
         <button class="btn" type="submit">Sign in</button>
       </form></section>`, "Admin", true);
     $("#loginForm").addEventListener("submit", async e => {
       e.preventDefault();
       try { await api.signIn($("#li-email").value.trim(), $("#li-pass").value); await updateNav(); showAdmin(); }
-      catch (ex) { $("#li-err").textContent = ex.message?.includes("administrator") ? ex.message : "Email or password is incorrect."; }
+      catch (ex) {
+        console.error("Sign-in error:", ex);
+        const m = String(ex?.message || "");
+        $("#li-err").textContent = m.includes("administrator") ? m
+          : /invalid login/i.test(m) ? "Email or password is incorrect."
+          : /not confirmed/i.test(m) ? "This email hasn't been confirmed yet. Confirm the user in Supabase (Authentication > Users)."
+          : /disabled/i.test(m) ? "Email sign-in is turned off in Supabase (Authentication > Providers > Email)."
+          : "Sign-in failed: " + (m || "unknown error. Open the browser console (F12) for details.");
+      }
     });
     return;
   }
@@ -984,6 +996,7 @@ document.addEventListener("click", e => {
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "togglepw": { const i = $("#li-pass"); if (!i) return; const show = i.type === "password"; i.type = show ? "text" : "password"; t.textContent = show ? "Hide" : "Show"; t.setAttribute("aria-pressed", String(show)); i.focus(); return; }
     case "seeall": hideSuggest(); return $("#posts")?.scrollIntoView({behavior:"smooth", block:"start"});
     case "open": { const card = t.closest(".post[data-pid]"); if (card) openView(card.dataset.pid); return; }
     case "refresh": return loadPosts();
