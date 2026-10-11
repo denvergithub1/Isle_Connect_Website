@@ -216,7 +216,7 @@ footer b{color:#fff}
     <nav class="nav" aria-label="Main">
       <a class="link" href="#/" id="navCountries">Countries</a>
       <!-- Only shown after an administrator signs in (see updateNav) -->
-      <a class="link" href="#/admin" id="navAdmin" hidden>Review posts</a>
+      <a class="link" href="#/" id="navAdmin" hidden>Review posts</a>
       <button class="btn accent small" data-act="post" type="button">+ Post</button>
     </nav>
   </div>
@@ -328,6 +328,10 @@ const CONFIG = {
 };
 
 
+
+/* Private address of the admin sign-in page, e.g. https://yoursite.com/#/owner-7k3q
+   Change this to any secret word and keep it to yourself. "#/admin" no longer works. */
+const ADMIN_PATH = "owner-7k3q";
 
 const validUrl = u => { try { const x = new URL(u); return x.protocol === "https:" && !x.hostname.includes(".."); } catch { return false; } };
 let sb = null;
@@ -492,7 +496,7 @@ function route(){
   let m;
   if (h === "#/" || h === "#") return showHome();
   if ((m = h.match(/^#\/c\/([a-z]{2})$/))) return showCountry(m[1]);
-  if (h === "#/admin") return showAdmin();
+  if (h === "#/" + ADMIN_PATH) return showAdmin();
   location.hash = "#/";
 }
 window.addEventListener("hashchange", route);
@@ -902,6 +906,7 @@ for (const d of document.querySelectorAll("dialog")) d.addEventListener("click",
    (The real protection is Row Level Security in Supabase; this only controls what is shown.) */
 async function updateNav(){
   const a = await api.session().catch(() => null);
+  $("#navAdmin").href = "#/" + ADMIN_PATH;
   $("#navAdmin").hidden = !a;
 }
 
