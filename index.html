@@ -448,17 +448,17 @@ function showHome(){
     <section class="hero">
       <div class="wrap">
         <h1>What does your community need today?</h1>
-        <p>Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island or country.</p>
+        <p>Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.</p>
         <div class="search">
           ${searchIcon}
           <label class="sr-only" for="cq">Search countries</label>
-          <input id="cq" type="search" placeholder="Search your island or country, e.g. Barbados" autocomplete="off" value="${esc(state.cq)}">
+          <input id="cq" type="search" placeholder="Search your island, e.g. Barbados" autocomplete="off" value="${esc(state.cq)}">
         </div>
         ${recent.length ? `<div class="recent">Recently visited: ${recent.slice(0,4).map(c => `<a href="#/c/${esc(c.code)}">${flag(c.code)}${esc(c.name)}</a>`).join("")}</div>` : ""}
       </div>
       <svg class="wave" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 28C120 56 240 56 360 36s240-36 360-20 240 40 360 36 240-40 360-24v40H0z"/></svg>
     </section>
-    <section class="wrap picker" aria-label="Choose an island or country">
+    <section class="wrap picker" aria-label="Choose an island">
       <div class="regions" id="regions" role="group" aria-label="Filter by region"></div>
       <div id="cgrid"></div>
     </section>`, null, false);
