@@ -1421,7 +1421,7 @@ function fbRow(f){
 }
 function ratingFeatures(){
   const list = [];
-  if (state.cat !== "All") list.push({id:state.cat, icon:catInfo(state.cat).icon, hint:`Rate ${state.cat} in ${state.country.name}?`});
+  if (state.cat !== "All") list.push({id:state.cat, icon:catInfo(state.cat).icon, hint:`Rate ${state.cat} in ${state.country.name}.`});
   list.push(CHILD);
   return list;
 }
