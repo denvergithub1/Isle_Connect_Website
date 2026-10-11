@@ -28,6 +28,9 @@ img{max-width:100%}
 a{color:inherit}
 h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
 :focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+/* The page moves focus to its main heading for screen readers. No visible box is needed there. */
+h1{width:fit-content;max-width:100%}
+h1:focus,h1:focus-visible{outline:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{width:min(1120px,100% - 2.5rem);margin-inline:auto}
 [hidden]{display:none!important}
