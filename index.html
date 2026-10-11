@@ -211,6 +211,35 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .status.Featured{background:var(--sun);color:var(--ink)}
 .arow-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem}
 
+/* Subscribe banner, stats, charts, subscribers */
+.subbar{display:flex;gap:1rem 2rem;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:1.2rem 1.4rem;margin:0 0 2rem}
+.subbar h2{font-size:1.3rem}
+.subbar p{margin:.3rem 0 0;color:var(--muted);max-width:56ch}
+.consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.9rem;color:#2c4852;cursor:pointer}
+.consent input{margin-top:.2rem;accent-color:var(--palm);width:1.05rem;height:1.05rem;flex:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;margin:1rem 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem}
+.stat b{display:block;font:800 1.9rem/1.1 var(--display)}
+.stat span{color:var(--muted);font-size:.88rem}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1rem 1.1rem;margin:.8rem 0}
+.panel h3{font-size:1.05rem;margin-bottom:.8rem}
+.chart{display:flex;align-items:flex-end;gap:2px;height:140px}
+.chart i{flex:1;background:var(--palm);border-radius:3px 3px 0 0;min-height:2px}
+.chart i:hover{background:var(--sun-d)}
+.chart-axis{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-top:.35rem}
+.rank{display:grid;gap:.5rem}
+.rank-row{display:grid;grid-template-columns:minmax(120px,1.2fr) 3fr auto;gap:.7rem;align-items:center;font-size:.92rem}
+.rank-row .lab{display:flex;align-items:center;gap:.5rem;overflow-wrap:anywhere}
+.rank-row .flag{width:24px;height:18px}
+.rank-bar{height:10px;border-radius:99px;background:#e3ecea;overflow:hidden}
+.rank-bar i{display:block;height:100%;background:var(--palm)}
+.srow{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.8rem 1rem;display:flex;gap:.6rem 1rem;align-items:center;flex-wrap:wrap}
+.srow .em{font-weight:700;flex:1;min-width:210px;overflow-wrap:anywhere}
+.srow .em a{text-decoration:none;color:var(--palm-d)}
+.srow .em a:hover{text-decoration:underline}
+.srow .meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
+.sbar{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin:.2rem 0 1rem}
+
 /* Footer & toast */
 footer{background:var(--ink);color:#9fc0c6;padding:1.6rem 0;font-size:.9rem;margin-top:auto}
 footer .wrap{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:space-between}
@@ -238,6 +267,7 @@ footer b{color:#fff}
       <a class="link" href="#/" id="navCountries">Countries</a>
       <!-- Only shown after an administrator signs in (see updateNav) -->
       <a class="link" href="#/" id="navAdmin" hidden>Review posts</a>
+      <button class="link" data-act="subscribe" type="button">Get updates</button>
       <button class="btn accent small" data-act="post" type="button">+ Post</button>
     </nav>
   </div>
@@ -329,6 +359,24 @@ footer b{color:#fff}
     <div class="form-actions">
       <button class="btn ghost" type="button" data-close>Cancel</button>
       <button class="btn accent" type="submit">Apply boost</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Subscribe dialog -->
+<dialog id="subDlg" aria-labelledby="subDlgTitle">
+  <div class="dlg-head"><h2 id="subDlgTitle">Get updates by email</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
+  <form class="f" id="subForm" novalidate>
+    <p class="boost-info">Jobs, scholarships, holidays and community news from your island, sent to your inbox.</p>
+    <div class="field"><label for="sf-email">Email address</label><input id="sf-email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></div>
+    <div class="field"><label for="sf-country">Country <span class="hint">(optional)</span></label><select id="sf-country"></select></div>
+    <div class="field"><span class="lbl">What would you like to hear about? <span class="hint">(optional)</span></span><div class="checks" id="sf-interests" role="group" aria-label="Topics"></div></div>
+    <label class="consent"><input type="checkbox" id="sf-consent"><span>I agree to receive emails from Isle Connect. I can ask to be removed at any time.</span></label>
+    <input class="hp" id="sf-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="err" id="sf-err" role="alert"></p>
+    <div class="form-actions">
+      <button class="btn ghost" type="button" data-close>Cancel</button>
+      <button class="btn" type="submit" id="sf-submit">Subscribe</button>
     </div>
   </form>
 </dialog>
@@ -460,6 +508,11 @@ const demoDb = {
     {id:"d11",country_code:"lc",title:"Fresh fish at Gros Islet market",category:"Food",description:"Daily catch, from 6am. Order ahead for large amounts.",contact:"758 555 0166",rating:null,status:"Approved",created_at:daysAgo(2)}
   ]
 };
+demoDb.subs = [
+  {id:"s1",email:"ana@example.com",country_code:"jm",interests:["Jobs","Food"],source:"home",created_at:daysAgo(2)},
+  {id:"s2",email:"marcus@example.com",country_code:"tt",interests:["Sports"],source:"country",created_at:daysAgo(5)},
+  {id:"s3",email:"keisha@example.com",country_code:"bb",interests:[],source:"home",created_at:daysAgo(9)}
+];
 const api = {
   async countries(){
     if (DEMO) return LOCAL_COUNTRIES;
@@ -485,6 +538,35 @@ const api = {
     const {error} = await sb.storage.from(CONFIG.MEDIA_BUCKET).upload(path, file, {contentType:file.type, upsert:false});
     if (error) throw error;
     return sb.storage.from(CONFIG.MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
+  },
+  async subscribe(row){
+    if (DEMO) { demoDb.subs.unshift({...row, id:"s"+Date.now(), created_at:new Date().toISOString()}); return; }
+    const {error} = await sb.from("subscribers").insert(row);
+    if (error && error.code !== "23505") throw error;      // 23505 = already subscribed: treat as success
+  },
+  async track(row){ if (DEMO) return; try { await sb.from("page_views").insert(row); } catch {} },
+  async subscribers(){
+    if (DEMO) return [...demoDb.subs].sort((a,b) => b.created_at.localeCompare(a.created_at));
+    const {data, error} = await sb.from("subscribers").select("*").order("created_at",{ascending:false}).limit(2000);
+    if (error) throw error;
+    return data;
+  },
+  async removeSub(id){
+    if (DEMO) { demoDb.subs = demoDb.subs.filter(s => s.id !== id); return; }
+    const {error} = await sb.from("subscribers").delete().eq("id", id);
+    if (error) throw error;
+  },
+  async traffic(days){
+    if (DEMO) {
+      const by_day = []; for (let i = days-1; i >= 0; i--) by_day.push({day:new Date(Date.now()-i*864e5).toISOString().slice(0,10), views:20+((i*37)%41)});
+      const total = by_day.reduce((a,b) => a + b.views, 0);
+      return {total_views:total, unique_visitors:Math.round(total*.6), subscribers:demoDb.subs.length, by_day,
+        by_country:[{code:"jm",views:Math.round(total*.3)},{code:"tt",views:Math.round(total*.2)},{code:"bb",views:Math.round(total*.15)}],
+        by_referrer:[{ref:"Direct / unknown",views:Math.round(total*.5)},{ref:"facebook.com",views:Math.round(total*.25)},{ref:"google.com",views:Math.round(total*.1)}]};
+    }
+    const {data, error} = await sb.rpc("traffic_summary", {p_days:days});
+    if (error) throw error;
+    return data;
   },
   /* admin */
   async session(){
@@ -531,8 +613,25 @@ const defaultFilters = () => ({sort:"new", when:"any", photo:false, audio:false,
 const state = {
   countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
   admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
-  region:"All", cq:""
+  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30
 };
+/* Cookie-free traffic counting: a random id kept only in this browser tab, no IP address, honours Do Not Track.
+   Your own visits are skipped while you are signed in as admin on this browser. */
+const SESSION_ID = (() => { try { let v = sessionStorage.getItem("ic_sid"); if (!v) { v = crypto.randomUUID(); sessionStorage.setItem("ic_sid", v); } return v; } catch { return crypto.randomUUID(); } })();
+let lastTrack = "";
+function track(path, code){
+  try {
+    if (DEMO || navigator.doNotTrack === "1" || store.get("ic_admin", false)) return;
+    const key = path + "|" + Math.floor(Date.now() / 3000);
+    if (key === lastTrack) return; lastTrack = key;
+    let ref = "";
+    if (!sessionStorage.getItem("ic_ref")) {
+      sessionStorage.setItem("ic_ref", "1");
+      try { if (document.referrer) { const h = new URL(document.referrer).hostname; if (h && h !== location.hostname) ref = h; } } catch {}
+    }
+    api.track({path:path.slice(0,200), country_code:code || null, referrer:ref.slice(0,200), session_id:SESSION_ID});
+  } catch {}
+}
 const app = $("#app");
 function setView(html, title, solidHeader){
   app.innerHTML = html;
@@ -557,6 +656,7 @@ window.addEventListener("hashchange", route);
 const searchIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.500-3.500"/></svg>`;
 function showHome(){
   state.country = null;
+  track("/", null);
   const recent = store.get("recent", []).map(c => state.byCode[c]).filter(Boolean);
   setView(`
     <section class="hero">
@@ -575,7 +675,8 @@ function showHome(){
     <section class="wrap picker" aria-label="Choose an island">
       <div class="regions" id="regions" role="group" aria-label="Filter by region"></div>
       <div id="cgrid"></div>
-    </section>`, null, false);
+    </section>
+    <section class="wrap"><div class="subbar"><div><h2>Get updates from your island</h2><p>Jobs, scholarships, holidays and community news by email. Remove yourself any time.</p></div><button class="btn accent" type="button" data-act="subscribe">Subscribe</button></div></section>`, null, false);
   renderRegions(); renderGrid();
   $("#cq").addEventListener("input", e => { state.cq = e.target.value; renderGrid(); });
   $("#cq").addEventListener("keydown", e => {
@@ -611,6 +712,7 @@ function showCountry(code){
   if (!c) { location.hash = "#/"; return; }
   state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = []; state.filters = defaultFilters();
   store.set("recent", [code, ...store.get("recent", []).filter(x => x !== code)].slice(0,6));
+  track("/c/" + code, code);
   setView(`
     <section class="band">
       <div class="wrap">
@@ -638,10 +740,10 @@ function showCountry(code){
         <div class="field"><label class="lbl" for="f-when">Posted</label>
           <select id="f-when" data-f="when"><option value="any">Any time</option><option value="day">Last 24 hours</option><option value="week">Last 7 days</option><option value="month">Last 30 days</option></select></div>
         <div class="checks" role="group" aria-label="Only show posts that have">
-          <label class="check"><input type="checkbox" data-f="photo" id="f-photo"> Has photo</label>
+          <label class="check"><input type="checkbox" data-f="photo" id="f-photo"> Has a photo</label>
           <label class="check"><input type="checkbox" data-f="audio" id="f-audio"> Has audio</label>
-          <label class="check"><input type="checkbox" data-f="contact" id="f-contact"> has contact details</label>
-          <label class="check"><input type="checkbox" data-f="rated" id="f-rated"> Has rating</label>
+          <label class="check"><input type="checkbox" data-f="contact" id="f-contact"> Has contact details</label>
+          <label class="check"><input type="checkbox" data-f="rated" id="f-rated"> Has a rating</label>
         </div>
         <button class="btn ghost small reset" type="button" data-act="reset">Clear all filters</button>
       </div>
@@ -649,6 +751,7 @@ function showCountry(code){
       <p class="result-info" id="resultInfo" aria-live="polite"></p>
     </section>
     <section class="wrap" aria-live="polite"><div id="posts" class="posts"></div><div id="postState"></div><div id="more" class="more" hidden></div></section>
+    <section class="wrap"><div class="subbar"><div><h2>Get ${esc(c.name)} updates by email</h2><p>New jobs, scholarships, holidays and community notices, straight to your inbox.</p></div><button class="btn accent" type="button" data-act="subscribe">Subscribe</button></div></section>
   `, c.name, true);
   $("#switch").addEventListener("change", e => location.hash = "#/c/" + e.target.value);
   $("#pq").addEventListener("input", e => { state.q = e.target.value; state.shown = 24; renderCats(); renderPosts(); showSuggest(); });
@@ -836,12 +939,28 @@ async function showAdmin(){
     });
     return;
   }
-  const f = state.adminFilter;
+  store.set("ic_admin", true);
   setView(`<section class="wrap admin">
     <div style="display:flex;gap:1rem;justify-content:space-between;align-items:flex-start;flex-wrap:wrap">
-      <div><h1>Review posts</h1><p style="color:var(--muted);margin:0">Approved posts appear on the board straight away. Boost an approved post to pin it to the top with a Sponsored badge.</p></div>
+      <div><h1>Admin</h1><p style="color:var(--muted);margin:0">Review and boost posts, see who subscribed, and check site traffic.</p></div>
       <button class="btn ghost small" type="button" data-act="signout">Sign out</button>
     </div>
+    <div class="regions" id="admtabs" role="group" aria-label="Admin sections" style="margin-top:1rem"></div>
+    <div id="admbody"></div></section>`, "Admin", true);
+  renderAdminTab();
+}
+function renderAdminTab(){
+  const tab = state.adminTab;
+  $("#admtabs").innerHTML = [["posts","Posts"],["subs","Subscribers"],["traffic","Traffic"]]
+    .map(([k,l]) => `<button class="chip" type="button" data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`).join("");
+  if (tab === "subs") return showSubs();
+  if (tab === "traffic") return showTraffic();
+  showAdminPosts();
+}
+function showAdminPosts(){
+  const f = state.adminFilter;
+  $("#admbody").innerHTML = `
+    <p style="color:var(--muted);margin:1rem 0 0">Approved posts appear on the board straight away. Boost an approved post to pin it to the top with a Sponsored badge.</p>
     <div class="afilters">
       <label class="sr-only" for="af-status">Status</label>
       <select id="af-status">${["Pending","Approved","Featured","Rejected","All"].map(s => `<option ${s===f.status?"selected":""}>${s}</option>`).join("")}</select>
@@ -852,13 +971,96 @@ async function showAdmin(){
       <label class="sr-only" for="af-q">Search</label>
       <input id="af-q" type="search" placeholder="Search title or details" value="${esc(f.q)}">
     </div>
-    <div id="alist" class="alist"></div></section>`, "Admin", true);
+    <div id="alist" class="alist"></div>`;
   $("#af-status").addEventListener("change", e => { f.status = e.target.value; loadAdmin(); });
   $("#af-country").addEventListener("change", e => { f.country = e.target.value; loadAdmin(); });
   $("#af-cat").addEventListener("change", e => { f.cat = e.target.value; renderAdminList(); });
   $("#af-q").addEventListener("input", e => { f.q = e.target.value; renderAdminList(); });
   loadAdmin();
 }
+
+/* ---------- Admin: subscribers ---------- */
+async function showSubs(){
+  const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:120px;margin-top:1rem"></div>';
+  try { state.subs = await api.subscribers(); renderSubs(); }
+  catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load subscribers</h2><p>Make sure you ran supabase_subscribers_traffic.sql and that you are signed in as an administrator.</p></div>`; }
+}
+function filteredSubs(){
+  const f = state.subFilter, q = f.q.trim().toLowerCase();
+  return state.subs.filter(s => (!q || s.email.toLowerCase().includes(q)) && (f.country === "All" || s.country_code === f.country) && (f.interest === "All" || (s.interests || []).includes(f.interest)));
+}
+function renderSubs(){
+  const f = state.subFilter;
+  $("#admbody").innerHTML = `
+    <div class="afilters">
+      <label class="sr-only" for="sub-q">Search emails</label><input id="sub-q" type="search" placeholder="Search email" value="${esc(f.q)}">
+      <label class="sr-only" for="sub-country">Country</label>
+      <select id="sub-country"><option value="All">All countries</option>${state.countries.map(c => `<option value="${esc(c.code)}" ${c.code===f.country?"selected":""}>${esc(c.name)}</option>`).join("")}</select>
+      <label class="sr-only" for="sub-int">Interest</label>
+      <select id="sub-int"><option value="All">All interests</option>${CATEGORIES.map(c => `<option value="${esc(c.id)}" ${c.id===f.interest?"selected":""}>${c.icon} ${esc(c.id)}</option>`).join("")}</select>
+    </div>
+    <div class="sbar">
+      <span class="result-info" id="sub-count"></span>
+      <button class="btn small" type="button" data-act="exportsubs">Download CSV</button>
+      <button class="btn ghost small" type="button" data-act="copyemails">Copy emails</button>
+    </div>
+    <div id="slist" class="alist"></div>`;
+  $("#sub-q").addEventListener("input", e => { f.q = e.target.value; renderSubList(); });
+  $("#sub-country").addEventListener("change", e => { f.country = e.target.value; renderSubList(); });
+  $("#sub-int").addEventListener("change", e => { f.interest = e.target.value; renderSubList(); });
+  renderSubList();
+}
+function renderSubList(){
+  const list = filteredSubs(), el = $("#slist"); if (!el) return;
+  $("#sub-count").textContent = `${list.length} of ${state.subs.length} subscribers`;
+  el.innerHTML = list.length ? list.map(s => {
+    const c = state.byCode[s.country_code];
+    return `<div class="srow" data-id="${esc(s.id)}">
+      <div class="em"><a href="mailto:${esc(s.email)}" target="_blank" rel="noopener noreferrer">${esc(s.email)}</a></div>
+      <div class="meta">${c ? flag(c.code) + " " + esc(c.name) : "Any country"} ${(s.interests || []).map(i => `<span class="tag" style="--h:${catInfo(i).h}">${catInfo(i).icon} ${esc(i)}</span>`).join("")} <span>${esc(ago(s.created_at))}</span></div>
+      <button class="btn danger small" type="button" data-act="subdel">Remove</button>
+    </div>`;
+  }).join("") : `<div class="state"><div class="big">📭</div><h2>No subscribers ${state.subs.length ? "match" : "yet"}</h2><p>${state.subs.length ? "Try clearing the filters." : "People who subscribe will appear here."}</p></div>`;
+}
+const csvCell = v => { let t = String(v ?? ""); if (/^[=+\-@\t\r]/.test(t)) t = "'" + t; return '"' + t.replace(/"/g, '""') + '"'; };
+function exportSubs(){
+  const rows = [["Email","Country","Interests","Subscribed"], ...filteredSubs().map(s => [s.email, state.byCode[s.country_code]?.name || "", (s.interests || []).join("; "), s.created_at])];
+  const blob = new Blob(["\ufeff" + rows.map(r => r.map(csvCell).join(",")).join("\r\n")], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "isle-connect-subscribers.csv";
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+async function copyEmails(){
+  const text = filteredSubs().map(s => s.email).join(", ");
+  try { await navigator.clipboard.writeText(text); toast(`Copied ${filteredSubs().length} email addresses.`, "ok"); }
+  catch { toast("Couldn't copy. Use Download CSV instead.", "error"); }
+}
+
+/* ---------- Admin: traffic ---------- */
+async function showTraffic(){
+  const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:160px;margin-top:1rem"></div>';
+  try { renderTraffic(await api.traffic(state.trafficDays)); }
+  catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load traffic</h2><p>Make sure you ran supabase_subscribers_traffic.sql and that you are signed in as an administrator.</p></div>`; }
+}
+function renderTraffic(t){
+  const days = state.trafficDays;
+  const map = Object.fromEntries((t.by_day || []).map(d => [String(d.day).slice(0,10), Number(d.views)]));
+  const series = []; for (let i = days-1; i >= 0; i--) { const d = new Date(Date.now() - i*864e5).toISOString().slice(0,10); series.push([d, map[d] || 0]); }
+  const max = Math.max(1, ...series.map(x => x[1]));
+  const rank = (rows, label) => { const m = Math.max(1, ...rows.map(r => Number(r.views)));
+    return rows.length ? `<div class="rank">${rows.map(r => `<div class="rank-row"><span class="lab">${label(r)}</span><span class="rank-bar"><i style="width:${Number(r.views)/m*100}%"></i></span><b>${Number(r.views)}</b></div>`).join("")}</div>` : `<p class="result-info">No data yet.</p>`; };
+  $("#admbody").innerHTML = `
+    <div class="regions" role="group" aria-label="Date range" style="margin-top:.8rem">${[7,30,90].map(n => `<button class="chip" type="button" data-days="${n}" aria-pressed="${days===n}">Last ${n} days</button>`).join("")}</div>
+    <div class="stats">
+      <div class="stat"><b>${Number(t.total_views || 0)}</b><span>Page views</span></div>
+      <div class="stat"><b>${Number(t.unique_visitors || 0)}</b><span>Visits (browser sessions)</span></div>
+      <div class="stat"><b>${Number(t.subscribers || 0)}</b><span>Email subscribers</span></div>
+    </div>
+    <div class="panel"><h3>Page views per day</h3><div class="chart" role="img" aria-label="Bar chart of page views per day">${series.map(([d,v]) => `<i style="height:${Math.max(2, v/max*100)}%" title="${d}: ${v} views"></i>`).join("")}</div><div class="chart-axis"><span>${series[0][0]}</span><span>${series[series.length-1][0]}</span></div></div>
+    <div class="panel"><h3>Most visited countries</h3>${rank(t.by_country || [], r => { const c = state.byCode[r.code]; return (c ? flag(c.code) : "") + esc(c ? c.name : r.code); })}</div>
+    <div class="panel"><h3>Where visitors came from</h3>${rank(t.by_referrer || [], r => esc(r.ref))}</div>
+    <p class="result-info">Cookie-free: visits are counted per browser tab session and no IP addresses are stored. Your own visits are skipped while you are signed in as admin on this browser.</p>`;
+}
+
 async function loadAdmin(){
   const el = $("#alist"); if (!el) return;
   el.innerHTML = '<div class="skeleton" style="height:120px"></div>'.repeat(3);
@@ -945,6 +1147,34 @@ async function adminAct(act, id){
   } catch (ex) { console.error(ex); toast("That didn't work. Check your connection and permissions, then try again.", "error"); }
 }
 
+/* ---------- Subscribe ---------- */
+function openSub(code){
+  $("#sf-country").innerHTML = `<option value="">Any country</option>` + state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("");
+  $("#sf-country").value = code || "";
+  $("#sf-interests").innerHTML = CATEGORIES.map(c => `<label class="check"><input type="checkbox" value="${esc(c.id)}"> ${c.icon} ${esc(c.id)}</label>`).join("");
+  $("#sf-err").textContent = "";
+  $("#subDlg").showModal(); $("#sf-email").focus();
+}
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+let lastSub = 0;
+$("#subForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = $("#sf-err"), btn = $("#sf-submit"); err.textContent = "";
+  if ($("#sf-website").value) return;                                   // honeypot
+  const email = $("#sf-email").value.trim().toLowerCase();
+  if (!EMAIL_RE.test(email) || email.length > 254) return err.textContent = "Enter a valid email address.";
+  if (!$("#sf-consent").checked) return err.textContent = "Please tick the box to agree to receive emails.";
+  if (Date.now() - lastSub < 10000) return err.textContent = "Please wait a few seconds and try again.";
+  const interests = [...document.querySelectorAll("#sf-interests input:checked")].map(i => i.value);
+  btn.disabled = true; btn.textContent = "Subscribing…";
+  try {
+    await api.subscribe({email, country_code:$("#sf-country").value || null, interests, consent:true, source:state.country ? "country" : "home"});
+    lastSub = Date.now(); $("#subForm").reset(); $("#subDlg").close();
+    toast("Thanks! You're on the list.", "ok");
+  } catch (ex) { console.error(ex); err.textContent = "We couldn't sign you up. Check your connection and try again."; }
+  finally { btn.disabled = false; btn.textContent = "Subscribe"; }
+});
+
 /* ---------- Global events ---------- */
 /* Suggestions: matching posts listed under the search box; click one to open it on its own */
 let sugIdx = -1;
@@ -985,17 +1215,24 @@ document.addEventListener("click", e => {
   if (!e.target.closest(".search.small")) hideSuggest();
   const sug = e.target.closest("[data-sid]");
   if (sug) { hideSuggest(); return openView(sug.dataset.sid); }
-  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close]");
+  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close],[data-tab],[data-days]");
   if (!t) {
     const card = e.target.closest(".post[data-pid]");
     if (card && !e.target.closest("a,button,audio,input,select,textarea,summary")) openView(card.dataset.pid);
     return;
   }
   if (t.dataset.close !== undefined) return t.closest("dialog").close();
+  if (t.dataset.tab) { state.adminTab = t.dataset.tab; return renderAdminTab(); }
+  if (t.dataset.days) { state.trafficDays = Number(t.dataset.days); return showTraffic(); }
   if (t.dataset.region) { state.region = t.dataset.region; renderRegions(); return renderGrid(); }
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "subscribe": return openSub(state.country?.code);
+    case "exportsubs": return exportSubs();
+    case "copyemails": return copyEmails();
+    case "subdel": { const row = t.closest(".srow"); if (!row) return; if (!confirm("Remove this subscriber permanently?")) return;
+      return api.removeSub(row.dataset.id).then(() => { state.subs = state.subs.filter(x => String(x.id) !== row.dataset.id); renderSubList(); toast("Subscriber removed."); }).catch(() => toast("Couldn't remove that subscriber.", "error")); }
     case "togglepw": { const i = $("#li-pass"); if (!i) return; const show = i.type === "password"; i.type = show ? "text" : "password"; t.textContent = show ? "Hide" : "Show"; t.setAttribute("aria-pressed", String(show)); i.focus(); return; }
     case "seeall": hideSuggest(); return $("#posts")?.scrollIntoView({behavior:"smooth", block:"start"});
     case "open": { const card = t.closest(".post[data-pid]"); if (card) openView(card.dataset.pid); return; }
@@ -1004,7 +1241,7 @@ document.addEventListener("click", e => {
     case "reset": return resetSearch();
     case "filters": { const panel = $("#fpanel"); panel.hidden = !panel.hidden; t.setAttribute("aria-expanded", String(!panel.hidden)); return; }
     case "toggle": { const d = t.previousElementSibling; const open = d.classList.toggle("clamp") === false; t.textContent = open ? "Show less" : "Read more"; return; }
-    case "signout": return api.signOut().then(() => { state.admin = null; location.hash = "#/"; toast("Signed out."); updateNav(); });
+    case "signout": return api.signOut().then(() => { state.admin = null; store.set("ic_admin", false); location.hash = "#/"; toast("Signed out."); updateNav(); });
     default: { const row = t.closest(".arow"); if (row) adminAct(t.dataset.act, row.dataset.id); }
   }
 });
