@@ -240,6 +240,31 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .srow .meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
 .sbar{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin:.2rem 0 1rem}
 
+/* Source line on imported posts */
+.srcline{font-size:.88rem;color:var(--muted)}
+.srcline a{color:var(--palm-d);font-weight:600}
+
+/* Ask a question (chat) */
+.chat-fab{position:fixed;right:1rem;bottom:1rem;z-index:90;display:inline-flex;align-items:center;gap:.5rem;background:var(--palm);color:#fff;border:0;border-radius:99px;padding:.85rem 1.15rem;font:700 .98rem var(--body);cursor:pointer;box-shadow:0 10px 28px rgba(10,47,60,.35)}
+.chat-fab:hover{background:var(--palm-d)}
+.chat-fab span[aria-hidden]{font-size:1.2rem;line-height:1}
+.chat-panel{position:fixed;right:1rem;bottom:1rem;z-index:95;width:min(360px,100% - 2rem);max-height:min(560px,100vh - 2rem);display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 60px rgba(5,25,32,.4);overflow:hidden}
+.chat-panel header{display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:var(--ink);color:#fff;padding:.8rem 1rem}
+.chat-panel header small{display:block;color:#b6d2d6;font-size:.8rem}
+.chat-panel header .x{color:#cfe3e6}
+.chat-panel header .x:hover{background:rgba(255,255,255,.12)}
+.chat-log{flex:1;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.55rem;background:var(--bg);min-height:120px}
+.bubble{max-width:88%;padding:.6rem .85rem;border-radius:16px;font-size:.94rem;overflow-wrap:anywhere;white-space:pre-wrap}
+.bubble.bot{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+.bubble.me{background:var(--palm);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-form{display:grid;gap:.5rem;padding:.8rem .9rem .9rem;border-top:1px solid var(--line)}
+.chat-form textarea,.chat-form input,.chat-form select{width:100%;font:500 .95rem var(--body);padding:.6rem .7rem;border-radius:10px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.chat-form textarea{resize:none}
+.chat-extra{display:grid;gap:.5rem}
+.chat-form .err{min-height:0}
+.qrow .em{white-space:pre-wrap}
+@media(max-width:520px){.chat-fab-t{display:none}.chat-fab{padding:.9rem}}
+
 /* Footer & toast */
 footer{background:var(--ink);color:#9fc0c6;padding:1.6rem 0;font-size:.9rem;margin-top:auto}
 footer .wrap{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:space-between}
@@ -387,6 +412,26 @@ footer b{color:#fff}
   <div class="vbody" id="vd-body"></div>
 </dialog>
 
+<!-- Ask a question (chat) -->
+<button class="chat-fab" id="chatFab" type="button" aria-expanded="false" aria-controls="chatPanel"><span aria-hidden="true">💬</span><span class="chat-fab-t">Ask a question</span></button>
+<section class="chat-panel" id="chatPanel" role="dialog" aria-label="Ask a question" hidden>
+  <header><div><strong>Ask a question</strong><small>We read every message</small></div><button class="x" type="button" id="chatClose" aria-label="Close chat">&times;</button></header>
+  <div class="chat-log" id="chatLog" aria-live="polite"></div>
+  <form class="chat-form" id="chatForm" novalidate>
+    <label class="sr-only" for="ch-text">Your question</label>
+    <textarea id="ch-text" maxlength="1000" rows="3" placeholder="Type your question…" required></textarea>
+    <div class="chat-extra">
+      <label class="sr-only" for="ch-email">Your email</label>
+      <input id="ch-email" type="email" maxlength="254" placeholder="Your email, so we can reply (optional)" autocomplete="email">
+      <label class="sr-only" for="ch-country">Country</label>
+      <select id="ch-country"></select>
+    </div>
+    <input class="hp" id="ch-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <p class="err" id="ch-err" role="alert"></p>
+    <button class="btn" type="submit" id="ch-send">Send</button>
+  </form>
+</section>
+
 <div id="toasts" aria-live="polite"></div>
 
 <script>
@@ -401,7 +446,6 @@ const CONFIG = {
   SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdic3hlemJxdnRzZGxqaWVoZnB3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1ODk0ODYsImV4cCI6MjEwNzE2NTQ4Nn0.xea-XyckCRIfbbcfR4xExQ__AnDc0TJusv6WtoGqooc",
   MEDIA_BUCKET: "post-media"
 };
-
 
 
 /* Private address of the admin sign-in page, e.g. https://yoursite.com/#/owner-7k3q
@@ -481,6 +525,10 @@ function linkify(text){
   }
   return out + esc(src.slice(last));
 }
+function srcLine(p){
+  const u = safeUrl(p.source_url); if (!u) return "";
+  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}>${esc(p.source_name || "Official notice")} ↗</a>${p.expires_at ? ` · Closes ${esc(fmtDate(p.expires_at))}` : ""}</div>`;
+}
 const fmtDate = d => new Date(d).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
 const isFeatured = p => !!p.featured_until && new Date(p.featured_until).getTime() > Date.now();
 function toast(msg, type=""){
@@ -505,9 +553,14 @@ const demoDb = {
     {id:"d8",country_code:"tt",title:"Doubles stall looking for a helper",category:"Jobs",description:"Early mornings in Port of Spain, 5am–10am. Pay is daily.",contact:"868 555 0123",rating:null,status:"Approved",created_at:daysAgo(5)},
     {id:"d9",country_code:"bb",title:"Surf lessons for beginners",category:"Sports",description:"Bathsheba, Saturdays and Sundays. Boards provided.",contact:"surf@example.com",rating:4.5,status:"Approved",created_at:daysAgo(7)},
     {id:"d10",country_code:"gd",title:"Spice farm tours",category:"Holiday",description:"Half-day tours with tastings. Transport from St. George's can be arranged.",contact:"473 555 0188",rating:5,status:"Approved",created_at:daysAgo(9)},
+    {id:"d12",country_code:"bb",title:"National Development Scholarships 2026",category:"Education",description:"Scholarship or education notice listed by Barbados Ministry of Education. Closing date: 25 October 2026. Open the source link for the full details and how to apply. Imported automatically, so please check the official notice before applying.",contact:null,rating:null,status:"Approved",created_at:daysAgo(1),source_name:"Barbados Ministry of Education",source_url:"https://mes.gov.bb/",expires_at:daysAgo(-14)},
     {id:"d11",country_code:"lc",title:"Fresh fish at Gros Islet market",category:"Food",description:"Daily catch, from 6am. Order ahead for large amounts.",contact:"758 555 0166",rating:null,status:"Approved",created_at:daysAgo(2)}
   ]
 };
+demoDb.questions = [
+  {id:"q1",question:"Is the National Development Scholarship open to part-time students?",email:"student@example.com",country_code:"bb",status:"Open",created_at:daysAgo(0.3)},
+  {id:"q2",question:"How do I post a job for my restaurant?",email:null,country_code:"jm",status:"Answered",created_at:daysAgo(4)}
+];
 demoDb.subs = [
   {id:"s1",email:"ana@example.com",country_code:"jm",interests:["Jobs","Food"],source:"home",created_at:daysAgo(2)},
   {id:"s2",email:"marcus@example.com",country_code:"tt",interests:["Sports"],source:"country",created_at:daysAgo(5)},
@@ -521,10 +574,11 @@ const api = {
     return data;
   },
   async posts(code){
-    if (DEMO) return demoDb.posts.filter(p => p.country_code === code && p.status === "Approved" && p.category !== REPORT.id);
+    const live = p => !p.expires_at || new Date(p.expires_at).getTime() > Date.now();
+    if (DEMO) return demoDb.posts.filter(p => p.country_code === code && p.status === "Approved" && p.category !== REPORT.id && live(p));
     const {data, error} = await sb.from("posts").select("*").eq("country_code", code).eq("status","Approved").neq("category", REPORT.id).order("created_at",{ascending:false}).limit(300);
     if (error) throw error;
-    return data;
+    return data.filter(live);
   },
   async create(p){
     if (DEMO) { demoDb.posts.unshift({...p, id:"d"+Date.now(), rating:null, status:"Pending", created_at:new Date().toISOString()}); return; }
@@ -543,6 +597,33 @@ const api = {
     if (DEMO) { demoDb.subs.unshift({...row, id:"s"+Date.now(), created_at:new Date().toISOString()}); return; }
     const {error} = await sb.from("subscribers").insert(row);
     if (error && error.code !== "23505") throw error;      // 23505 = already subscribed: treat as success
+  },
+  async ask(row){
+    if (DEMO) { demoDb.questions.unshift({...row, id:"q"+Date.now(), status:"Open", created_at:new Date().toISOString()}); return; }
+    const {error} = await sb.from("questions").insert(row);
+    if (error) throw error;
+  },
+  async questions(){
+    if (DEMO) return [...demoDb.questions].sort((a,b) => b.created_at.localeCompare(a.created_at));
+    const {data, error} = await sb.from("questions").select("*").order("created_at",{ascending:false}).limit(500);
+    if (error) throw error;
+    return data;
+  },
+  async openQuestionCount(){
+    if (DEMO) return demoDb.questions.filter(q => q.status === "Open").length;
+    const {count, error} = await sb.from("questions").select("id",{count:"exact",head:true}).eq("status","Open");
+    if (error) throw error;
+    return count || 0;
+  },
+  async setQuestion(id, status){
+    if (DEMO) { Object.assign(demoDb.questions.find(q => q.id === id), {status}); return; }
+    const {error} = await sb.from("questions").update({status}).eq("id", id);
+    if (error) throw error;
+  },
+  async removeQuestion(id){
+    if (DEMO) { demoDb.questions = demoDb.questions.filter(q => q.id !== id); return; }
+    const {error} = await sb.from("questions").delete().eq("id", id);
+    if (error) throw error;
   },
   async track(row){ if (DEMO) return; try { await sb.from("page_views").insert(row); } catch {} },
   async subscribers(){
@@ -613,7 +694,7 @@ const defaultFilters = () => ({sort:"new", when:"any", photo:false, audio:false,
 const state = {
   countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
   admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
-  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30
+  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0
 };
 /* Cookie-free traffic counting: a random id kept only in this browser tab, no IP address, honours Do Not Track.
    Your own visits are skipped while you are signed in as admin on this browser. */
@@ -855,6 +936,7 @@ function postCard(p){
       <h3><button class="ptitle" type="button" data-act="open" aria-haspopup="dialog">${esc(p.title)}</button></h3>
       <p class="desc ${long ? "clamp" : ""}">${esc(p.description)}</p>
       ${long ? `<button class="linkbtn" type="button" data-act="toggle">Read more</button>` : ""}
+      ${srcLine(p)}
       ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
       ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
       ${stars(p.rating)}
@@ -949,10 +1031,16 @@ async function showAdmin(){
     <div id="admbody"></div></section>`, "Admin", true);
   renderAdminTab();
 }
+function renderAdminTabs(){
+  const el = $("#admtabs"); if (!el) return;
+  el.innerHTML = [["posts","Posts"],["questions", "Questions" + (state.openQ ? ` (${state.openQ})` : "")],["subs","Subscribers"],["traffic","Traffic"]]
+    .map(([k,l]) => `<button class="chip" type="button" data-tab="${k}" aria-pressed="${state.adminTab===k}">${l}</button>`).join("");
+}
+async function refreshOpenQ(){ try { state.openQ = await api.openQuestionCount(); renderAdminTabs(); } catch {} }
 function renderAdminTab(){
   const tab = state.adminTab;
-  $("#admtabs").innerHTML = [["posts","Posts"],["subs","Subscribers"],["traffic","Traffic"]]
-    .map(([k,l]) => `<button class="chip" type="button" data-tab="${k}" aria-pressed="${tab===k}">${l}</button>`).join("");
+  renderAdminTabs(); refreshOpenQ();
+  if (tab === "questions") return showQuestions();
   if (tab === "subs") return showSubs();
   if (tab === "traffic") return showTraffic();
   showAdminPosts();
@@ -977,6 +1065,40 @@ function showAdminPosts(){
   $("#af-cat").addEventListener("change", e => { f.cat = e.target.value; renderAdminList(); });
   $("#af-q").addEventListener("input", e => { f.q = e.target.value; renderAdminList(); });
   loadAdmin();
+}
+
+/* ---------- Admin: questions ---------- */
+async function showQuestions(){
+  const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:120px;margin-top:1rem"></div>';
+  try { state.questions = await api.questions(); renderQuestions(); }
+  catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load questions</h2><p>Make sure you ran supabase_questions.sql and that you are signed in as an administrator.</p></div>`; }
+}
+function renderQuestions(){
+  $("#admbody").innerHTML = `
+    <div class="afilters">
+      <label class="sr-only" for="q-status">Status</label>
+      <select id="q-status">${["Open","Answered","All"].map(x => `<option ${x===state.qFilter?"selected":""}>${x}</option>`).join("")}</select>
+      <span class="result-info" id="q-count" style="align-self:center"></span>
+    </div>
+    <div id="qlist" class="alist"></div>`;
+  $("#q-status").addEventListener("change", e => { state.qFilter = e.target.value; renderQuestionList(); });
+  renderQuestionList();
+}
+function renderQuestionList(){
+  const el = $("#qlist"); if (!el) return;
+  const list = state.questions.filter(q => state.qFilter === "All" || q.status === state.qFilter);
+  $("#q-count").textContent = `${list.length} ${list.length === 1 ? "question" : "questions"}`;
+  el.innerHTML = list.length ? list.map(q => {
+    const c = state.byCode[q.country_code];
+    const reply = q.email ? `mailto:${q.email}?subject=${encodeURIComponent("Re: your question on Isle Connect")}&body=${encodeURIComponent(`Hi,\n\nYou asked:\n"${q.question}"\n\n`)}` : "";
+    return `<div class="srow qrow" data-id="${esc(q.id)}">
+      <div class="em">${esc(q.question)}</div>
+      <div class="meta"><span class="status ${q.status === "Open" ? "Pending" : "Approved"}">${esc(q.status)}</span>${c ? flag(c.code) + " " + esc(c.name) : "No country"} <span>${q.email ? esc(q.email) : "no email left"}</span> <span>${esc(ago(q.created_at))}</span></div>
+      ${q.email ? `<a class="btn small" href="${esc(reply)}" target="_blank" rel="noopener noreferrer">Reply by email</a>` : ""}
+      <button class="btn ghost small" type="button" data-act="qtoggle">${q.status === "Open" ? "Mark answered" : "Reopen"}</button>
+      <button class="btn danger small" type="button" data-act="qdel">Delete</button>
+    </div>`;
+  }).join("") : `<div class="state"><div class="big">💬</div><h2>No ${state.qFilter === "All" ? "" : state.qFilter.toLowerCase() + " "}questions</h2><p>Questions from the chat button will appear here.</p></div>`;
 }
 
 /* ---------- Admin: subscribers ---------- */
@@ -1077,9 +1199,10 @@ function renderAdminList(){
 function adminRow(p){
   const c = state.byCode[p.country_code], ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
   return `<div class="arow ${feat ? "is-featured" : ""}" data-id="${esc(p.id)}">
-    <div class="arow-top"><span class="status ${esc(p.status)}">${esc(p.status)}</span>${feat ? `<span class="status Featured">★ Featured until ${esc(fmtDate(p.featured_until))}</span>` : ""}${c ? flag(c.code) : ""}<strong>${esc(c?.name || p.country_code)}</strong><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><span>${esc(ago(p.created_at))}</span></div>
+    <div class="arow-top"><span class="status ${esc(p.status)}">${esc(p.status)}</span>${p.external_id ? `<span class="status Pending" title="Imported automatically">Imported</span>` : ""}${feat ? `<span class="status Featured">★ Featured until ${esc(fmtDate(p.featured_until))}</span>` : ""}${c ? flag(c.code) : ""}<strong>${esc(c?.name || p.country_code)}</strong><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><span>${esc(ago(p.created_at))}</span></div>
     <h3>${esc(p.title)}</h3>
     <p class="desc">${esc(p.description)}</p>
+    ${srcLine(p)}
     ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener">View photo</a>` : ""} ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
     <div class="arow-actions">
@@ -1175,6 +1298,40 @@ $("#subForm").addEventListener("submit", async e => {
   finally { btn.disabled = false; btn.textContent = "Subscribe"; }
 });
 
+/* ---------- Ask a question (chat) ---------- */
+const bubble = (who, text) => `<div class="bubble ${who}">${esc(text)}</div>`;
+let lastAsk = 0;
+function setChat(open){
+  $("#chatPanel").hidden = !open; $("#chatFab").hidden = open; $("#chatFab").setAttribute("aria-expanded", String(open));
+  if (!open) return $("#chatFab").focus();
+  $("#ch-country").innerHTML = `<option value="">Country (optional)</option>` + state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("");
+  if (state.country) $("#ch-country").value = state.country.code;
+  if (!$("#chatLog").children.length) $("#chatLog").innerHTML = bubble("bot", "Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.");
+  $("#ch-err").textContent = ""; $("#ch-text").focus();
+}
+$("#chatFab").addEventListener("click", () => setChat(true));
+$("#chatClose").addEventListener("click", () => setChat(false));
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#chatPanel").hidden) setChat(false); });
+$("#ch-text").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#chatForm").requestSubmit(); } });
+$("#chatForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = $("#ch-err"), btn = $("#ch-send"); err.textContent = "";
+  if ($("#ch-website").value) return;                                   // honeypot
+  const question = $("#ch-text").value.trim(), email = $("#ch-email").value.trim().toLowerCase();
+  if (question.length < 3) return err.textContent = "Please type your question first.";
+  if (email && (!EMAIL_RE.test(email) || email.length > 254)) return err.textContent = "That email address doesn't look right.";
+  if (Date.now() - lastAsk < 10000) return err.textContent = "Please wait a few seconds before sending another question.";
+  btn.disabled = true; btn.textContent = "Sending…";
+  try {
+    await api.ask({question, email: email || null, country_code: $("#ch-country").value || null});
+    lastAsk = Date.now();
+    const log = $("#chatLog");
+    log.insertAdjacentHTML("beforeend", bubble("me", question) + bubble("bot", email ? `Thanks! We've got your question and will reply to ${email}.` : "Thanks! We've got your question. You didn't leave an email, so we can't reply directly. Add one next time if you'd like an answer."));
+    log.scrollTop = log.scrollHeight; $("#ch-text").value = "";
+  } catch (ex) { console.error(ex); err.textContent = "We couldn't send that. Check your connection and try again."; }
+  finally { btn.disabled = false; btn.textContent = "Send"; }
+});
+
 /* ---------- Global events ---------- */
 /* Suggestions: matching posts listed under the search box; click one to open it on its own */
 let sugIdx = -1;
@@ -1200,6 +1357,7 @@ function openView(id){
     <div class="vmeta">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><time datetime="${esc(p.created_at)}">Posted ${esc(ago(p.created_at))}</time></div>
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener"><img class="vimg" src="${esc(img)}" alt=""></a>` : ""}
     <p class="desc">${esc(p.description)}</p>
+    ${srcLine(p)}
     ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
     ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
     ${stars(p.rating)}
@@ -1228,6 +1386,11 @@ document.addEventListener("click", e => {
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "qtoggle": { const row = t.closest(".qrow"); const q = state.questions.find(x => String(x.id) === row?.dataset.id); if (!q) return;
+      const next = q.status === "Open" ? "Answered" : "Open";
+      return api.setQuestion(q.id, next).then(() => { q.status = next; renderQuestionList(); refreshOpenQ(); }).catch(() => toast("Couldn't update that question.", "error")); }
+    case "qdel": { const row = t.closest(".qrow"); if (!row || !confirm("Delete this question permanently?")) return;
+      return api.removeQuestion(row.dataset.id).then(() => { state.questions = state.questions.filter(x => String(x.id) !== row.dataset.id); renderQuestionList(); refreshOpenQ(); toast("Question deleted."); }).catch(() => toast("Couldn't delete that question.", "error")); }
     case "subscribe": return openSub(state.country?.code);
     case "exportsubs": return exportSubs();
     case "copyemails": return copyEmails();
