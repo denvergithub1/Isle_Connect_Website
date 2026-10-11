@@ -286,6 +286,7 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .ratebox summary{cursor:pointer;font:700 1.1rem var(--display)}
 .ratebox[open] summary{margin-bottom:.5rem}
 .fbrows{display:grid;gap:.45rem}
+.fbhint{margin:0;color:var(--muted);font-size:.93rem}
 .fbrow{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.4rem .75rem;border:1px solid var(--line);border-radius:12px;background:#fff}
 .fbrow .lab{font-weight:600}
 .fbrow .lab small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
@@ -482,7 +483,6 @@ const CONFIG = {
 };
 
 
-
 /* Private address of the admin sign-in page, e.g. https://yoursite.com/#/owner-7k3q
    Change this to any secret word and keep it to yourself. "#/admin" no longer works. */
 const ADMIN_PATH = "owner-7k3q";
@@ -502,14 +502,10 @@ const CATEGORIES = [
   {id:"Transport",icon:"🚌",h:190},{id:"Emergency",icon:"🚨",h:5},{id:"Holiday",icon:"🌴",h:150},
   {id:"Advertisement",icon:"📣",h:320},{id:"Sports",icon:"⚽",h:100},{id:"Other",icon:"✨",h:45}
 ];
-/* Things visitors can rate. Keep these ids in sync with supabase_feedback.sql */
-const FEATURES = [
-  {id:"Overall site",icon:"🏝",hint:"Your overall experience"},
-  {id:"Child-friendly",icon:"🧒",hint:"How suitable is the site for children?"},
-  {id:"Jobs",icon:"💼"},{id:"Food",icon:"🍲"},{id:"Education",icon:"🎓"},{id:"Transport",icon:"🚌"},
-  {id:"Emergency",icon:"🚨"},{id:"Holiday",icon:"🌴"},{id:"Advertisement",icon:"📣"},{id:"Sports",icon:"⚽"},
-  {id:"Search and filters",icon:"🔎"},{id:"Posting",icon:"✍️"},{id:"Ask a question",icon:"💬"},{id:"Email updates",icon:"✉️"}
-];
+/* Things visitors can rate on a country page: the section (category) they are looking at, plus child-friendliness.
+   Keep these ids in sync with supabase_feedback.sql */
+const CHILD = {id:"Child-friendly",icon:"🧒",hint:"How suitable is this page for children?"};
+const FEATURES = [...CATEGORIES.map(c => ({id:c.id, icon:c.icon})), CHILD];
 const CAT_BLURB = {Jobs:"Vacancies and work opportunities",Food:"Meals, markets and places to eat",Education:"Schools, lessons and scholarships",
   Transport:"Rides, routes and travel updates",Emergency:"Urgent notices and where to find help",Holiday:"Public holidays and local events",
   Advertisement:"Offers from local businesses",Sports:"Leagues, fixtures and local sport",Other:"Anything else the community needs"};
@@ -608,8 +604,8 @@ demoDb.questions = [
   {id:"q2",question:"How do I post a job for my restaurant?",email:null,country_code:"jm",status:"Answered",created_at:daysAgo(4)}
 ];
 demoDb.feedback = [
-  {id:"f1",ratings:{"Overall site":5,"Jobs":4,"Child-friendly":4},comment:"Easy to find jobs near me. Thank you!",email:"reader@example.com",country_code:"jm",status:"New",created_at:daysAgo(1)},
-  {id:"f2",ratings:{"Overall site":4,"Food":5,"Search and filters":3},comment:"",email:null,country_code:"tt",status:"Reviewed",created_at:daysAgo(6)}
+  {id:"f1",ratings:{"Jobs":4,"Child-friendly":4},comment:"Easy to find jobs near me. Thank you!",email:"reader@example.com",country_code:"jm",status:"New",created_at:daysAgo(1)},
+  {id:"f2",ratings:{"Food":5,"Child-friendly":5},comment:"",email:null,country_code:"tt",status:"Reviewed",created_at:daysAgo(6)}
 ];
 demoDb.subs = [
   {id:"s1",email:"ana@example.com",country_code:"jm",interests:["Jobs","Food"],source:"home",created_at:daysAgo(2)},
@@ -907,7 +903,7 @@ function showCountry(code){
         <button class="btn ghost small reset" type="button" data-act="reset">Clear all filters</button>
       </div>
       <div class="cats" id="cats" role="group" aria-label="Filter by category"></div>
-      <p class="result-info" id="resultInfo" aria-live="polite"></p>
+      <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap"><p class="result-info" id="resultInfo" aria-live="polite"></p><button class="linkbtn" type="button" id="rateJump" data-act="ratejump">★ Rate this island</button></div>
     </section>
     <section class="wrap" aria-live="polite"><div id="posts" class="posts"></div><div id="postState"></div><div id="more" class="more" hidden></div></section>
     <section class="wrap">${feedbackBox(c)}</section>
@@ -1199,17 +1195,19 @@ async function showFeedback(){
 }
 function fbBase(){ return state.fbCountry === "All" ? state.fbList : state.fbList.filter(f => f.country_code === state.fbCountry); }
 function renderFeedback(){
-  const base = fbBase(), sum = fbSummary(base), overall = sum.find(x => x.feature === "Overall site"), kids = sum.find(x => x.feature === "Child-friendly");
+  const base = fbBase(), sum = fbSummary(base), kids = sum.find(x => x.feature === "Child-friendly");
+  const vals = base.flatMap(f => Object.values(f.ratings || {}).map(Number));
+  const avgAll = vals.length ? vals.reduce((x, y) => x + y, 0) / vals.length : null;
   let byCountry = "";
   if (state.fbCountry === "All") {
     const g = {};
-    state.fbList.forEach(f => { const k = f.country_code || "none"; g[k] = g[k] || {n:0, sum:0, m:0}; g[k].n++; const o = f.ratings && f.ratings["Overall site"]; if (o != null) { g[k].sum += Number(o); g[k].m++; } });
+    state.fbList.forEach(f => { const k = f.country_code || "none"; g[k] = g[k] || {n:0, sum:0, m:0}; g[k].n++; Object.values(f.ratings || {}).forEach(v => { g[k].sum += Number(v); g[k].m++; }); });
     const rows = Object.entries(g).map(([code, a]) => ({code, n:a.n, avg:a.m ? a.sum / a.m : null})).sort((x, y) => y.n - x.n);
-    byCountry = `<div class="panel"><h3>By country (responses · average overall rating)</h3>${rows.length ? `<div class="rank">${rows.map(r => { const c = state.byCode[r.code]; return `<div class="rank-row"><span class="lab">${c ? flag(c.code) : ""}${esc(c ? c.name : "No country")} · ${r.n}</span><span class="rank-bar"><i style="width:${r.avg ? r.avg / 5 * 100 : 0}%"></i></span><b>${r.avg ? r.avg.toFixed(1) + " ★" : "–"}</b></div>`; }).join("")}</div>` : `<p class="result-info">No responses yet.</p>`}</div>`;
+    byCountry = `<div class="panel"><h3>By country (responses · average of all ratings)</h3>${rows.length ? `<div class="rank">${rows.map(r => { const c = state.byCode[r.code]; return `<div class="rank-row"><span class="lab">${c ? flag(c.code) : ""}${esc(c ? c.name : "No country")} · ${r.n}</span><span class="rank-bar"><i style="width:${r.avg ? r.avg / 5 * 100 : 0}%"></i></span><b>${r.avg ? r.avg.toFixed(1) + " ★" : "–"}</b></div>`; }).join("")}</div>` : `<p class="result-info">No responses yet.</p>`}</div>`;
   }
   $("#admbody").innerHTML = `
     <div class="stats">
-      <div class="stat"><b>${overall ? overall.avg.toFixed(1) + " ★" : "–"}</b><span>Overall site rating${overall ? ` (${overall.n})` : ""}</span></div>
+      <div class="stat"><b>${avgAll ? avgAll.toFixed(1) + " ★" : "–"}</b><span>Average of all ratings${vals.length ? ` (${vals.length})` : ""}</span></div>
       <div class="stat"><b>${kids ? kids.avg.toFixed(1) + " ★" : "–"}</b><span>Child-friendly rating${kids ? ` (${kids.n})` : ""}</span></div>
       <div class="stat"><b>${base.length}</b><span>Responses</span></div>
       <div class="stat"><b>${base.filter(f => f.status === "New").length}</b><span>New</span></div>
@@ -1421,12 +1419,30 @@ function fbRow(f){
   return `<div class="fbrow" data-feat="${esc(f.id)}"><span class="lab">${f.icon} ${esc(f.id)}${f.hint ? `<small>${esc(f.hint)}</small>` : ""}</span>
     <span class="stars-in" role="group" aria-label="Rate ${esc(f.id)}">${[1,2,3,4,5].map(n => `<button type="button" class="st ${n <= v ? "on" : ""}" data-feat="${esc(f.id)}" data-star="${n}" aria-label="${esc(f.id)}: ${n} star${n > 1 ? "s" : ""}" aria-pressed="${n === v}">★</button>`).join("")}</span></div>`;
 }
+function ratingFeatures(){
+  const list = [];
+  if (state.cat !== "All") list.push({id:state.cat, icon:catInfo(state.cat).icon, hint:`How useful are the ${state.cat} posts in ${state.country.name}?`});
+  list.push(CHILD);
+  return list;
+}
+function ratingRowsHtml(){
+  const hint = state.cat === "All" ? `<p class="fbhint">Pick a category above (Jobs, Food, Education…) to rate that section.</p>` : "";
+  return hint + ratingFeatures().map(fbRow).join("");
+}
+function refreshRatingRows(){
+  if (!state.country) return;
+  const keep = new Set(ratingFeatures().map(f => f.id));
+  Object.keys(state.fb).forEach(k => { if (!keep.has(k)) delete state.fb[k]; });       // forget ratings for sections no longer shown
+  const rows = $("#fbrows"); if (rows) rows.innerHTML = ratingRowsHtml();
+  const sum = $("#feedback summary"); if (sum) sum.textContent = state.cat === "All" ? `⭐ Rate Isle Connect in ${state.country.name}` : `⭐ Rate ${state.cat} in ${state.country.name}`;
+  const jump = $("#rateJump"); if (jump) jump.textContent = state.cat === "All" ? "★ Rate this island" : `★ Rate ${state.cat}`;
+}
 function feedbackBox(c){
   return `<details class="panel ratebox" id="feedback">
     <summary>⭐ Rate Isle Connect in ${esc(c.name)}</summary>
-    <p style="margin:.2rem 0 0;color:#2c4852">Tap the stars for the features you have used. Tap a star again to clear it, and skip anything you haven't tried.</p>
+    <p style="margin:.2rem 0 0;color:#2c4852">Tap the stars to rate the section you are viewing and how child-friendly this page is. Tap a star again to clear it.</p>
     <form class="f" id="fbForm" novalidate style="padding:.6rem 0 0">
-      <div class="fbrows">${FEATURES.map(fbRow).join("")}</div>
+      <div class="fbrows" id="fbrows">${ratingRowsHtml()}</div>
       <div class="field"><label for="fb-comment">Brief feedback <span class="hint">(optional)</span></label>
         <textarea id="fb-comment" maxlength="500" placeholder="What works well? What could be better?"></textarea>
         <div class="counter" id="fb-count">0 / 500</div></div>
@@ -1460,7 +1476,7 @@ function showAbout(){
         <li>In an emergency, contact your local emergency services and check official sources.</li>
         <li>Isle Connect is a general community board and is not designed specifically for children. Young people should use it with a parent or guardian.</li>
         <li>Have a question? Tap <b>Ask a question</b> at the bottom right of any page.</li>
-        <li>Tell us how we are doing: open any island and use the <b>Rate Isle Connect</b> box near the bottom of its page.</li></ul></article>
+        <li>Tell us how we are doing: open any island, choose a category, and use the ⭐ rating box near the bottom of its page.</li></ul></article>
     </section>`, "About", true);
 }
 let lastFb = 0;
@@ -1579,7 +1595,7 @@ function openView(id){
 function resetSearch(){
   state.cat = "All"; state.q = ""; state.shown = 24; state.filters = defaultFilters();
   const pq = $("#pq"); if (pq) pq.value = "";
-  renderCats(); renderPosts();
+  renderCats(); refreshRatingRows(); renderPosts();
 }
 document.addEventListener("click", e => {
   if (!e.target.closest(".search.small")) hideSuggest();
@@ -1593,7 +1609,7 @@ document.addEventListener("click", e => {
   }
   if (t.dataset.close !== undefined) return t.closest("dialog").close();
   if (t.dataset.star) {
-    const feat = t.dataset.feat, n = Number(t.dataset.star), f = FEATURES.find(x => x.id === feat); if (!f) return;
+    const feat = t.dataset.feat, n = Number(t.dataset.star), f = ratingFeatures().find(x => x.id === feat); if (!f) return;
     if (state.fb[feat] === n) delete state.fb[feat]; else state.fb[feat] = n;
     t.closest(".fbrow").outerHTML = fbRow(f);
     return document.querySelector(`.fbrow[data-feat="${feat}"] [data-star="${n}"]`)?.focus();
@@ -1601,9 +1617,10 @@ document.addEventListener("click", e => {
   if (t.dataset.tab) { state.adminTab = t.dataset.tab; return renderAdminTab(); }
   if (t.dataset.days) { state.trafficDays = Number(t.dataset.days); return showTraffic(); }
   if (t.dataset.region) { state.region = t.dataset.region; renderRegions(); return renderGrid(); }
-  if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
+  if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); refreshRatingRows(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "ratejump": { const box = $("#feedback"); if (box) { box.open = true; box.scrollIntoView({behavior:"smooth", block:"center"}); } return; }
     case "fbtoggle": { const row = t.closest(".frow"); const f = state.fbList.find(x => String(x.id) === row?.dataset.id); if (!f) return;
       const next = f.status === "New" ? "Reviewed" : "New";
       return api.setFeedback(f.id, next).then(() => { f.status = next; renderFeedbackList(); refreshOpenQ(); }).catch(() => toast("Couldn't update that feedback.", "error")); }
