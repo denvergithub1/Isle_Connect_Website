@@ -103,15 +103,31 @@ h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
 .toolbar-row{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
 .toolbar-row .search{flex:1;min-width:220px;max-width:none}
 .cats{display:flex;gap:.5rem;overflow-x:auto;padding:.1rem 0 .4rem;scrollbar-width:thin}
+.result-info{margin:0;font-size:.88rem;color:var(--muted)}
+
+/* Filters */
+.fcount{display:inline-grid;place-items:center;min-width:1.35rem;height:1.35rem;padding:0 .35rem;border-radius:99px;background:var(--palm);color:#fff;font-size:.78rem;font-weight:700}
+.fpanel{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:1rem 1.1rem;display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));align-items:end}
+.fpanel .field{margin:0}
+.fpanel select{width:100%;font:500 .95rem var(--body);padding:.6rem .7rem;border-radius:10px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.fpanel label.lbl{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem}
+.checks{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.5rem}
+.check{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:.9rem;padding:.5rem .8rem;border:1.5px solid var(--line);border-radius:99px;cursor:pointer;background:#fff}
+.check:has(input:checked){background:var(--ink);border-color:var(--ink);color:#fff}
+.check input{accent-color:var(--sun);width:1rem;height:1rem;margin:0}
+.fpanel .reset{grid-column:1/-1;justify-self:start}
 
 /* Posts */
 .posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.1rem;padding:1rem 0 1.5rem;align-items:start}
 .post{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.post.featured{border:2px solid var(--sun);box-shadow:0 6px 22px rgba(245,184,46,.25)}
 .post .pic{display:block;aspect-ratio:16/9;background:#e3ecea}
 .post .pic img{width:100%;height:100%;object-fit:cover;display:block}
 .pbody{padding:1.1rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:.65rem}
 .pmeta{display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-size:.82rem;color:var(--muted)}
+.pmeta .left{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
 .tag{display:inline-flex;align-items:center;gap:.3rem;font-weight:700;font-size:.8rem;padding:.25rem .65rem;border-radius:99px;background:hsl(var(--h) 55% 92%);color:hsl(var(--h) 60% 22%)}
+.spon{display:inline-flex;align-items:center;gap:.25rem;font-weight:700;font-size:.78rem;padding:.25rem .6rem;border-radius:99px;background:var(--sun);color:var(--ink)}
 .post h3{font-size:1.25rem;font-weight:700;letter-spacing:-.01em}
 .desc{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#2c4852}
 .desc.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
@@ -153,21 +169,25 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .counter{font-size:.8rem;color:var(--muted);text-align:right;margin-top:.2rem}
 .err{color:var(--danger);font-size:.9rem;font-weight:600;min-height:1.2em;margin:0}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.boost-info{margin:0;color:#2c4852;font-size:.95rem}
 
 /* Admin */
 .admin{padding:2rem 0 3rem}
 .admin h1{font-size:2rem;margin-bottom:.4rem}
 .login-card{max-width:420px;margin:1.5rem 0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.4rem}
 .afilters{display:flex;gap:.7rem;flex-wrap:wrap;margin:1.2rem 0}
-.afilters select{font:600 .93rem var(--body);padding:.65rem .8rem;border-radius:12px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.afilters select,.afilters input{font:600 .93rem var(--body);padding:.65rem .8rem;border-radius:12px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.afilters input{flex:1;min-width:180px;font-weight:500}
 .alist{display:grid;gap:.8rem}
 .arow{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1rem 1.15rem;display:grid;gap:.5rem}
+.arow.is-featured{border-color:var(--sun);box-shadow:0 0 0 2px rgba(245,184,46,.35)}
 .arow-top{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;font-size:.86rem;color:var(--muted)}
 .arow h3{font-size:1.1rem}
 .status{font-weight:700;font-size:.78rem;padding:.2rem .6rem;border-radius:99px}
 .status.Pending{background:#fff1cc;color:#7a5400}
 .status.Approved{background:#d9f1e2;color:#165a39}
 .status.Rejected{background:#fbe0de;color:#8a2820}
+.status.Featured{background:var(--sun);color:var(--ink)}
 .arow-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem}
 
 /* Footer & toast */
@@ -195,7 +215,8 @@ footer b{color:#fff}
     </a>
     <nav class="nav" aria-label="Main">
       <a class="link" href="#/" id="navCountries">Countries</a>
-      <a class="link" href="#/admin" id="navAdmin">Admin</a>
+      <!-- Only shown after an administrator signs in (see updateNav) -->
+      <a class="link" href="#/admin" id="navAdmin" hidden>Review posts</a>
       <button class="btn accent small" data-act="post" type="button">+ Post</button>
     </nav>
   </div>
@@ -268,6 +289,29 @@ footer b{color:#fff}
   </form>
 </dialog>
 
+<!-- Boost visibility dialog (admin) -->
+<dialog id="boostDlg" aria-labelledby="boostDlgTitle">
+  <div class="dlg-head"><h2 id="boostDlgTitle">Boost visibility</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
+  <form class="f" id="boostForm" novalidate>
+    <p class="boost-info" id="bf-info"></p>
+    <div class="field">
+      <label for="bf-days">Pin to the top for</label>
+      <select id="bf-days">
+        <option value="7">7 days</option>
+        <option value="14">14 days</option>
+        <option value="30" selected>30 days</option>
+        <option value="90">90 days</option>
+      </select>
+    </div>
+    <p class="boost-info" id="bf-end"></p>
+    <p class="err" id="bf-err" role="alert"></p>
+    <div class="form-actions">
+      <button class="btn ghost" type="button" data-close>Cancel</button>
+      <button class="btn accent" type="submit">Apply boost</button>
+    </div>
+  </form>
+</dialog>
+
 <div id="toasts" aria-live="polite"></div>
 
 <script>
@@ -284,8 +328,15 @@ const CONFIG = {
 };
 
 
-const DEMO = CONFIG.SUPABASE_URL.startsWith("YOUR_") || !window.supabase;
-const sb = DEMO ? null : window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+
+const validUrl = u => { try { const x = new URL(u); return x.protocol === "https:" && !x.hostname.includes(".."); } catch { return false; } };
+let sb = null;
+try {
+  if (window.supabase && validUrl(CONFIG.SUPABASE_URL) && CONFIG.SUPABASE_ANON_KEY && !CONFIG.SUPABASE_ANON_KEY.startsWith("....")) {
+    sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  }
+} catch (err) { console.error("Supabase setup failed:", err); sb = null; }
+const DEMO = !sb;
 
 /* ---------- Static data ---------- */
 const CATEGORIES = [
@@ -326,6 +377,8 @@ function ago(iso){
   if (a < 2592000) return rtf.format(Math.round(s/86400), "day");
   return new Date(iso).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
 }
+const fmtDate = d => new Date(d).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+const isFeatured = p => !!p.featured_until && new Date(p.featured_until).getTime() > Date.now();
 function toast(msg, type=""){
   const t = document.createElement("div");
   t.className = "toast " + type; t.textContent = msg;
@@ -338,7 +391,7 @@ const stars = r => { if (r == null || r === "") return ""; const n = Math.round(
 const daysAgo = d => new Date(Date.now() - d*86400000).toISOString();
 const demoDb = {
   posts: [
-    {id:"d1",country_code:"jm",title:"Hiring: front-desk receptionist",category:"Jobs",description:"Small hotel in Negril needs a friendly receptionist, weekdays 8am–4pm. Experience helpful but not required.",contact:"jobs@example.com",rating:4.5,status:"Approved",created_at:daysAgo(1)},
+    {id:"d1",country_code:"jm",title:"Hiring: front-desk receptionist",category:"Jobs",description:"Small hotel in Negril needs a friendly receptionist, weekdays 8am–4pm. Experience helpful but not required.",contact:"jobs@example.com",rating:4.5,status:"Approved",created_at:daysAgo(1),featured_until:daysAgo(-6)},
     {id:"d2",country_code:"jm",title:"Free hot meals every Saturday",category:"Food",description:"Community kitchen at the Half-Way Tree church hall serves lunch from 12 noon. Everyone is welcome.",contact:"876 555 0142",rating:5,status:"Approved",created_at:daysAgo(3)},
     {id:"d3",country_code:"jm",title:"Maths and English lessons, grades 7–11",category:"Education",description:"Qualified teacher offering after-school lessons in Kingston. Small groups, affordable rates.",contact:"WhatsApp 876 555 0177",rating:null,status:"Approved",created_at:daysAgo(6)},
     {id:"d4",country_code:"jm",title:"Shared ride Montego Bay → Kingston",category:"Transport",description:"Leaving Fridays at 6am, 3 seats free. Split fuel cost.",contact:"876 555 0199",rating:null,status:"Approved",created_at:daysAgo(2)},
@@ -359,7 +412,7 @@ const api = {
     return data;
   },
   async posts(code){
-    if (DEMO) return demoDb.posts.filter(p => p.country_code === code && p.status === "Approved" && p.category !== REPORT.id).sort((a,b) => b.created_at.localeCompare(a.created_at));
+    if (DEMO) return demoDb.posts.filter(p => p.country_code === code && p.status === "Approved" && p.category !== REPORT.id);
     const {data, error} = await sb.from("posts").select("*").eq("country_code", code).eq("status","Approved").neq("category", REPORT.id).order("created_at",{ascending:false}).limit(300);
     if (error) throw error;
     return data;
@@ -393,9 +446,13 @@ const api = {
   },
   async signOut(){ if (DEMO) state.demoAdmin = false; else await sb.auth.signOut(); },
   async adminPosts({status, country}){
-    if (DEMO) return demoDb.posts.filter(p => (status==="All"||p.status===status) && (country==="All"||p.country_code===country)).sort((a,b)=>b.created_at.localeCompare(a.created_at));
-    let q = sb.from("posts").select("*").order("created_at",{ascending:false}).limit(200);
-    if (status !== "All") q = q.eq("status", status);
+    const nowIso = new Date().toISOString();
+    if (DEMO) return demoDb.posts.filter(p =>
+      (status==="All" || (status==="Featured" ? isFeatured(p) : p.status===status)) &&
+      (country==="All" || p.country_code===country)).sort((a,b)=>b.created_at.localeCompare(a.created_at));
+    let q = sb.from("posts").select("*").order("created_at",{ascending:false}).limit(300);
+    if (status === "Featured") q = q.gt("featured_until", nowIso);
+    else if (status !== "All") q = q.eq("status", status);
     if (country !== "All") q = q.eq("country_code", country);
     const {data, error} = await q;
     if (error) throw error;
@@ -414,9 +471,10 @@ const api = {
 };
 
 /* ---------- State ---------- */
+const defaultFilters = () => ({sort:"new", when:"any", photo:false, audio:false, contact:false, rated:false});
 const state = {
-  countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24,
-  admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All"}, adminPosts:[],
+  countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
+  admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
   region:"All", cq:""
 };
 const app = $("#app");
@@ -495,7 +553,7 @@ function renderGrid(){
 function showCountry(code){
   const c = state.byCode[code];
   if (!c) { location.hash = "#/"; return; }
-  state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = [];
+  state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = []; state.filters = defaultFilters();
   store.set("recent", [code, ...store.get("recent", []).filter(x => x !== code)].slice(0,6));
   setView(`
     <section class="band">
@@ -515,19 +573,34 @@ function showCountry(code){
     <section class="wrap toolbar">
       <div class="toolbar-row">
         <div class="search small">${searchIcon}<label class="sr-only" for="pq">Search posts</label><input id="pq" type="search" placeholder="Search posts in ${esc(c.name)}"></div>
+        <button class="btn ghost small" type="button" data-act="filters" id="fbtn" aria-expanded="false" aria-controls="fpanel">Filters <span class="fcount" id="fcount" hidden></span></button>
         <button class="btn ghost small" type="button" data-act="refresh">Refresh</button>
       </div>
+      <div class="fpanel" id="fpanel" hidden>
+        <div class="field"><label class="lbl" for="f-sort">Sort by</label>
+          <select id="f-sort" data-f="sort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="rating">Highest rated</option></select></div>
+        <div class="field"><label class="lbl" for="f-when">Posted</label>
+          <select id="f-when" data-f="when"><option value="any">Any time</option><option value="day">Last 24 hours</option><option value="week">Last 7 days</option><option value="month">Last 30 days</option></select></div>
+        <div class="checks" role="group" aria-label="Only show posts that have">
+          <label class="check"><input type="checkbox" data-f="photo" id="f-photo"> Has a photo</label>
+          <label class="check"><input type="checkbox" data-f="audio" id="f-audio"> Has audio</label>
+          <label class="check"><input type="checkbox" data-f="contact" id="f-contact"> Has contact details</label>
+          <label class="check"><input type="checkbox" data-f="rated" id="f-rated"> Has a rating</label>
+        </div>
+        <button class="btn ghost small reset" type="button" data-act="reset">Clear all filters</button>
+      </div>
       <div class="cats" id="cats" role="group" aria-label="Filter by category"></div>
+      <p class="result-info" id="resultInfo" aria-live="polite"></p>
     </section>
     <section class="wrap" aria-live="polite"><div id="posts" class="posts"></div><div id="postState"></div><div id="more" class="more" hidden></div></section>
   `, c.name, true);
   $("#switch").addEventListener("change", e => location.hash = "#/c/" + e.target.value);
-  $("#pq").addEventListener("input", e => { state.q = e.target.value; state.shown = 24; renderPosts(); });
+  $("#pq").addEventListener("input", e => { state.q = e.target.value; state.shown = 24; renderCats(); renderPosts(); });
   renderCats(); loadPosts();
 }
 async function loadPosts(){
   const code = state.country.code;
-  $("#postState").innerHTML = ""; $("#more").hidden = true;
+  $("#postState").innerHTML = ""; $("#more").hidden = true; $("#resultInfo").textContent = "";
   $("#posts").innerHTML = '<div class="skeleton"></div>'.repeat(6);
   try {
     const rows = await api.posts(code);
@@ -539,34 +612,74 @@ async function loadPosts(){
     $("#postState").innerHTML = `<div class="state"><div class="big">📡</div><h2>We couldn't load the posts</h2><p>Check your connection and try again.</p><button class="btn" type="button" data-act="refresh">Try again</button></div>`;
   }
 }
+
+/* Filtering, sorting and counts */
+function activeFilterCount(){
+  const f = state.filters;
+  return (f.sort !== "new") + (f.when !== "any") + f.photo + f.audio + f.contact + f.rated;
+}
+function matches(p, ignoreCat){
+  const f = state.filters, q = state.q.trim().toLowerCase();
+  if (!ignoreCat && state.cat !== "All" && p.category !== state.cat) return false;
+  if (q && !(p.title + " " + p.description + " " + p.category).toLowerCase().includes(q)) return false;
+  if (f.when !== "any") {
+    const days = {day:1, week:7, month:30}[f.when];
+    if (Date.now() - new Date(p.created_at).getTime() > days * 86400000) return false;
+  }
+  if (f.photo && !safeUrl(p.image_url)) return false;
+  if (f.audio && !safeUrl(p.audio_url)) return false;
+  if (f.contact && !(p.contact || "").trim()) return false;
+  if (f.rated && (p.rating == null || p.rating === "")) return false;
+  return true;
+}
+function sortPosts(list){
+  const s = state.filters.sort;
+  const byDate = (a,b) => b.created_at.localeCompare(a.created_at);
+  const cmp = s === "old" ? (a,b) => a.created_at.localeCompare(b.created_at)
+            : s === "rating" ? (a,b) => (Number(b.rating ?? -1) - Number(a.rating ?? -1)) || byDate(a,b)
+            : byDate;
+  /* Featured (sponsored) posts always stay pinned at the top */
+  return [...list].sort((a,b) => (isFeatured(b) - isFeatured(a)) || cmp(a,b));
+}
+function syncFilterUI(){
+  const f = state.filters;
+  if (!$("#f-sort")) return;
+  $("#f-sort").value = f.sort; $("#f-when").value = f.when;
+  for (const k of ["photo","audio","contact","rated"]) $("#f-"+k).checked = f[k];
+  const n = activeFilterCount(), badge = $("#fcount");
+  badge.hidden = !n; badge.textContent = n;
+}
 function renderCats(){
   const el = $("#cats"); if (!el) return;
-  const count = id => state.posts.filter(p => p.category === id).length;
-  el.innerHTML = [`<button class="chip" type="button" data-cat="All" aria-pressed="${state.cat==="All"}">All<span class="n">${state.posts.length}</span></button>`,
+  const base = state.posts.filter(p => matches(p, true));
+  const count = id => base.filter(p => p.category === id).length;
+  el.innerHTML = [`<button class="chip" type="button" data-cat="All" aria-pressed="${state.cat==="All"}">All<span class="n">${base.length}</span></button>`,
     ...CATEGORIES.map(c => `<button class="chip ${count(c.id)?"":"zero"}" type="button" data-cat="${c.id}" aria-pressed="${state.cat===c.id}">${c.icon} ${c.id}<span class="n">${count(c.id)}</span></button>`)].join("");
 }
 function renderPosts(){
-  const q = state.q.trim().toLowerCase();
-  const list = state.posts.filter(p => (state.cat === "All" || p.category === state.cat) && (!q || (p.title + " " + p.description).toLowerCase().includes(q)));
+  const list = sortPosts(state.posts.filter(p => matches(p, false)));
   const name = state.country.name;
+  syncFilterUI();
   $("#posts").innerHTML = list.slice(0, state.shown).map(postCard).join("");
   $("#more").hidden = list.length <= state.shown;
   $("#more").innerHTML = `<button class="btn ghost" type="button" data-act="more">Show more posts</button>`;
+  const narrowed = state.cat !== "All" || state.q.trim() || activeFilterCount();
+  $("#resultInfo").textContent = state.posts.length ? `${list.length} ${list.length === 1 ? "post" : "posts"}${narrowed ? " match your search and filters" : ""}` : "";
   let s = "";
   if (!list.length) {
     s = state.posts.length === 0
       ? `<div class="state"><div class="big">🌱</div><h2>Nothing here yet</h2><p>No one has posted in ${esc(name)} so far. Be the first to share a need or an offer.</p><button class="btn accent" type="button" data-act="post">+ Post in ${esc(name)}</button></div>`
-      : `<div class="state"><div class="big">🔎</div><h2>No matching posts</h2><p>Try another category, or clear your search.</p><button class="btn ghost" type="button" data-act="clear">Show all posts</button></div>`;
+      : `<div class="state"><div class="big">🔎</div><h2>No matching posts</h2><p>Try another category, relax a filter, or clear your search.</p><button class="btn ghost" type="button" data-act="reset">Clear search and filters</button></div>`;
   }
   $("#postState").innerHTML = s;
 }
 function postCard(p){
-  const ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url);
+  const ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
   const long = (p.description || "").length > 220;
-  return `<article class="post">
+  return `<article class="post ${feat ? "featured" : ""}">
     ${img ? `<a class="pic" href="${esc(img)}" target="_blank" rel="noopener"><img src="${esc(img)}" alt="" loading="lazy"></a>` : ""}
     <div class="pbody">
-      <div class="pmeta"><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><time datetime="${esc(p.created_at)}">${esc(ago(p.created_at))}</time></div>
+      <div class="pmeta"><span class="left">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span></span><time datetime="${esc(p.created_at)}">${esc(ago(p.created_at))}</time></div>
       <h3>${esc(p.title)}</h3>
       <p class="desc ${long ? "clamp" : ""}">${esc(p.description)}</p>
       ${long ? `<button class="linkbtn" type="button" data-act="toggle">Read more</button>` : ""}
@@ -632,7 +745,7 @@ async function showAdmin(){
     setView(`<section class="wrap admin">
       <a class="back" href="#/" style="text-decoration:none;font-weight:600;color:var(--palm)">&lsaquo; Back to the Caribbean</a>
       <h1 style="margin-top:1rem">Administrator sign in</h1>
-      <p style="color:var(--muted)">Sign in to approve, edit or remove posts.${DEMO ? " <b>Demo mode:</b> any email and password will work." : ""}</p>
+      <p style="color:var(--muted)">Sign in to approve, edit, boost or remove posts.${DEMO ? " <b>Demo mode:</b> any email and password will work." : ""}</p>
       <form class="login-card f" id="loginForm" style="padding:1.4rem">
         <div class="field"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="username" required></div>
         <div class="field"><label for="li-pass">Password</label><input id="li-pass" type="password" autocomplete="current-password" required></div>
@@ -641,7 +754,7 @@ async function showAdmin(){
       </form></section>`, "Admin", true);
     $("#loginForm").addEventListener("submit", async e => {
       e.preventDefault();
-      try { await api.signIn($("#li-email").value.trim(), $("#li-pass").value); showAdmin(); }
+      try { await api.signIn($("#li-email").value.trim(), $("#li-pass").value); await updateNav(); showAdmin(); }
       catch (ex) { $("#li-err").textContent = ex.message?.includes("administrator") ? ex.message : "Email or password is incorrect."; }
     });
     return;
@@ -649,45 +762,57 @@ async function showAdmin(){
   const f = state.adminFilter;
   setView(`<section class="wrap admin">
     <div style="display:flex;gap:1rem;justify-content:space-between;align-items:flex-start;flex-wrap:wrap">
-      <div><h1>Review posts</h1><p style="color:var(--muted);margin:0">Approved posts appear on the board straight away.</p></div>
+      <div><h1>Review posts</h1><p style="color:var(--muted);margin:0">Approved posts appear on the board straight away. Boost an approved post to pin it to the top with a Sponsored badge.</p></div>
       <button class="btn ghost small" type="button" data-act="signout">Sign out</button>
     </div>
     <div class="afilters">
       <label class="sr-only" for="af-status">Status</label>
-      <select id="af-status">${["Pending","Approved","Rejected","All"].map(s => `<option ${s===f.status?"selected":""}>${s}</option>`).join("")}</select>
+      <select id="af-status">${["Pending","Approved","Featured","Rejected","All"].map(s => `<option ${s===f.status?"selected":""}>${s}</option>`).join("")}</select>
       <label class="sr-only" for="af-country">Country</label>
       <select id="af-country"><option value="All">All countries</option>${state.countries.map(c => `<option value="${esc(c.code)}" ${c.code===f.country?"selected":""}>${esc(c.name)}</option>`).join("")}</select>
+      <label class="sr-only" for="af-cat">Category</label>
+      <select id="af-cat"><option value="All">All categories</option>${ALL_CATS.map(c => `<option value="${esc(c.id)}" ${c.id===f.cat?"selected":""}>${c.icon} ${esc(c.id)}</option>`).join("")}</select>
+      <label class="sr-only" for="af-q">Search</label>
+      <input id="af-q" type="search" placeholder="Search title or details" value="${esc(f.q)}">
     </div>
     <div id="alist" class="alist"></div></section>`, "Admin", true);
   $("#af-status").addEventListener("change", e => { f.status = e.target.value; loadAdmin(); });
   $("#af-country").addEventListener("change", e => { f.country = e.target.value; loadAdmin(); });
+  $("#af-cat").addEventListener("change", e => { f.cat = e.target.value; renderAdminList(); });
+  $("#af-q").addEventListener("input", e => { f.q = e.target.value; renderAdminList(); });
   loadAdmin();
 }
 async function loadAdmin(){
   const el = $("#alist"); if (!el) return;
   el.innerHTML = '<div class="skeleton" style="height:120px"></div>'.repeat(3);
-  try {
-    state.adminPosts = await api.adminPosts(state.adminFilter);
-    el.innerHTML = state.adminPosts.length ? state.adminPosts.map(adminRow).join("") :
-      `<div class="state"><div class="big">✅</div><h2>All caught up</h2><p>No ${state.adminFilter.status === "All" ? "" : state.adminFilter.status.toLowerCase() + " "}posts match these filters.</p></div>`;
-  } catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load posts</h2><p>Check your connection and try again.</p></div>`; }
+  try { state.adminPosts = await api.adminPosts(state.adminFilter); renderAdminList(); }
+  catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load posts</h2><p>Check your connection and try again. If you just added featured posts, make sure you ran supabase_featured.sql.</p></div>`; }
+}
+function renderAdminList(){
+  const el = $("#alist"); if (!el) return;
+  const f = state.adminFilter, q = f.q.trim().toLowerCase();
+  const list = state.adminPosts.filter(p => (f.cat === "All" || p.category === f.cat) && (!q || (p.title + " " + p.description).toLowerCase().includes(q)));
+  el.innerHTML = list.length ? list.map(adminRow).join("") :
+    `<div class="state"><div class="big">✅</div><h2>All caught up</h2><p>No ${f.status === "All" ? "" : f.status.toLowerCase() + " "}posts match these filters.</p></div>`;
 }
 function adminRow(p){
-  const c = state.byCode[p.country_code], ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url);
-  return `<div class="arow" data-id="${esc(p.id)}">
-    <div class="arow-top"><span class="status ${esc(p.status)}">${esc(p.status)}</span>${c ? flag(c.code) : ""}<strong>${esc(c?.name || p.country_code)}</strong><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><span>${esc(ago(p.created_at))}</span></div>
+  const c = state.byCode[p.country_code], ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
+  return `<div class="arow ${feat ? "is-featured" : ""}" data-id="${esc(p.id)}">
+    <div class="arow-top"><span class="status ${esc(p.status)}">${esc(p.status)}</span>${feat ? `<span class="status Featured">★ Featured until ${esc(fmtDate(p.featured_until))}</span>` : ""}${c ? flag(c.code) : ""}<strong>${esc(c?.name || p.country_code)}</strong><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><span>${esc(ago(p.created_at))}</span></div>
     <h3>${esc(p.title)}</h3>
     <p class="desc">${esc(p.description)}</p>
     ${p.contact ? `<div class="contact"><b>Contact:</b> ${esc(p.contact)}</div>` : ""}
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener">View photo</a>` : ""} ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
     <div class="arow-actions">
       ${p.status !== "Approved" ? `<button class="btn small" type="button" data-act="approve">Approve</button>` : ""}
+      ${p.status === "Approved" ? `<button class="btn accent small" type="button" data-act="boost">${feat ? "Extend boost" : "★ Boost visibility"}</button>` : ""}
+      ${feat ? `<button class="btn ghost small" type="button" data-act="unboost">Remove boost</button>` : ""}
       ${p.status !== "Rejected" ? `<button class="btn ghost small" type="button" data-act="reject">Reject</button>` : ""}
       <button class="btn ghost small" type="button" data-act="edit">Edit</button>
       <button class="btn danger small" type="button" data-act="delete">Delete</button>
     </div></div>`;
 }
-let editingId = null;
+let editingId = null, boostingId = null;
 $("#editForm").addEventListener("submit", async e => {
   e.preventDefault();
   const title = $("#ef-title").value.trim(), description = $("#ef-desc").value.trim();
@@ -698,12 +823,40 @@ $("#editForm").addEventListener("submit", async e => {
     $("#editDlg").close(); toast("Changes saved.", "ok"); loadAdmin();
   } catch (ex) { console.error(ex); $("#ef-err").textContent = "Couldn't save your changes. Try again."; }
 });
+/* Boost: pins the post to the top of its country for N days. Extending adds time to the current end date. */
+function boostEnd(p, days){
+  const base = isFeatured(p) ? new Date(p.featured_until) : new Date();
+  return new Date(base.getTime() + days * 86400000);
+}
+function updateBoostEnd(){
+  const p = state.adminPosts.find(x => x.id === boostingId); if (!p) return;
+  $("#bf-end").textContent = `Pinned until ${fmtDate(boostEnd(p, Number($("#bf-days").value)))}.`;
+}
+$("#bf-days").addEventListener("change", updateBoostEnd);
+$("#boostForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const p = state.adminPosts.find(x => x.id === boostingId); if (!p) return;
+  try {
+    await api.update(boostingId, {featured_until: boostEnd(p, Number($("#bf-days").value)).toISOString()});
+    $("#boostDlg").close(); toast("Boost applied. The post is now pinned with a Sponsored badge.", "ok"); loadAdmin();
+  } catch (ex) { console.error(ex); $("#bf-err").textContent = "Couldn't apply the boost. Make sure you ran supabase_featured.sql and that you are signed in as an administrator."; }
+});
 async function adminAct(act, id){
   const p = state.adminPosts.find(x => x.id === id); if (!p) return;
   try {
     if (act === "approve") { await api.update(id, {status:"Approved"}); toast("Approved. It's now on the board.", "ok"); }
-    if (act === "reject")  { await api.update(id, {status:"Rejected"}); toast("Rejected."); }
+    if (act === "reject")  { await api.update(id, {status:"Rejected", featured_until:null}); toast("Rejected."); }
     if (act === "delete")  { if (!confirm("Delete this post permanently?")) return; await api.remove(id); toast("Deleted."); }
+    if (act === "unboost") { await api.update(id, {featured_until:null}); toast("Boost removed."); }
+    if (act === "boost") {
+      boostingId = id; $("#bf-err").textContent = "";
+      const c = state.byCode[p.country_code];
+      $("#bf-info").textContent = isFeatured(p)
+        ? `“${p.title}” is already featured until ${fmtDate(p.featured_until)}. The time you choose is added to the end of that.`
+        : `“${p.title}” will be pinned to the top of the ${c ? c.name : "country"} board with a Sponsored badge.`;
+      $("#bf-days").value = "30"; updateBoostEnd();
+      $("#boostDlg").showModal(); return;
+    }
     if (act === "edit") {
       editingId = id;
       $("#ef-cat").innerHTML = ALL_CATS.map(c => `<option value="${esc(c.id)}">${c.icon} ${esc(c.id)}</option>`).join("");
@@ -716,6 +869,11 @@ async function adminAct(act, id){
 }
 
 /* ---------- Global events ---------- */
+function resetSearch(){
+  state.cat = "All"; state.q = ""; state.shown = 24; state.filters = defaultFilters();
+  const pq = $("#pq"); if (pq) pq.value = "";
+  renderCats(); renderPosts();
+}
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close]"); if (!t) return;
   if (t.dataset.close !== undefined) return t.closest("dialog").close();
@@ -725,18 +883,26 @@ document.addEventListener("click", e => {
     case "post": return openPost();
     case "refresh": return loadPosts();
     case "more": state.shown += 24; return renderPosts();
-    case "clear": state.cat = "All"; state.q = ""; $("#pq").value = ""; renderCats(); return renderPosts();
+    case "reset": return resetSearch();
+    case "filters": { const panel = $("#fpanel"); panel.hidden = !panel.hidden; t.setAttribute("aria-expanded", String(!panel.hidden)); return; }
     case "toggle": { const d = t.previousElementSibling; const open = d.classList.toggle("clamp") === false; t.textContent = open ? "Show less" : "Read more"; return; }
     case "signout": return api.signOut().then(() => { state.admin = null; location.hash = "#/"; toast("Signed out."); updateNav(); });
     default: { const row = t.closest(".arow"); if (row) adminAct(t.dataset.act, row.dataset.id); }
   }
 });
+document.addEventListener("change", e => {
+  const el = e.target.closest("[data-f]"); if (!el) return;
+  state.filters[el.dataset.f] = el.type === "checkbox" ? el.checked : el.value;
+  state.shown = 24; renderCats(); renderPosts();
+});
 document.addEventListener("error", e => { if (e.target.matches?.("img.flag")) e.target.style.visibility = "hidden"; }, true);
 for (const d of document.querySelectorAll("dialog")) d.addEventListener("click", e => { if (e.target === d) d.close(); });
 
+/* The Admin link is hidden for everyone except a signed-in administrator.
+   (The real protection is Row Level Security in Supabase; this only controls what is shown.) */
 async function updateNav(){
   const a = await api.session().catch(() => null);
-  $("#navAdmin").textContent = a ? "Review posts" : "Admin";
+  $("#navAdmin").hidden = !a;
 }
 
 /* ---------- Start ---------- */
