@@ -104,6 +104,14 @@ h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
 .toolbar-row .search{flex:1;min-width:220px;max-width:none}
 .cats{display:flex;gap:.5rem;overflow-x:auto;padding:.1rem 0 .4rem;scrollbar-width:thin}
 .result-info{margin:0;font-size:.88rem;color:var(--muted)}
+.suggest{position:absolute;left:0;right:0;top:calc(100% + .35rem);z-index:30;background:#fff;border:1.5px solid var(--line);border-radius:14px;box-shadow:0 12px 30px rgba(10,47,60,.18);overflow:hidden;max-height:min(70vh,420px);overflow-y:auto}
+.sug{display:flex;width:100%;justify-content:space-between;align-items:center;gap:.8rem;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:.75rem .95rem;font:600 .95rem var(--body);color:var(--ink);cursor:pointer}
+.sug:last-child{border-bottom:0}
+.sug:hover,.sug.active{background:#eef6f2}
+.sug mark{background:rgba(245,184,46,.5);color:inherit;border-radius:3px;padding:0 .1rem}
+.sug-c{flex:none;font-size:.78rem;font-weight:700;color:var(--muted)}
+.sug-all{justify-content:center;color:var(--palm-d)}
+.sug-none{padding:.85rem .95rem;color:var(--muted);font-size:.93rem}
 
 /* Filters */
 .fcount{display:inline-grid;place-items:center;min-width:1.35rem;height:1.35rem;padding:0 .35rem;border-radius:99px;background:var(--palm);color:#fff;font-size:.78rem;font-weight:700}
@@ -396,20 +404,22 @@ function ago(iso){
   if (a < 2592000) return rtf.format(Math.round(s/86400), "day");
   return new Date(iso).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
 }
-/* Turn web addresses, emails and phone numbers inside contact text into links */
-const CONTACT_RE = /(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)|([A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,})|(\+?\(?\d[\d\s().-]{5,}\d)/g;
+/* Turn web addresses, emails and phone numbers inside contact text into links.
+   Web addresses (with or without https://) and emails open in a new window/tab. */
+const CONTACT_RE = /(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)|([A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,})|((?:[A-Za-z0-9-]+\.)+(?:com|net|org|gov|edu|info|io|co|bb|jm|tt|gd|lc|bz|gy|bs|ky|vc|kn|ag|dm|ai|vg|tc|sr|cw|aw|pr|do|ht|cu|vi|ms|gp|mq|sx|uk|us|ca)\b(?:\/[^\s<>"]*)?)|(\+?\(?\d[\d\s().-]{5,}\d)/gi;
+const NEWWIN = 'target="_blank" rel="noopener noreferrer"';
 function linkify(text){
   const src = String(text ?? ""); let out = "", last = 0, m;
   CONTACT_RE.lastIndex = 0;
   while ((m = CONTACT_RE.exec(src))) {
     out += esc(src.slice(last, m.index));
     let raw = m[0], tail = "", html;
-    if (m[1]) {
+    if (m[1] || m[3]) {
       const t = raw.match(/[.,;:!?)]+$/); if (t) { tail = t[0]; raw = raw.slice(0, -tail.length); }
       const href = safeUrl(/^https?:/i.test(raw) ? raw : "https://" + raw);
-      html = href ? `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(raw)}</a>` : esc(raw);
+      html = href ? `<a href="${esc(href)}" ${NEWWIN}>${esc(raw)}</a>` : esc(raw);
     } else if (m[2]) {
-      html = `<a href="mailto:${esc(raw)}">${esc(raw)}</a>`;
+      html = `<a href="mailto:${esc(raw)}" ${NEWWIN}>${esc(raw)}</a>`;
     } else {
       const digits = raw.replace(/[^\d+]/g, "");
       html = digits.replace(/\D/g, "").length >= 7 ? `<a href="tel:${esc(digits)}">${esc(raw)}</a>` : esc(raw);
@@ -614,7 +624,7 @@ function showCountry(code){
     </section>
     <section class="wrap toolbar">
       <div class="toolbar-row">
-        <div class="search small">${searchIcon}<label class="sr-only" for="pq">Search posts</label><input id="pq" type="search" placeholder="Search posts in ${esc(c.name)}"></div>
+        <div class="search small">${searchIcon}<label class="sr-only" for="pq">Search posts</label><input id="pq" type="search" placeholder="Search posts in ${esc(c.name)}" autocomplete="off" aria-autocomplete="list" aria-controls="suggest"><div class="suggest" id="suggest" role="listbox" aria-label="Matching posts" hidden></div></div>
         <button class="btn ghost small" type="button" data-act="filters" id="fbtn" aria-expanded="false" aria-controls="fpanel">Filters <span class="fcount" id="fcount" hidden></span></button>
         <button class="btn ghost small" type="button" data-act="refresh">Refresh</button>
       </div>
@@ -637,7 +647,20 @@ function showCountry(code){
     <section class="wrap" aria-live="polite"><div id="posts" class="posts"></div><div id="postState"></div><div id="more" class="more" hidden></div></section>
   `, c.name, true);
   $("#switch").addEventListener("change", e => location.hash = "#/c/" + e.target.value);
-  $("#pq").addEventListener("input", e => { state.q = e.target.value; state.shown = 24; renderCats(); renderPosts(); });
+  $("#pq").addEventListener("input", e => { state.q = e.target.value; state.shown = 24; renderCats(); renderPosts(); showSuggest(); });
+  $("#pq").addEventListener("focus", showSuggest);
+  $("#pq").addEventListener("keydown", e => {
+    const items = [...document.querySelectorAll("#suggest .sug")];
+    if (e.key === "Escape") return hideSuggest();
+    if (!items.length || $("#suggest").hidden) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      sugIdx = (sugIdx + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+      items.forEach((b, i) => b.classList.toggle("active", i === sugIdx));
+      items[sugIdx].scrollIntoView({block:"nearest"});
+    }
+    if (e.key === "Enter") { e.preventDefault(); if (sugIdx >= 0) items[sugIdx].click(); else hideSuggest(); }
+  });
   renderCats(); loadPosts();
 }
 async function loadPosts(){
@@ -911,6 +934,22 @@ async function adminAct(act, id){
 }
 
 /* ---------- Global events ---------- */
+/* Suggestions: matching posts listed under the search box; click one to open it on its own */
+let sugIdx = -1;
+function hideSuggest(){ const el = $("#suggest"); if (el) { el.hidden = true; el.innerHTML = ""; } sugIdx = -1; }
+function showSuggest(){
+  const el = $("#suggest"); if (!el) return;
+  const q = state.q.trim();
+  if (!q || !state.posts.length) return hideSuggest();
+  const list = sortPosts(state.posts.filter(p => matches(p, true)));
+  sugIdx = -1;
+  if (!list.length) { el.innerHTML = `<div class="sug-none">No posts match “${esc(q)}”.</div>`; el.hidden = false; return; }
+  const ql = q.toLowerCase();
+  const hl = t => { const i = t.toLowerCase().indexOf(ql); return i < 0 ? esc(t) : esc(t.slice(0, i)) + "<mark>" + esc(t.slice(i, i + q.length)) + "</mark>" + esc(t.slice(i + q.length)); };
+  el.innerHTML = list.slice(0, 6).map(p => { const ci = catInfo(p.category); return `<button type="button" class="sug" role="option" data-sid="${esc(p.id)}"><span>${hl(p.title)}</span><span class="sug-c">${ci.icon} ${esc(p.category)}</span></button>`; }).join("")
+    + (list.length > 6 ? `<button type="button" class="sug sug-all" data-act="seeall">See all ${list.length} results</button>` : "");
+  el.hidden = false;
+}
 function openView(id){
   const p = state.posts.find(x => String(x.id) === String(id)); if (!p) return;
   const ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
@@ -931,6 +970,9 @@ function resetSearch(){
   renderCats(); renderPosts();
 }
 document.addEventListener("click", e => {
+  if (!e.target.closest(".search.small")) hideSuggest();
+  const sug = e.target.closest("[data-sid]");
+  if (sug) { hideSuggest(); return openView(sug.dataset.sid); }
   const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close]");
   if (!t) {
     const card = e.target.closest(".post[data-pid]");
@@ -942,6 +984,7 @@ document.addEventListener("click", e => {
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "seeall": hideSuggest(); return $("#posts")?.scrollIntoView({behavior:"smooth", block:"start"});
     case "open": { const card = t.closest(".post[data-pid]"); if (card) openView(card.dataset.pid); return; }
     case "refresh": return loadPosts();
     case "more": state.shown += 24; return renderPosts();
