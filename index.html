@@ -107,10 +107,10 @@ h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
 
 /* Filters */
 .fcount{display:inline-grid;place-items:center;min-width:1.35rem;height:1.35rem;padding:0 .35rem;border-radius:99px;background:var(--palm);color:#fff;font-size:.78rem;font-weight:700}
-.fpanel{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:1rem 1.1rem;display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));align-items:start}
-.opts{display:flex;flex-wrap:wrap;gap:.4rem}
+.fpanel{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:1rem 1.1rem;display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));align-items:end}
 .fpanel .field{margin:0}
-.fpanel .lbl{display:block;font-weight:600;font-size:.88rem;margin-bottom:.4rem}
+.fpanel select{width:100%;font:500 .95rem var(--body);padding:.6rem .7rem;border-radius:10px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.fpanel label.lbl{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem}
 .checks{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.5rem}
 .check{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:.9rem;padding:.5rem .8rem;border:1.5px solid var(--line);border-radius:99px;cursor:pointer;background:#fff}
 .check:has(input:checked){background:var(--ink);border-color:var(--ink);color:#fff}
@@ -119,7 +119,14 @@ h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
 
 /* Posts */
 .posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.1rem;padding:1rem 0 1.5rem;align-items:start}
-.post{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.post{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.post:hover{border-color:var(--palm);box-shadow:0 6px 20px rgba(10,47,60,.12)}
+.ptitle{all:unset;cursor:pointer;display:block;font:inherit;color:inherit;letter-spacing:inherit}
+.ptitle:hover{text-decoration:underline;text-underline-offset:3px}
+.ptitle:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:4px}
+.vbody{padding:.4rem 1.4rem 1.4rem;display:flex;flex-direction:column;gap:.85rem}
+.vbody img.vimg{width:100%;border-radius:14px;display:block;max-height:340px;object-fit:cover}
+.vbody .vmeta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
 .post.featured{border:2px solid var(--sun);box-shadow:0 6px 22px rgba(245,184,46,.25)}
 .post .pic{display:block;aspect-ratio:16/9;background:#e3ecea}
 .post .pic img{width:100%;height:100%;object-fit:cover;display:block}
@@ -312,6 +319,12 @@ footer b{color:#fff}
       <button class="btn accent" type="submit">Apply boost</button>
     </div>
   </form>
+</dialog>
+
+<!-- Post detail dialog -->
+<dialog id="viewDlg" aria-labelledby="vd-title">
+  <div class="dlg-head"><h2 id="vd-title"></h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
+  <div class="vbody" id="vd-body"></div>
 </dialog>
 
 <div id="toasts" aria-live="polite"></div>
@@ -606,19 +619,10 @@ function showCountry(code){
         <button class="btn ghost small" type="button" data-act="refresh">Refresh</button>
       </div>
       <div class="fpanel" id="fpanel" hidden>
-        <div class="field"><span class="lbl" id="l-sort">Sort by</span>
-          <div class="opts" role="group" aria-labelledby="l-sort">
-            <button type="button" class="chip" data-fopt="sort" data-v="new">Newest</button>
-            <button type="button" class="chip" data-fopt="sort" data-v="old">Oldest</button>
-            <button type="button" class="chip" data-fopt="sort" data-v="rating">Top rated</button>
-          </div></div>
-        <div class="field"><span class="lbl" id="l-when">Posted</span>
-          <div class="opts" role="group" aria-labelledby="l-when">
-            <button type="button" class="chip" data-fopt="when" data-v="any">Any time</button>
-            <button type="button" class="chip" data-fopt="when" data-v="day">24 hours</button>
-            <button type="button" class="chip" data-fopt="when" data-v="week">7 days</button>
-            <button type="button" class="chip" data-fopt="when" data-v="month">30 days</button>
-          </div></div>
+        <div class="field"><label class="lbl" for="f-sort">Sort by</label>
+          <select id="f-sort" data-f="sort"><option value="new">Newest first</option><option value="old">Oldest first</option><option value="rating">Highest rated</option></select></div>
+        <div class="field"><label class="lbl" for="f-when">Posted</label>
+          <select id="f-when" data-f="when"><option value="any">Any time</option><option value="day">Last 24 hours</option><option value="week">Last 7 days</option><option value="month">Last 30 days</option></select></div>
         <div class="checks" role="group" aria-label="Only show posts that have">
           <label class="check"><input type="checkbox" data-f="photo" id="f-photo"> Has a photo</label>
           <label class="check"><input type="checkbox" data-f="audio" id="f-audio"> Has audio</label>
@@ -681,8 +685,8 @@ function sortPosts(list){
 }
 function syncFilterUI(){
   const f = state.filters;
-  if (!$("#fpanel")) return;
-  document.querySelectorAll("[data-fopt]").forEach(b => b.setAttribute("aria-pressed", String(f[b.dataset.fopt] === b.dataset.v)));
+  if (!$("#f-sort")) return;
+  $("#f-sort").value = f.sort; $("#f-when").value = f.when;
   for (const k of ["photo","audio","contact","rated"]) $("#f-"+k).checked = f[k];
   const n = activeFilterCount(), badge = $("#fcount");
   badge.hidden = !n; badge.textContent = n;
@@ -714,11 +718,11 @@ function renderPosts(){
 function postCard(p){
   const ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
   const long = (p.description || "").length > 220;
-  return `<article class="post ${feat ? "featured" : ""}">
+  return `<article class="post ${feat ? "featured" : ""}" data-pid="${esc(p.id)}">
     ${img ? `<a class="pic" href="${esc(img)}" target="_blank" rel="noopener"><img src="${esc(img)}" alt="" loading="lazy"></a>` : ""}
     <div class="pbody">
       <div class="pmeta"><span class="left">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span></span><time datetime="${esc(p.created_at)}">${esc(ago(p.created_at))}</time></div>
-      <h3>${esc(p.title)}</h3>
+      <h3><button class="ptitle" type="button" data-act="open" aria-haspopup="dialog">${esc(p.title)}</button></h3>
       <p class="desc ${long ? "clamp" : ""}">${esc(p.description)}</p>
       ${long ? `<button class="linkbtn" type="button" data-act="toggle">Read more</button>` : ""}
       ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
@@ -907,19 +911,38 @@ async function adminAct(act, id){
 }
 
 /* ---------- Global events ---------- */
+function openView(id){
+  const p = state.posts.find(x => String(x.id) === String(id)); if (!p) return;
+  const ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
+  $("#vd-title").textContent = p.title;
+  $("#vd-body").innerHTML = `
+    <div class="vmeta">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><time datetime="${esc(p.created_at)}">Posted ${esc(ago(p.created_at))}</time></div>
+    ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener"><img class="vimg" src="${esc(img)}" alt=""></a>` : ""}
+    <p class="desc">${esc(p.description)}</p>
+    ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
+    ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
+    ${stars(p.rating)}
+    <div class="form-actions"><button class="btn" type="button" data-close>Close</button></div>`;
+  $("#viewDlg").showModal();
+}
 function resetSearch(){
   state.cat = "All"; state.q = ""; state.shown = 24; state.filters = defaultFilters();
   const pq = $("#pq"); if (pq) pq.value = "";
   renderCats(); renderPosts();
 }
 document.addEventListener("click", e => {
-  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close],[data-fopt]"); if (!t) return;
+  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close]");
+  if (!t) {
+    const card = e.target.closest(".post[data-pid]");
+    if (card && !e.target.closest("a,button,audio,input,select,textarea,summary")) openView(card.dataset.pid);
+    return;
+  }
   if (t.dataset.close !== undefined) return t.closest("dialog").close();
-  if (t.dataset.fopt) { state.filters[t.dataset.fopt] = t.dataset.v; state.shown = 24; renderCats(); return renderPosts(); }
   if (t.dataset.region) { state.region = t.dataset.region; renderRegions(); return renderGrid(); }
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "open": { const card = t.closest(".post[data-pid]"); if (card) openView(card.dataset.pid); return; }
     case "refresh": return loadPosts();
     case "more": state.shown += 24; return renderPosts();
     case "reset": return resetSearch();
