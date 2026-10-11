@@ -57,7 +57,7 @@ h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
 
 /* Hero */
 .hero{background:var(--ink);color:#fff;position:relative;padding:7.5rem 0 0}
-.hero h1{font-size:clamp(2.2rem,5.6vw,4rem);font-weight:800;letter-spacing:-.025em;max-width:16ch}
+.hero h1{font-size:clamp(1.2rem,5.2vw,3.4rem);font-weight:800;letter-spacing:-.025em;white-space:nowrap}
 .hero p{font-size:1.12rem;color:#c3dadd;max-width:52ch;margin:1.1rem 0 1.8rem}
 .search{position:relative;max-width:560px}
 .search svg{position:absolute;left:1rem;top:50%;translate:0 -50%;width:20px;height:20px;color:var(--muted);pointer-events:none}
@@ -265,6 +265,34 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .qrow .em{white-space:pre-wrap}
 @media(max-width:520px){.chat-fab-t{display:none}.chat-fab{padding:.9rem}}
 
+/* About + feedback */
+.about{padding:1.5rem 0 3rem;display:grid;gap:1rem}
+.about h2{font-size:1.35rem;margin-bottom:.5rem}
+.about p{margin:.3rem 0;color:#2c4852}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin-top:.8rem}
+.step{background:#eef6f2;border-radius:14px;padding:.9rem 1rem}
+.step b{display:block;font-family:var(--display);font-size:1.05rem;margin-bottom:.2rem}
+.step .num{display:inline-grid;place-items:center;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--palm);color:#fff;font-weight:700;margin-bottom:.4rem}
+.step p{margin:0;font-size:.93rem}
+.cats-about{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.6rem;margin-top:.8rem}
+.cat-about{display:flex;gap:.6rem;align-items:flex-start;padding:.7rem .85rem;border:1px solid var(--line);border-radius:12px;background:#fff}
+.cat-about span{font-size:1.3rem;line-height:1.2}
+.cat-about small{color:var(--muted)}
+.know{margin:.4rem 0 0;padding-left:1.2rem;color:#2c4852}
+.know li{margin:.35rem 0}
+.fbrows{display:grid;gap:.45rem}
+.fbrow{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.4rem .75rem;border:1px solid var(--line);border-radius:12px;background:#fff}
+.fbrow .lab{font-weight:600}
+.fbrow .lab small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.stars-in{display:inline-flex;gap:.05rem}
+.st{background:none;border:0;font-size:1.65rem;line-height:1;color:#c3d1ce;cursor:pointer;padding:.1rem .22rem;border-radius:6px}
+.st.on{color:#e0a114}
+.st:hover{color:#f5b82e}
+.fchips{display:flex;gap:.35rem;flex-wrap:wrap}
+footer a{color:#cfe3e6}
+footer a:hover{color:#fff}
+@media(max-width:560px){#navCountries{display:none}}
+
 /* Footer & toast */
 footer{background:var(--ink);color:#9fc0c6;padding:1.6rem 0;font-size:.9rem;margin-top:auto}
 footer .wrap{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:space-between}
@@ -290,6 +318,7 @@ footer b{color:#fff}
     </a>
     <nav class="nav" aria-label="Main">
       <a class="link" href="#/" id="navCountries">Countries</a>
+      <a class="link" href="#/about" id="navAbout">About</a>
       <!-- Only shown after an administrator signs in (see updateNav) -->
       <a class="link" href="#/" id="navAdmin" hidden>Review posts</a>
       <button class="link" data-act="subscribe" type="button">Get updates</button>
@@ -302,8 +331,8 @@ footer b{color:#fff}
 
 <footer>
   <div class="wrap">
-    <div><b>JSur</b> copyright &copy;2023</div>
-    <div>Silver sponsor: ThermoDen &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
+    <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a> &nbsp;|&nbsp; <a href="#/feedback">Give feedback</a></div>
+    <div>Silver sponsor: JnBaptiste Foundation &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
   </div>
 </footer>
 
@@ -442,8 +471,8 @@ footer b{color:#fff}
    in supabase_setup.sql are what protect the data.)
    ===================================================================== */
 const CONFIG = {
-  SUPABASE_URL: "https://gbsxezbqvtsdljiehfpw.supabase.co", 
-  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdic3hlemJxdnRzZGxqaWVoZnB3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1ODk0ODYsImV4cCI6MjEwNzE2NTQ4Nn0.xea-XyckCRIfbbcfR4xExQ__AnDc0TJusv6WtoGqooc",
+  SUPABASE_URL: "....", 
+  SUPABASE_ANON_KEY: "....xea-XyckCRIfbbcfR4xExQ__AnDc0TJusv6WtoGqooc",
   MEDIA_BUCKET: "post-media"
 };
 
@@ -467,6 +496,17 @@ const CATEGORIES = [
   {id:"Transport",icon:"🚌",h:190},{id:"Emergency",icon:"🚨",h:5},{id:"Holiday",icon:"🌴",h:150},
   {id:"Advertisement",icon:"📣",h:320},{id:"Sports",icon:"⚽",h:100},{id:"Other",icon:"✨",h:45}
 ];
+/* Things visitors can rate. Keep these ids in sync with supabase_feedback.sql */
+const FEATURES = [
+  {id:"Overall site",icon:"🏝",hint:"Your overall experience"},
+  {id:"Child-friendly",icon:"🧒",hint:"How suitable is the site for children?"},
+  {id:"Jobs",icon:"💼"},{id:"Food",icon:"🍲"},{id:"Education",icon:"🎓"},{id:"Transport",icon:"🚌"},
+  {id:"Emergency",icon:"🚨"},{id:"Holiday",icon:"🌴"},{id:"Advertisement",icon:"📣"},{id:"Sports",icon:"⚽"},
+  {id:"Search and filters",icon:"🔎"},{id:"Posting",icon:"✍️"},{id:"Ask a question",icon:"💬"},{id:"Email updates",icon:"✉️"}
+];
+const CAT_BLURB = {Jobs:"Vacancies and work opportunities",Food:"Meals, markets and places to eat",Education:"Schools, lessons and scholarships",
+  Transport:"Rides, routes and travel updates",Emergency:"Urgent notices and where to find help",Holiday:"Public holidays and local events",
+  Advertisement:"Offers from local businesses",Sports:"Leagues, fixtures and local sport",Other:"Anything else the community needs"};
 const REPORT = {id:"Report a problem",icon:"🚩",h:0};
 const ALL_CATS = [...CATEGORIES, REPORT];
 const catInfo = id => ALL_CATS.find(c => c.id === id) || CATEGORIES[CATEGORIES.length-1];
@@ -561,6 +601,10 @@ demoDb.questions = [
   {id:"q1",question:"Is the National Development Scholarship open to part-time students?",email:"student@example.com",country_code:"bb",status:"Open",created_at:daysAgo(0.3)},
   {id:"q2",question:"How do I post a job for my restaurant?",email:null,country_code:"jm",status:"Answered",created_at:daysAgo(4)}
 ];
+demoDb.feedback = [
+  {id:"f1",ratings:{"Overall site":5,"Jobs":4,"Child-friendly":4},comment:"Easy to find jobs near me. Thank you!",email:"reader@example.com",country_code:"jm",status:"New",created_at:daysAgo(1)},
+  {id:"f2",ratings:{"Overall site":4,"Food":5,"Search and filters":3},comment:"",email:null,country_code:"tt",status:"Reviewed",created_at:daysAgo(6)}
+];
 demoDb.subs = [
   {id:"s1",email:"ana@example.com",country_code:"jm",interests:["Jobs","Food"],source:"home",created_at:daysAgo(2)},
   {id:"s2",email:"marcus@example.com",country_code:"tt",interests:["Sports"],source:"country",created_at:daysAgo(5)},
@@ -623,6 +667,33 @@ const api = {
   async removeQuestion(id){
     if (DEMO) { demoDb.questions = demoDb.questions.filter(q => q.id !== id); return; }
     const {error} = await sb.from("questions").delete().eq("id", id);
+    if (error) throw error;
+  },
+  async feedback(row){
+    if (DEMO) { demoDb.feedback.unshift({...row, id:"f"+Date.now(), status:"New", created_at:new Date().toISOString()}); return; }
+    const {error} = await sb.from("feedback").insert(row);
+    if (error) throw error;
+  },
+  async feedbackList(){
+    if (DEMO) return [...demoDb.feedback].sort((a,b) => b.created_at.localeCompare(a.created_at));
+    const {data, error} = await sb.from("feedback").select("*").order("created_at",{ascending:false}).limit(1000);
+    if (error) throw error;
+    return data;
+  },
+  async newFeedbackCount(){
+    if (DEMO) return demoDb.feedback.filter(f => f.status === "New").length;
+    const {count, error} = await sb.from("feedback").select("id",{count:"exact",head:true}).eq("status","New");
+    if (error) throw error;
+    return count || 0;
+  },
+  async setFeedback(id, status){
+    if (DEMO) { Object.assign(demoDb.feedback.find(f => f.id === id), {status}); return; }
+    const {error} = await sb.from("feedback").update({status}).eq("id", id);
+    if (error) throw error;
+  },
+  async removeFeedback(id){
+    if (DEMO) { demoDb.feedback = demoDb.feedback.filter(f => f.id !== id); return; }
+    const {error} = await sb.from("feedback").delete().eq("id", id);
     if (error) throw error;
   },
   async track(row){ if (DEMO) return; try { await sb.from("page_views").insert(row); } catch {} },
@@ -694,7 +765,7 @@ const defaultFilters = () => ({sort:"new", when:"any", photo:false, audio:false,
 const state = {
   countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
   admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
-  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0
+  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, fbList:[], fbFilter:"New", newFb:0, fb:{}
 };
 /* Cookie-free traffic counting: a random id kept only in this browser tab, no IP address, honours Do Not Track.
    Your own visits are skipped while you are signed in as admin on this browser. */
@@ -728,6 +799,8 @@ function route(){
   let m;
   if (h === "#/" || h === "#") return showHome();
   if ((m = h.match(/^#\/c\/([a-z]{2})$/))) return showCountry(m[1]);
+  if (h === "#/about") return showAbout(false);
+  if (h === "#/feedback") return showAbout(true);
   if (h === "#/" + ADMIN_PATH) return showAdmin();
   location.hash = "#/";
 }
@@ -742,8 +815,7 @@ function showHome(){
   setView(`
     <section class="hero">
       <div class="wrap">
- <h1>The Latest Community Posts</h1>
-
+        <h1>The Latest Community Posts</h1>
         <p>Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.</p>
         <div class="search">
           ${searchIcon}
@@ -1034,14 +1106,19 @@ async function showAdmin(){
 }
 function renderAdminTabs(){
   const el = $("#admtabs"); if (!el) return;
-  el.innerHTML = [["posts","Posts"],["questions", "Questions" + (state.openQ ? ` (${state.openQ})` : "")],["subs","Subscribers"],["traffic","Traffic"]]
+  el.innerHTML = [["posts","Posts"],["questions", "Questions" + (state.openQ ? ` (${state.openQ})` : "")],["feedback", "Feedback" + (state.newFb ? ` (${state.newFb})` : "")],["subs","Subscribers"],["traffic","Traffic"]]
     .map(([k,l]) => `<button class="chip" type="button" data-tab="${k}" aria-pressed="${state.adminTab===k}">${l}</button>`).join("");
 }
-async function refreshOpenQ(){ try { state.openQ = await api.openQuestionCount(); renderAdminTabs(); } catch {} }
+async function refreshOpenQ(){
+  try { state.openQ = await api.openQuestionCount(); } catch {}
+  try { state.newFb = await api.newFeedbackCount(); } catch {}
+  renderAdminTabs();
+}
 function renderAdminTab(){
   const tab = state.adminTab;
   renderAdminTabs(); refreshOpenQ();
   if (tab === "questions") return showQuestions();
+  if (tab === "feedback") return showFeedback();
   if (tab === "subs") return showSubs();
   if (tab === "traffic") return showTraffic();
   showAdminPosts();
@@ -1100,6 +1177,55 @@ function renderQuestionList(){
       <button class="btn danger small" type="button" data-act="qdel">Delete</button>
     </div>`;
   }).join("") : `<div class="state"><div class="big">💬</div><h2>No ${state.qFilter === "All" ? "" : state.qFilter.toLowerCase() + " "}questions</h2><p>Questions from the chat button will appear here.</p></div>`;
+}
+
+/* ---------- Admin: feedback ---------- */
+const starText = n => "★".repeat(n) + "☆".repeat(5 - n);
+function fbSummary(list){
+  const agg = {};
+  list.forEach(f => Object.entries(f.ratings || {}).forEach(([k, v]) => { (agg[k] = agg[k] || {sum:0, n:0}); agg[k].sum += Number(v); agg[k].n++; }));
+  return Object.entries(agg).map(([feature, a]) => ({feature, avg:a.sum / a.n, n:a.n})).sort((a, b) => b.avg - a.avg);
+}
+async function showFeedback(){
+  const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:160px;margin-top:1rem"></div>';
+  try { state.fbList = await api.feedbackList(); renderFeedback(); }
+  catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load feedback</h2><p>Make sure you ran supabase_feedback.sql and that you are signed in as an administrator.</p></div>`; }
+}
+function renderFeedback(){
+  const sum = fbSummary(state.fbList), overall = sum.find(x => x.feature === "Overall site"), kids = sum.find(x => x.feature === "Child-friendly");
+  $("#admbody").innerHTML = `
+    <div class="stats">
+      <div class="stat"><b>${overall ? overall.avg.toFixed(1) + " ★" : "–"}</b><span>Overall site rating${overall ? ` (${overall.n})` : ""}</span></div>
+      <div class="stat"><b>${kids ? kids.avg.toFixed(1) + " ★" : "–"}</b><span>Child-friendly rating${kids ? ` (${kids.n})` : ""}</span></div>
+      <div class="stat"><b>${state.fbList.length}</b><span>Responses</span></div>
+      <div class="stat"><b>${state.fbList.filter(f => f.status === "New").length}</b><span>New</span></div>
+    </div>
+    <div class="panel"><h3>Average rating by feature</h3>${sum.length ? `<div class="rank">${sum.map(r => `<div class="rank-row"><span class="lab">${esc(r.feature)} · ${r.n}</span><span class="rank-bar"><i style="width:${r.avg / 5 * 100}%"></i></span><b>${r.avg.toFixed(1)} ★</b></div>`).join("")}</div>` : `<p class="result-info">No ratings yet.</p>`}</div>
+    <div class="afilters">
+      <label class="sr-only" for="fb-status">Status</label>
+      <select id="fb-status">${["New","Reviewed","All"].map(x => `<option ${x===state.fbFilter?"selected":""}>${x}</option>`).join("")}</select>
+      <span class="result-info" id="fb-total" style="align-self:center"></span>
+    </div>
+    <div id="fblist" class="alist"></div>`;
+  $("#fb-status").addEventListener("change", e => { state.fbFilter = e.target.value; renderFeedbackList(); });
+  renderFeedbackList();
+}
+function renderFeedbackList(){
+  const el = $("#fblist"); if (!el) return;
+  const list = state.fbList.filter(f => state.fbFilter === "All" || f.status === state.fbFilter);
+  $("#fb-total").textContent = `${list.length} ${list.length === 1 ? "response" : "responses"}`;
+  el.innerHTML = list.length ? list.map(f => {
+    const c = state.byCode[f.country_code];
+    const reply = f.email ? `mailto:${f.email}?subject=${encodeURIComponent("Thanks for your feedback on Isle Connect")}&body=${encodeURIComponent("Hi,\n\nThank you for your feedback on Isle Connect.\n\n")}` : "";
+    return `<div class="srow frow" data-id="${esc(f.id)}">
+      <div class="em"><div class="fchips">${Object.entries(f.ratings || {}).map(([k, v]) => `<span class="tag" style="--h:45">${esc(k)} <span class="stars">${starText(Number(v))}</span></span>`).join("")}</div>
+        ${f.comment ? `<p class="desc" style="margin:.5rem 0 0">${esc(f.comment)}</p>` : ""}</div>
+      <div class="meta"><span class="status ${f.status === "New" ? "Pending" : "Approved"}">${esc(f.status)}</span>${c ? flag(c.code) + " " + esc(c.name) : "No country"} <span>${f.email ? esc(f.email) : "no email left"}</span> <span>${esc(ago(f.created_at))}</span></div>
+      ${f.email ? `<a class="btn small" href="${esc(reply)}" target="_blank" rel="noopener noreferrer">Reply by email</a>` : ""}
+      <button class="btn ghost small" type="button" data-act="fbtoggle">${f.status === "New" ? "Mark reviewed" : "Mark new"}</button>
+      <button class="btn danger small" type="button" data-act="fbdel">Delete</button>
+    </div>`;
+  }).join("") : `<div class="state"><div class="big">⭐</div><h2>No ${state.fbFilter === "All" ? "" : state.fbFilter.toLowerCase() + " "}feedback</h2><p>Ratings and comments from the About page will appear here.</p></div>`;
 }
 
 /* ---------- Admin: subscribers ---------- */
@@ -1271,6 +1397,74 @@ async function adminAct(act, id){
   } catch (ex) { console.error(ex); toast("That didn't work. Check your connection and permissions, then try again.", "error"); }
 }
 
+/* ---------- About + customer feedback ---------- */
+function fbRow(f){
+  const v = state.fb[f.id] || 0;
+  return `<div class="fbrow" data-feat="${esc(f.id)}"><span class="lab">${f.icon} ${esc(f.id)}${f.hint ? `<small>${esc(f.hint)}</small>` : ""}</span>
+    <span class="stars-in" role="group" aria-label="Rate ${esc(f.id)}">${[1,2,3,4,5].map(n => `<button type="button" class="st ${n <= v ? "on" : ""}" data-feat="${esc(f.id)}" data-star="${n}" aria-label="${esc(f.id)}: ${n} star${n > 1 ? "s" : ""}" aria-pressed="${n === v}">★</button>`).join("")}</span></div>`;
+}
+function showAbout(toFeedback){
+  state.country = null; state.fb = {};
+  setView(`
+    <section class="band"><div class="wrap">
+      <a class="back" href="#/">&lsaquo; All Caribbean</a>
+      <h1>About Isle Connect</h1><div class="sub">A free community board for the Caribbean</div>
+    </div></section>
+    <section class="wrap about">
+      <article class="panel"><h2>What is Isle Connect?</h2>
+        <p>Isle Connect brings jobs, meals, rides, school notices, holidays, sports and emergency help for ${state.countries.length} Caribbean countries and territories into one place.</p>
+        <p>Choose your island, see what people in your community are sharing, and post what you need or what you can offer.</p></article>
+      <article class="panel"><h2>How it works</h2><div class="steps">
+        <div class="step"><span class="num">1</span><b>Pick your island</b><p>Every country and territory has its own page.</p></div>
+        <div class="step"><span class="num">2</span><b>Browse, search and filter</b><p>Use the categories, search box and filters to find what you need.</p></div>
+        <div class="step"><span class="num">3</span><b>Post and be seen</b><p>Anyone can post. An administrator reviews every post before it appears.</p></div>
+      </div></article>
+      <article class="panel"><h2>What you'll find</h2><div class="cats-about">${CATEGORIES.map(c => `<div class="cat-about"><span>${c.icon}</span><div><b>${esc(c.id)}</b><br><small>${esc(CAT_BLURB[c.id] || "")}</small></div></div>`).join("")}</div></article>
+      <article class="panel"><h2>Good to know</h2><ul class="know">
+        <li>Isle Connect is free to use.</li>
+        <li>Posts marked <b>Sponsored</b> are paid placements.</li>
+        <li>Contact details in a post are public, so only share what you are comfortable with.</li>
+        <li>In an emergency, contact your local emergency services and check official sources.</li>
+        <li>Isle Connect is a general community board and is not designed specifically for children. Young people should use it with a parent or guardian.</li>
+        <li>Have a question? Tap <b>Ask a question</b> at the bottom right of any page.</li></ul></article>
+      <article class="panel" id="feedback"><h2>Rate Isle Connect</h2>
+        <p>Tap the stars for the features you have used. Tap a star again to clear it, and skip anything you haven't tried.</p>
+        <form class="f" id="fbForm" novalidate style="padding:.6rem 0 0">
+          <div class="fbrows">${FEATURES.map(fbRow).join("")}</div>
+          <div class="field"><label for="fb-comment">Brief feedback <span class="hint">(optional)</span></label>
+            <textarea id="fb-comment" maxlength="500" placeholder="What works well? What could be better?"></textarea>
+            <div class="counter" id="fb-count">0 / 500</div></div>
+          <div class="row2">
+            <div class="field"><label for="fb-email">Email <span class="hint">(optional, if you'd like a reply)</span></label><input id="fb-email" type="email" maxlength="254" autocomplete="email"></div>
+            <div class="field"><label for="fb-country">Country <span class="hint">(optional)</span></label>
+              <select id="fb-country"><option value="">Any country</option>${state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("")}</select></div>
+          </div>
+          <input class="hp" id="fb-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="err" id="fb-err" role="alert"></p>
+          <div class="form-actions"><button class="btn" type="submit" id="fb-send">Send my ratings</button></div>
+        </form></article>
+    </section>`, "About", true);
+  if (toFeedback) $("#feedback").scrollIntoView({behavior:"smooth", block:"start"});
+}
+let lastFb = 0;
+document.addEventListener("input", e => { if (e.target.id === "fb-comment") $("#fb-count").textContent = e.target.value.length + " / 500"; });
+document.addEventListener("submit", async e => {
+  if (e.target.id !== "fbForm") return;
+  e.preventDefault();
+  const err = $("#fb-err"), btn = $("#fb-send"); err.textContent = "";
+  if ($("#fb-website").value) return;                                      // honeypot
+  const ratings = {...state.fb}, comment = $("#fb-comment").value.trim(), email = $("#fb-email").value.trim().toLowerCase();
+  if (!Object.keys(ratings).length) return err.textContent = "Please tap at least one star rating.";
+  if (email && (!EMAIL_RE.test(email) || email.length > 254)) return err.textContent = "That email address doesn't look right.";
+  if (Date.now() - lastFb < 30000) return err.textContent = "Please wait a little before sending again.";
+  btn.disabled = true; btn.textContent = "Sending…";
+  try {
+    await api.feedback({ratings, comment: comment || null, email: email || null, country_code: $("#fb-country").value || null});
+    lastFb = Date.now();
+    $("#feedback").innerHTML = `<div class="state" style="margin:1rem auto"><div class="big">🌟</div><h2>Thank you!</h2><p>Your ratings help us improve Isle Connect${email ? ". We'll reply to " + esc(email) + " if needed" : ""}.</p><a class="btn" href="#/">Back to the islands</a></div>`;
+  } catch (ex) { console.error(ex); err.textContent = "We couldn't send your ratings. Check your connection and try again."; btn.disabled = false; btn.textContent = "Send my ratings"; }
+});
+
 /* ---------- Subscribe ---------- */
 function openSub(code){
   $("#sf-country").innerHTML = `<option value="">Any country</option>` + state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("");
@@ -1374,19 +1568,30 @@ document.addEventListener("click", e => {
   if (!e.target.closest(".search.small")) hideSuggest();
   const sug = e.target.closest("[data-sid]");
   if (sug) { hideSuggest(); return openView(sug.dataset.sid); }
-  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close],[data-tab],[data-days]");
+  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close],[data-tab],[data-days],[data-star]");
   if (!t) {
     const card = e.target.closest(".post[data-pid]");
     if (card && !e.target.closest("a,button,audio,input,select,textarea,summary")) openView(card.dataset.pid);
     return;
   }
   if (t.dataset.close !== undefined) return t.closest("dialog").close();
+  if (t.dataset.star) {
+    const feat = t.dataset.feat, n = Number(t.dataset.star), f = FEATURES.find(x => x.id === feat); if (!f) return;
+    if (state.fb[feat] === n) delete state.fb[feat]; else state.fb[feat] = n;
+    t.closest(".fbrow").outerHTML = fbRow(f);
+    return document.querySelector(`.fbrow[data-feat="${feat}"] [data-star="${n}"]`)?.focus();
+  }
   if (t.dataset.tab) { state.adminTab = t.dataset.tab; return renderAdminTab(); }
   if (t.dataset.days) { state.trafficDays = Number(t.dataset.days); return showTraffic(); }
   if (t.dataset.region) { state.region = t.dataset.region; renderRegions(); return renderGrid(); }
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "fbtoggle": { const row = t.closest(".frow"); const f = state.fbList.find(x => String(x.id) === row?.dataset.id); if (!f) return;
+      const next = f.status === "New" ? "Reviewed" : "New";
+      return api.setFeedback(f.id, next).then(() => { f.status = next; renderFeedbackList(); refreshOpenQ(); }).catch(() => toast("Couldn't update that feedback.", "error")); }
+    case "fbdel": { const row = t.closest(".frow"); if (!row || !confirm("Delete this feedback permanently?")) return;
+      return api.removeFeedback(row.dataset.id).then(() => { state.fbList = state.fbList.filter(x => String(x.id) !== row.dataset.id); renderFeedback(); refreshOpenQ(); toast("Feedback deleted."); }).catch(() => toast("Couldn't delete that feedback.", "error")); }
     case "qtoggle": { const row = t.closest(".qrow"); const q = state.questions.find(x => String(x.id) === row?.dataset.id); if (!q) return;
       const next = q.status === "Open" ? "Answered" : "Open";
       return api.setQuestion(q.id, next).then(() => { q.status = next; renderQuestionList(); refreshOpenQ(); }).catch(() => toast("Couldn't update that question.", "error")); }
