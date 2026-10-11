@@ -280,6 +280,8 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .cat-about small{color:var(--muted)}
 .know{margin:.4rem 0 0;padding-left:1.2rem;color:#2c4852}
 .know li{margin:.35rem 0}
+.ratebox summary{cursor:pointer;font:700 1.1rem var(--display)}
+.ratebox[open] summary{margin-bottom:.5rem}
 .fbrows{display:grid;gap:.45rem}
 .fbrow{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.4rem .75rem;border:1px solid var(--line);border-radius:12px;background:#fff}
 .fbrow .lab{font-weight:600}
@@ -331,7 +333,7 @@ footer b{color:#fff}
 
 <footer>
   <div class="wrap">
-    <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a> &nbsp;|&nbsp; <a href="#/feedback">Give feedback</a></div>
+    <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a></div>
     <div>Silver sponsor: JnBaptiste Foundation &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
   </div>
 </footer>
@@ -765,7 +767,7 @@ const defaultFilters = () => ({sort:"new", when:"any", photo:false, audio:false,
 const state = {
   countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
   admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
-  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, fbList:[], fbFilter:"New", newFb:0, fb:{}
+  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, fbList:[], fbFilter:"New", fbCountry:"All", newFb:0, fb:{}
 };
 /* Cookie-free traffic counting: a random id kept only in this browser tab, no IP address, honours Do Not Track.
    Your own visits are skipped while you are signed in as admin on this browser. */
@@ -799,8 +801,7 @@ function route(){
   let m;
   if (h === "#/" || h === "#") return showHome();
   if ((m = h.match(/^#\/c\/([a-z]{2})$/))) return showCountry(m[1]);
-  if (h === "#/about") return showAbout(false);
-  if (h === "#/feedback") return showAbout(true);
+  if (h === "#/about") return showAbout();
   if (h === "#/" + ADMIN_PATH) return showAdmin();
   location.hash = "#/";
 }
@@ -864,7 +865,7 @@ function renderGrid(){
 function showCountry(code){
   const c = state.byCode[code];
   if (!c) { location.hash = "#/"; return; }
-  state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = []; state.filters = defaultFilters();
+  state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = []; state.filters = defaultFilters(); state.fb = {};
   store.set("recent", [code, ...store.get("recent", []).filter(x => x !== code)].slice(0,6));
   track("/c/" + code, code);
   setView(`
@@ -905,6 +906,7 @@ function showCountry(code){
       <p class="result-info" id="resultInfo" aria-live="polite"></p>
     </section>
     <section class="wrap" aria-live="polite"><div id="posts" class="posts"></div><div id="postState"></div><div id="more" class="more" hidden></div></section>
+    <section class="wrap">${feedbackBox(c)}</section>
     <section class="wrap"><div class="subbar"><div><h2>Get ${esc(c.name)} updates by email</h2><p>New jobs, scholarships, holidays and community notices, straight to your inbox.</p></div><button class="btn accent" type="button" data-act="subscribe">Subscribe</button></div></section>
   `, c.name, true);
   $("#switch").addEventListener("change", e => location.hash = "#/c/" + e.target.value);
@@ -1191,28 +1193,40 @@ async function showFeedback(){
   try { state.fbList = await api.feedbackList(); renderFeedback(); }
   catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load feedback</h2><p>Make sure you ran supabase_feedback.sql and that you are signed in as an administrator.</p></div>`; }
 }
+function fbBase(){ return state.fbCountry === "All" ? state.fbList : state.fbList.filter(f => f.country_code === state.fbCountry); }
 function renderFeedback(){
-  const sum = fbSummary(state.fbList), overall = sum.find(x => x.feature === "Overall site"), kids = sum.find(x => x.feature === "Child-friendly");
+  const base = fbBase(), sum = fbSummary(base), overall = sum.find(x => x.feature === "Overall site"), kids = sum.find(x => x.feature === "Child-friendly");
+  let byCountry = "";
+  if (state.fbCountry === "All") {
+    const g = {};
+    state.fbList.forEach(f => { const k = f.country_code || "none"; g[k] = g[k] || {n:0, sum:0, m:0}; g[k].n++; const o = f.ratings && f.ratings["Overall site"]; if (o != null) { g[k].sum += Number(o); g[k].m++; } });
+    const rows = Object.entries(g).map(([code, a]) => ({code, n:a.n, avg:a.m ? a.sum / a.m : null})).sort((x, y) => y.n - x.n);
+    byCountry = `<div class="panel"><h3>By country (responses · average overall rating)</h3>${rows.length ? `<div class="rank">${rows.map(r => { const c = state.byCode[r.code]; return `<div class="rank-row"><span class="lab">${c ? flag(c.code) : ""}${esc(c ? c.name : "No country")} · ${r.n}</span><span class="rank-bar"><i style="width:${r.avg ? r.avg / 5 * 100 : 0}%"></i></span><b>${r.avg ? r.avg.toFixed(1) + " ★" : "–"}</b></div>`; }).join("")}</div>` : `<p class="result-info">No responses yet.</p>`}</div>`;
+  }
   $("#admbody").innerHTML = `
     <div class="stats">
       <div class="stat"><b>${overall ? overall.avg.toFixed(1) + " ★" : "–"}</b><span>Overall site rating${overall ? ` (${overall.n})` : ""}</span></div>
       <div class="stat"><b>${kids ? kids.avg.toFixed(1) + " ★" : "–"}</b><span>Child-friendly rating${kids ? ` (${kids.n})` : ""}</span></div>
-      <div class="stat"><b>${state.fbList.length}</b><span>Responses</span></div>
-      <div class="stat"><b>${state.fbList.filter(f => f.status === "New").length}</b><span>New</span></div>
+      <div class="stat"><b>${base.length}</b><span>Responses</span></div>
+      <div class="stat"><b>${base.filter(f => f.status === "New").length}</b><span>New</span></div>
     </div>
-    <div class="panel"><h3>Average rating by feature</h3>${sum.length ? `<div class="rank">${sum.map(r => `<div class="rank-row"><span class="lab">${esc(r.feature)} · ${r.n}</span><span class="rank-bar"><i style="width:${r.avg / 5 * 100}%"></i></span><b>${r.avg.toFixed(1)} ★</b></div>`).join("")}</div>` : `<p class="result-info">No ratings yet.</p>`}</div>
+    ${byCountry}
+    <div class="panel"><h3>Average rating by feature${state.fbCountry === "All" ? "" : " in " + esc(state.byCode[state.fbCountry]?.name || state.fbCountry)}</h3>${sum.length ? `<div class="rank">${sum.map(r => `<div class="rank-row"><span class="lab">${esc(r.feature)} · ${r.n}</span><span class="rank-bar"><i style="width:${r.avg / 5 * 100}%"></i></span><b>${r.avg.toFixed(1)} ★</b></div>`).join("")}</div>` : `<p class="result-info">No ratings yet.</p>`}</div>
     <div class="afilters">
+      <label class="sr-only" for="fb-cfilter">Country</label>
+      <select id="fb-cfilter"><option value="All">All countries</option>${state.countries.map(c => `<option value="${esc(c.code)}" ${c.code===state.fbCountry?"selected":""}>${esc(c.name)}</option>`).join("")}</select>
       <label class="sr-only" for="fb-status">Status</label>
       <select id="fb-status">${["New","Reviewed","All"].map(x => `<option ${x===state.fbFilter?"selected":""}>${x}</option>`).join("")}</select>
       <span class="result-info" id="fb-total" style="align-self:center"></span>
     </div>
     <div id="fblist" class="alist"></div>`;
+  $("#fb-cfilter").addEventListener("change", e => { state.fbCountry = e.target.value; renderFeedback(); });
   $("#fb-status").addEventListener("change", e => { state.fbFilter = e.target.value; renderFeedbackList(); });
   renderFeedbackList();
 }
 function renderFeedbackList(){
   const el = $("#fblist"); if (!el) return;
-  const list = state.fbList.filter(f => state.fbFilter === "All" || f.status === state.fbFilter);
+  const list = fbBase().filter(f => state.fbFilter === "All" || f.status === state.fbFilter);
   $("#fb-total").textContent = `${list.length} ${list.length === 1 ? "response" : "responses"}`;
   el.innerHTML = list.length ? list.map(f => {
     const c = state.byCode[f.country_code];
@@ -1403,7 +1417,22 @@ function fbRow(f){
   return `<div class="fbrow" data-feat="${esc(f.id)}"><span class="lab">${f.icon} ${esc(f.id)}${f.hint ? `<small>${esc(f.hint)}</small>` : ""}</span>
     <span class="stars-in" role="group" aria-label="Rate ${esc(f.id)}">${[1,2,3,4,5].map(n => `<button type="button" class="st ${n <= v ? "on" : ""}" data-feat="${esc(f.id)}" data-star="${n}" aria-label="${esc(f.id)}: ${n} star${n > 1 ? "s" : ""}" aria-pressed="${n === v}">★</button>`).join("")}</span></div>`;
 }
-function showAbout(toFeedback){
+function feedbackBox(c){
+  return `<details class="panel ratebox" id="feedback">
+    <summary>⭐ Rate Isle Connect in ${esc(c.name)}</summary>
+    <p style="margin:.2rem 0 0;color:#2c4852">Tap the stars for the features you have used. Tap a star again to clear it, and skip anything you haven't tried.</p>
+    <form class="f" id="fbForm" novalidate style="padding:.6rem 0 0">
+      <div class="fbrows">${FEATURES.map(fbRow).join("")}</div>
+      <div class="field"><label for="fb-comment">Brief feedback <span class="hint">(optional)</span></label>
+        <textarea id="fb-comment" maxlength="500" placeholder="What works well? What could be better?"></textarea>
+        <div class="counter" id="fb-count">0 / 500</div></div>
+      <div class="field"><label for="fb-email">Email <span class="hint">(optional, if you'd like a reply)</span></label><input id="fb-email" type="email" maxlength="254" autocomplete="email"></div>
+      <input class="hp" id="fb-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="err" id="fb-err" role="alert"></p>
+      <div class="form-actions"><button class="btn" type="submit" id="fb-send">Send my ratings</button></div>
+    </form></details>`;
+}
+function showAbout(){
   state.country = null; state.fb = {};
   setView(`
     <section class="band"><div class="wrap">
@@ -1426,25 +1455,9 @@ function showAbout(toFeedback){
         <li>Contact details in a post are public, so only share what you are comfortable with.</li>
         <li>In an emergency, contact your local emergency services and check official sources.</li>
         <li>Isle Connect is a general community board and is not designed specifically for children. Young people should use it with a parent or guardian.</li>
-        <li>Have a question? Tap <b>Ask a question</b> at the bottom right of any page.</li></ul></article>
-      <article class="panel" id="feedback"><h2>Rate Isle Connect</h2>
-        <p>Tap the stars for the features you have used. Tap a star again to clear it, and skip anything you haven't tried.</p>
-        <form class="f" id="fbForm" novalidate style="padding:.6rem 0 0">
-          <div class="fbrows">${FEATURES.map(fbRow).join("")}</div>
-          <div class="field"><label for="fb-comment">Brief feedback <span class="hint">(optional)</span></label>
-            <textarea id="fb-comment" maxlength="500" placeholder="What works well? What could be better?"></textarea>
-            <div class="counter" id="fb-count">0 / 500</div></div>
-          <div class="row2">
-            <div class="field"><label for="fb-email">Email <span class="hint">(optional, if you'd like a reply)</span></label><input id="fb-email" type="email" maxlength="254" autocomplete="email"></div>
-            <div class="field"><label for="fb-country">Country <span class="hint">(optional)</span></label>
-              <select id="fb-country"><option value="">Any country</option>${state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("")}</select></div>
-          </div>
-          <input class="hp" id="fb-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <p class="err" id="fb-err" role="alert"></p>
-          <div class="form-actions"><button class="btn" type="submit" id="fb-send">Send my ratings</button></div>
-        </form></article>
+        <li>Have a question? Tap <b>Ask a question</b> at the bottom right of any page.</li>
+        <li>Tell us how we are doing: open any island and use the <b>Rate Isle Connect</b> box near the bottom of its page.</li></ul></article>
     </section>`, "About", true);
-  if (toFeedback) $("#feedback").scrollIntoView({behavior:"smooth", block:"start"});
 }
 let lastFb = 0;
 document.addEventListener("input", e => { if (e.target.id === "fb-comment") $("#fb-count").textContent = e.target.value.length + " / 500"; });
@@ -1459,9 +1472,9 @@ document.addEventListener("submit", async e => {
   if (Date.now() - lastFb < 30000) return err.textContent = "Please wait a little before sending again.";
   btn.disabled = true; btn.textContent = "Sending…";
   try {
-    await api.feedback({ratings, comment: comment || null, email: email || null, country_code: $("#fb-country").value || null});
+    await api.feedback({ratings, comment: comment || null, email: email || null, country_code: state.country?.code || null});
     lastFb = Date.now();
-    $("#feedback").innerHTML = `<div class="state" style="margin:1rem auto"><div class="big">🌟</div><h2>Thank you!</h2><p>Your ratings help us improve Isle Connect${email ? ". We'll reply to " + esc(email) + " if needed" : ""}.</p><a class="btn" href="#/">Back to the islands</a></div>`;
+    $("#feedback").outerHTML = `<div class="panel" id="feedback"><div class="state" style="margin:1rem auto"><div class="big">🌟</div><h2>Thank you!</h2><p>Your ratings for ${esc(state.country?.name || "this page")} help us improve Isle Connect${email ? ". We'll reply to " + esc(email) + " if needed" : ""}.</p></div></div>`;
   } catch (ex) { console.error(ex); err.textContent = "We couldn't send your ratings. Check your connection and try again."; btn.disabled = false; btn.textContent = "Send my ratings"; }
 });
 
