@@ -1449,7 +1449,7 @@ function rateRowHtml(key){
 function ratePanelHtml(p){
   if (hasRated(p.id)) return `<div class="ratepost"><p class="fbhint">✓ You have rated this post. Thank you!</p></div>`;
   return `<form class="ratepost f" id="rateForm" data-pid="${esc(p.id)}" novalidate style="padding:0">
-    <h3>Rate this post</h3>
+    <h3>Rate</h3>
     ${rateRowHtml("stars")}${rateRowHtml("child")}
     <div class="field"><label for="rp-comment">Brief feedback <span class="hint">(optional, only the admin sees it)</span></label><textarea id="rp-comment" maxlength="300" rows="2"></textarea></div>
     <input class="hp" id="rp-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
