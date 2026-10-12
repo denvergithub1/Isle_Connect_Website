@@ -1443,7 +1443,7 @@ function communityLine(p){
   return chips.length ? `<div class="crow"><span class="rlabel">Visitor rating</span>${chips.join("")}</div>` : "";
 }
 function rateRowHtml(key){
-  const v = state.pr[key], label = key === "stars" ? "How useful is this post?" : "🧒 How child-friendly is it?";
+  const v = state.pr[key], label = key === "stars" ? "Rate" : "🧒 How child-friendly is it?";
   return `<div class="fbrow rrow" data-row="${key}"><span class="lab">${label}</span><span class="stars-in" role="group" aria-label="${label}">${[1,2,3,4,5].map(n => `<button type="button" class="st ${n <= v ? "on" : ""}" data-rkey="${key}" data-rval="${n}" aria-label="${n} star${n > 1 ? "s" : ""}" aria-pressed="${n === v}">★</button>`).join("")}</span></div>`;
 }
 function ratePanelHtml(p){
