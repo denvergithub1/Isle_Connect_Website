@@ -374,12 +374,32 @@ footer b{color:#fff}
       <input id="pf-contact" maxlength="200" placeholder="e.g. +1 555 123 4567">
     </div>
     <details class="media">
-      <summary>Add a photo or audio (optional)</summary>
+      <summary>Add a photo, audio or video (optional)</summary>
       <div class="inner">
         <div class="field"><label for="pf-imgfile">Photo <span class="hint">(JPG, PNG, WebP – up to 5 MB)</span></label><input id="pf-imgfile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
         <div class="field"><label for="pf-imgurl">…or paste a photo link</label><input id="pf-imgurl" type="url" placeholder="https://"></div>
         <div class="field"><label for="pf-audfile">Audio <span class="hint">(MP3, WAV, M4A, OGG – up to 10 MB)</span></label><input id="pf-audfile" type="file" accept="audio/mpeg,audio/wav,audio/mp4,audio/x-m4a,audio/ogg"></div>
         <div class="field"><label for="pf-audurl">…or paste an audio link</label><input id="pf-audurl" type="url" placeholder="https://"></div>
+
+<div class="field">
+  <label for="pf-vidfile">
+    Video <span class="hint">(MP4, WebM, MOV – up to 50 MB)</span>
+  </label>
+  <input
+    id="pf-vidfile"
+    type="file"
+    accept="video/mp4,video/webm,video/quicktime"
+  >
+</div>
+
+<div class="field">
+  <label for="pf-vidurl">…or paste a video link</label>
+  <input
+    id="pf-vidurl"
+    type="url"
+    placeholder="https://"
+  >
+        
       </div>
     </details>
     <input class="hp" id="pf-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
