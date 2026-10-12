@@ -349,7 +349,7 @@ footer b{color:#fff}
 <footer>
   <div class="wrap">
     <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a></div>
-    <div>Silver sponsor: JnBaptiste Foundation &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
+    <div>Silver sponsor: ThermoDen &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
   </div>
 </footer>
 
@@ -581,7 +581,7 @@ function linkify(text){
 }
 function srcLine(p){
   const u = safeUrl(p.source_url); if (!u) return "";
-  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}>${esc(p.source_name || "Official notice")} ↗</a>${p.expires_at ? ` · Closes ${esc(fmtDate(p.expires_at))}` : ""}</div>`;
+  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}>${esc(p.source_name || "Official notice")} ↗</a>${p.expires_at ? ` · Closes ${esc(fmtDate(p.expires_at))}` : ""}</div>`; 
 }
 const fmtDate = d => new Date(d).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
 const isFeatured = p => !!p.featured_until && new Date(p.featured_until).getTime() > Date.now();
