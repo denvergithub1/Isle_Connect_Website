@@ -510,9 +510,10 @@ const CONFIG = {
    Change this to any secret word and keep it to yourself. "#/admin" no longer works. */
 const ADMIN_PATH = "owner-7k3q";
 
-/* Public community ratings are shown once a section has at least this many ratings
-   (stops one fake rating from deciding the score). Set to 1 to show every rating. */
-const MIN_RATINGS_TO_SHOW = 3;
+/* The visitor thumbs tally on a post is shown once it has at least this many votes.
+   1 = shown from the very first vote, just like the admin rating. Raise it (for example to 3) if you want
+   a post to need a few votes before its tally appears. */
+const MIN_RATINGS_TO_SHOW = 1;
 
 /* Security & privacy switches
    USE_FLAG_IMAGES: country flags are loaded from flagcdn.com (that site can see a visitor's IP address).
@@ -863,16 +864,22 @@ const api = {
 const defaultFilters = () => ({sort:"new", when:"any"});
 const state = {
   countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
-  admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
+  admin:null, isAdmin:false, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
   region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, ratings:[], rFilter:"New", rCountry:"All", newR:0, pstats:{}, pr:{vote:0, child:0}, contacts:{}
 };
 /* Cookie-free traffic counting: a random id kept only in this browser tab, no IP address, honours Do Not Track.
    Your own visits are skipped while you are signed in as admin on this browser. */
 const SESSION_ID = (() => { try { let v = sessionStorage.getItem("ic_sid"); if (!v) { v = crypto.randomUUID(); sessionStorage.setItem("ic_sid", v); } return v; } catch { return crypto.randomUUID(); } })();
 let lastTrack = "";
-function track(path, code){
+/* Resolves once we know whether this browser is signed in as the admin (see updateNav). Tracking waits for it,
+   so even the very first page view of an admin session is never counted. The database refuses admin page views too. */
+let adminCheckDone; const adminCheck = new Promise(r => { adminCheckDone = r; });
+const isAdminBrowser = () => state.isAdmin === true || store.get("ic_admin", false) === true;
+async function track(path, code){
   try {
-    if (DEMO || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true || store.get("ic_admin", false)) return;
+    if (DEMO || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true || isAdminBrowser()) return;
+    await Promise.race([adminCheck, new Promise(r => setTimeout(r, 4000))]);   // wait (briefly) for the admin check
+    if (isAdminBrowser()) return;
     const key = path + "|" + Math.floor(Date.now() / 3000);
     if (key === lastTrack) return; lastTrack = key;
     let ref = "";
@@ -1500,10 +1507,10 @@ const voterId = () => { let v = store.get("ic_voter", ""); if (!v) { v = crypto.
 const hasRated = id => store.get("ic_rated", []).includes(String(id));
 const markRated = id => store.set("ic_rated", [...new Set([...store.get("ic_rated", []), String(id)])].slice(-500));
 const avgStars = (sum, n) => n ? sum / n : null;
-/* Visitor votes: thumbs up / thumbs down. Shown once at least MIN_RATINGS_TO_SHOW people have voted. */
+/* Visitor votes: thumbs up / thumbs down tally, shown the same way as the admin rating. */
 function voteLine(up, down, label, prefix = "") {
   const total = up + down, pct = Math.round(100 * up / total);
-  return `<div class="rline" title="${up} thumbs up and ${down} thumbs down">${prefix}<span class="thumbs" aria-hidden="true">👍 <b>${up}</b> &nbsp;👎 <b>${down}</b></span> <small>${pct}% ${esc(label)} (${total} votes)</small><span class="sr-only">${up} thumbs up and ${down} thumbs down, ${pct} percent ${esc(label)}</span></div>`;
+  return `<div class="rline" title="${up} thumbs up and ${down} thumbs down">${prefix}<span class="thumbs" aria-hidden="true">👍 <b>${up}</b> &nbsp;👎 <b>${down}</b></span> <small>${pct}% ${esc(label)} (${total} vote${total === 1 ? "" : "s"})</small><span class="sr-only">${up} thumbs up and ${down} thumbs down, ${pct} percent ${esc(label)}</span></div>`;
 }
 function communityLine(p){
   const st = state.pstats[p.id]; if (!st) return "";
@@ -1755,8 +1762,11 @@ for (const d of document.querySelectorAll("dialog")) d.addEventListener("click",
    (The real protection is Row Level Security in Supabase; this only controls what is shown.) */
 async function updateNav(){
   const a = await api.session().catch(() => null);
+  state.isAdmin = !!a;
+  if (a) store.set("ic_admin", true);                    // remembered until you sign out, so your visits are never counted
   $("#navAdmin").href = "#/" + ADMIN_PATH;
   $("#navAdmin").hidden = !a;
+  adminCheckDone();
 }
 
 /* ---------- Start ---------- */
