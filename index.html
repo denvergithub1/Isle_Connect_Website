@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Isle Connect – community resources across the Caribbean</title>
 <meta name="description" content="Find jobs, food, transport, education and emergency help posted by people across the Caribbean.">
+<!-- Security & privacy: only your own page, the pinned Supabase library (checked with an integrity hash) and your own Supabase project may load.
+     If you use a custom Supabase domain, add it to connect-src and img-src/media-src below. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co https://flagcdn.com; media-src 'self' blob: https://*.supabase.co; font-src 'self'; connect-src 'self' https://*.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝</text></svg>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o" crossorigin="anonymous"></script>
 
 <style>
 :root{
@@ -89,6 +90,8 @@ h1:focus,h1:focus-visible{outline:none}
 .ccard:hover{border-color:var(--palm);box-shadow:0 4px 14px rgba(10,47,60,.1)}
 .flag{width:40px;height:30px;object-fit:cover;border-radius:5px;background:#dfe9e6;box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:none}
 .flag.lg{width:72px;height:54px;border-radius:8px}
+.flag.badge{display:inline-grid;place-items:center;font:800 .78rem var(--body);color:var(--ink-2);letter-spacing:.04em}
+.flag.badge.lg{font-size:1.2rem}
 .empty-grid{padding:2rem 0;color:var(--muted)}
 
 /* Country page */
@@ -287,10 +290,19 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .ratebox[open] summary{margin-bottom:.5rem}
 .comrate{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.2rem}
 .comrate .rlabel{font-weight:700;font-size:.88rem;color:var(--ink-2)}
+.rline{font-size:.95rem}
+.rline.muted{color:var(--muted);font-size:.85rem}
 .crow{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
 .crow .rlabel{font-weight:700;font-size:.82rem;color:var(--ink-2)}
 .ratepost{border-top:1px solid var(--line);padding-top:.8rem;display:grid;gap:.6rem}
 .ratepost h3{font-size:1.1rem}
+.thumbs-in{display:inline-flex;gap:.4rem}
+.th{background:#fff;border:1.5px solid var(--line);border-radius:12px;font-size:1.4rem;line-height:1;padding:.35rem .7rem;cursor:pointer}
+.th:hover{border-color:var(--palm)}
+.th.up[aria-pressed="true"]{background:#d9f1e2;border-color:var(--palm)}
+.th.down[aria-pressed="true"]{background:#fbe0de;border-color:var(--danger)}
+.rline .thumbs b{font-weight:700}
+.post video,.vbody video{width:100%;max-height:360px;border-radius:12px;background:#000;display:block}
 .rchip{display:inline-flex;align-items:center;gap:.35rem;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:.3rem .8rem;font-size:.9rem;font-weight:600}
 .rchip .stars{font-size:.95rem}
 .rchip small{color:var(--muted);font-weight:500}
@@ -349,7 +361,7 @@ footer b{color:#fff}
 <footer>
   <div class="wrap">
     <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a></div>
-    <div>Silver sponsor: ThermoDen &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
+    <div>Silver sponsor: ThermoDen Foundation &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
   </div>
 </footer>
 
@@ -377,13 +389,9 @@ footer b{color:#fff}
       <summary>Add a photo, audio or video (optional)</summary>
       <div class="inner">
         <div class="field"><label for="pf-imgfile">Photo <span class="hint">(JPG, PNG, WebP – up to 5 MB)</span></label><input id="pf-imgfile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
-        <div class="field"><label for="pf-imgurl">…or paste a photo link</label><input id="pf-imgurl" type="url" placeholder="https://"></div>
         <div class="field"><label for="pf-audfile">Audio <span class="hint">(MP3, WAV, M4A, OGG – up to 10 MB)</span></label><input id="pf-audfile" type="file" accept="audio/mpeg,audio/wav,audio/mp4,audio/x-m4a,audio/ogg"></div>
-        <div class="field"><label for="pf-audurl">…or paste an audio link</label><input id="pf-audurl" type="url" placeholder="https://"></div>
-
-<div class="field"><label for="pf-vidfile">Video <span class="hint">(MP4, WebM, MOV – up to 50 MB)</span></label><input id="pf-vidfile" type="file" accept="video/mp4,video/webm,video/quicktime"></div>
-<div class="field"><label for="pf-vidurl">…or paste a video link</label><input id="pf-vidurl" type="url" placeholder="https://"></div>
-        
+        <div class="field"><label for="pf-vidfile">Video <span class="hint">(MP4, WebM or MOV – up to 25 MB)</span></label><input id="pf-vidfile" type="file" accept="video/mp4,video/webm,video/quicktime"></div>
+      </div>
     </details>
     <input class="hp" id="pf-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p class="err" id="pf-err" role="alert"></p>
@@ -402,7 +410,7 @@ footer b{color:#fff}
     <div class="field"><label for="ef-title">Title</label><input id="ef-title" maxlength="120" required></div>
     <div class="row2">
       <div class="field"><label for="ef-cat">Category</label><select id="ef-cat"></select></div>
-      <div class="field"><label for="ef-rating">Public Rating <span class="hint">(0–5, optional)</span></label><input id="ef-rating" type="number" min="0" max="5" step="0.5"></div>
+      <div class="field"><label for="ef-rating">Rating <span class="hint">(0–5, optional)</span></label><input id="ef-rating" type="number" min="0" max="5" step="0.5"></div>
     </div>
     <div class="field"><label for="ef-desc">Details</label><textarea id="ef-desc" maxlength="1500" required></textarea></div>
     <div class="field"><label for="ef-contact">Contact</label><input id="ef-contact" maxlength="200"></div>
@@ -506,6 +514,17 @@ const ADMIN_PATH = "owner-7k3q";
    (stops one fake rating from deciding the score). Set to 1 to show every rating. */
 const MIN_RATINGS_TO_SHOW = 3;
 
+/* Security & privacy switches
+   USE_FLAG_IMAGES: country flags are loaded from flagcdn.com (that site can see a visitor's IP address).
+                    Set to false to show plain country-code badges and make NO request to any third party.
+   BLOCK_AUTOMATION: browsers driven by automation tools (Selenium, Playwright...) are not shown posts.
+                     This stops casual scrapers only; it is not a complete defence. */
+const USE_FLAG_IMAGES = true;
+const BLOCK_AUTOMATION = true;
+try { if (window.top !== window.self) document.documentElement.style.display = "none"; }       // never show inside someone else's frame
+catch { document.documentElement.style.display = "none"; }
+const AUTOMATED = BLOCK_AUTOMATION && navigator.webdriver === true;
+
 const validUrl = u => { try { const x = new URL(u); return x.protocol === "https:" && !x.hostname.includes(".."); } catch { return false; } };
 let sb = null;
 try {
@@ -514,6 +533,16 @@ try {
   }
 } catch (err) { console.error("Supabase setup failed:", err); sb = null; }
 const DEMO = !sb;
+const LIB_BLOCKED = !window.supabase && validUrl(CONFIG.SUPABASE_URL);              // real settings, but the database library did not load
+const MEDIA_HOST = (() => { try { return new URL(CONFIG.SUPABASE_URL).hostname; } catch { return ""; } })();
+/* Photos and audio are only ever loaded from YOUR Supabase storage (or a local preview in demo mode),
+   so a post can never contain a link that tracks the people who view it. */
+const mediaUrl = u => {
+  if (DEMO && /^blob:/.test(u || "")) return u;
+  const x = safeUrl(u); if (!x) return "";
+  try { return new URL(x).hostname === MEDIA_HOST ? x : ""; } catch { return ""; }
+};
+const isLimited = ex => /rate_limited/.test(String((ex && (ex.message || ex.hint)) || ""));
 
 /* ---------- Static data ---------- */
 const CATEGORIES = [
@@ -524,6 +553,7 @@ const CATEGORIES = [
 const CAT_BLURB = {Jobs:"Vacancies and work opportunities",Food:"Meals, markets and places to eat",Education:"Schools, lessons and scholarships",
   Transport:"Rides, routes and travel updates",Emergency:"Urgent notices and where to find help",Holiday:"Public holidays and local events",
   Advertisement:"Offers from local businesses",Sports:"Leagues, fixtures and local sport",Other:"Anything else the community needs"};
+const VIDEO_BUCKET = "post-videos";
 const REPORT = {id:"Report a problem",icon:"🚩",h:0};
 const ALL_CATS = [...CATEGORIES, REPORT];
 const catInfo = id => ALL_CATS.find(c => c.id === id) || CATEGORIES[CATEGORIES.length-1];
@@ -543,7 +573,9 @@ const REGION_ORDER = Object.keys(COUNTRY_DATA);
 const $ = (s, r=document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const safeUrl = u => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : ""; } catch { return ""; } };
-const flag = (code, cls="") => `<img class="flag ${cls}" src="https://flagcdn.com/w160/${esc(code)}.png" alt="" width="40" height="30" loading="lazy">`;
+const flag = (code, cls="") => USE_FLAG_IMAGES
+  ? `<img class="flag ${cls}" src="https://flagcdn.com/w160/${esc(code)}.png" alt="" width="40" height="30" loading="lazy" referrerpolicy="no-referrer">`
+  : `<span class="flag badge ${cls}" aria-hidden="true">${esc(String(code).toUpperCase())}</span>`;
 const store = {
   get(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
   set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
@@ -584,7 +616,15 @@ function linkify(text){
 }
 function srcLine(p){
   const u = safeUrl(p.source_url); if (!u) return "";
-  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}>${esc(p.source_name || "Official notice")} ↗</a>${p.expires_at ? ` · Closes ${esc(fmtDate(p.expires_at))}` : ""}</div>`; 
+  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}>${esc(p.source_name || "Official notice")} ↗</a>${p.expires_at ? ` · Closes ${esc(fmtDate(p.expires_at))}` : ""}</div>`;
+}
+/* Contact details are not part of the public post list. A visitor clicks to reveal one at a time. */
+function contactHtml(p){
+  const shown = state.contacts[p.id];
+  const text = shown !== undefined ? shown : (p.contact || "");        // admin and not-yet-hardened databases already include it
+  if (text) return `<div class="contact"><b>Contact:</b> ${linkify(text)}</div>`;
+  if (shown !== undefined || !p.has_contact) return "";
+  return `<button class="btn ghost small" type="button" data-act="reveal">Show contact details</button>`;
 }
 const fmtDate = d => new Date(d).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
 const isFeatured = p => !!p.featured_until && new Date(p.featured_until).getTime() > Date.now();
@@ -594,7 +634,7 @@ function toast(msg, type=""){
   $("#toasts").appendChild(t);
   setTimeout(() => t.remove(), 5500);
 }
-const stars = r => { if (r == null || r === "") return ""; const n = Math.round(Number(r)); return `<span class="stars" aria-label="Rated ${esc(r)} out of 5">${"★".repeat(n)}${"☆".repeat(5-n)}<small>${Number(r).toFixed(1)} · admin rating</small></span>`; };
+const stars = (r, label = "admin rating", prefix = "") => { if (r == null || r === "") return ""; const n = Math.round(Number(r)); return `<span class="stars" aria-label="Rated ${esc(r)} out of 5">${"★".repeat(n)}${"☆".repeat(5-n)}<small>${Number(r).toFixed(1)} · ${esc(label)}</small></span>`; };
 
 /* ---------- Data layer (Supabase, with an in-memory demo fallback) ---------- */
 const daysAgo = d => new Date(Date.now() - d*86400000).toISOString();
@@ -619,11 +659,11 @@ demoDb.questions = [
   {id:"q2",question:"How do I post a job for my restaurant?",email:null,country_code:"jm",status:"Answered",created_at:daysAgo(4)}
 ];
 demoDb.ratings = [
-  {id:"r1",post_id:"d1",stars:4,child_stars:4,comment:"Applied, quick reply.",status:"New",created_at:daysAgo(1),posts:{title:"Hiring: front-desk receptionist",category:"Jobs",country_code:"jm"}},
-  {id:"r2",post_id:"d2",stars:5,child_stars:5,comment:"",status:"Reviewed",created_at:daysAgo(3),posts:{title:"Free hot meals every Saturday",category:"Food",country_code:"jm"}}
+  {id:"r1",post_id:"d1",vote:1,child_vote:1,comment:"Applied, quick reply.",status:"New",created_at:daysAgo(1),posts:{title:"Hiring: front-desk receptionist",category:"Jobs",country_code:"jm"}},
+  {id:"r2",post_id:"d2",vote:1,child_vote:1,comment:"",status:"Reviewed",created_at:daysAgo(3),posts:{title:"Free hot meals every Saturday",category:"Food",country_code:"jm"}}
 ];
-/* public totals per post: sum/n = stars, csum/cn = child-friendly */
-demoDb.pstats = {d1:{sum:17,n:4,csum:11,cn:3}, d2:{sum:9,n:2,csum:0,cn:0}, d12:{sum:14,n:3,csum:0,cn:0}};
+/* public counts per post: up/down = helpful votes, cup/cdown = child-friendly votes */
+demoDb.pstats = {d1:{up:7,down:1,cup:3,cdown:0}, d2:{up:2,down:0,cup:0,cdown:0}, d12:{up:3,down:0,cup:0,cdown:0}};
 demoDb.subs = [
   {id:"s1",email:"ana@example.com",country_code:"jm",interests:["Jobs","Food"],source:"home",created_at:daysAgo(2)},
   {id:"s2",email:"marcus@example.com",country_code:"tt",interests:["Sports"],source:"country",created_at:daysAgo(5)},
@@ -638,8 +678,11 @@ const api = {
   },
   async posts(code){
     const live = p => !p.expires_at || new Date(p.expires_at).getTime() > Date.now();
-    if (DEMO) return demoDb.posts.filter(p => p.country_code === code && p.status === "Approved" && p.category !== REPORT.id && live(p));
-    const {data, error} = await sb.from("posts").select("*").eq("country_code", code).eq("status","Approved").neq("category", REPORT.id).order("created_at",{ascending:false}).limit(300);
+    if (DEMO) return demoDb.posts.filter(p => p.country_code === code && p.status === "Approved" && p.category !== REPORT.id && live(p)).map(({contact, ...rest}) => ({...rest, has_contact: !!contact}));
+    const PUBLIC_COLS = "id,country_code,title,category,description,image_url,audio_url,video_url,rating,created_at,featured_until,source_name,source_url,expires_at,has_contact";
+    const load = cols => sb.from("posts").select(cols).eq("country_code", code).eq("status","Approved").neq("category", REPORT.id).order("created_at",{ascending:false}).limit(300);
+    let {data, error} = await load(PUBLIC_COLS);
+    if (error && /does not exist|column/i.test(error.message || "")) ({data, error} = await load("*"));     // database not hardened/updated yet
     if (error) throw error;
     return data.filter(live);
   },
@@ -648,13 +691,13 @@ const api = {
     const {error} = await sb.from("posts").insert(p);
     if (error) throw error;
   },
-  async upload(file, code){
+  async upload(file, code, bucket = CONFIG.MEDIA_BUCKET){
     if (DEMO) return URL.createObjectURL(file);
     const ext = (file.name.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g,"").slice(0,5);
     const path = `${code}/${crypto.randomUUID()}.${ext}`;
-    const {error} = await sb.storage.from(CONFIG.MEDIA_BUCKET).upload(path, file, {contentType:file.type, upsert:false});
+    const {error} = await sb.storage.from(bucket).upload(path, file, {contentType:file.type, upsert:false});
     if (error) throw error;
-    return sb.storage.from(CONFIG.MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
+    return sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
   },
   async subscribe(row){
     if (DEMO) { demoDb.subs.unshift({...row, id:"s"+Date.now(), created_at:new Date().toISOString()}); return; }
@@ -694,17 +737,23 @@ const api = {
       demoDb.posts.filter(p => p.country_code === code && demoDb.pstats[p.id]).forEach(p => out[p.id] = {...demoDb.pstats[p.id]});
       return out;
     }
-    const {data, error} = await sb.from("post_rating_stats").select("*").eq("country_code", code);
+    const {data, error} = await sb.from("post_rating_stats").select("post_id,up_count,down_count,child_up_count,child_down_count").eq("country_code", code);
     if (error) throw error;
-    (data || []).forEach(r => out[r.post_id] = {sum:r.rating_sum, n:r.rating_count, csum:r.child_sum, cn:r.child_count});
+    (data || []).forEach(r => out[r.post_id] = {up:r.up_count, down:r.down_count, cup:r.child_up_count, cdown:r.child_down_count});
     return out;
+  },
+  async revealContact(id){
+    if (DEMO) { const p = demoDb.posts.find(x => x.id === id); return p ? (p.contact || null) : null; }
+    const {data, error} = await sb.rpc("reveal_contact", {p_post_id:id});
+    if (error) throw error;
+    return data;
   },
   async ratePost(row){
     if (DEMO) {
       const post = demoDb.posts.find(x => x.id === row.post_id);
       demoDb.ratings.unshift({...row, id:"r"+Date.now(), status:"New", created_at:new Date().toISOString(), posts: post ? {title:post.title, category:post.category, country_code:post.country_code} : null});
-      const st = (demoDb.pstats[row.post_id] = demoDb.pstats[row.post_id] || {sum:0, n:0, csum:0, cn:0});
-      if (row.stars) { st.sum += row.stars; st.n++; } if (row.child_stars) { st.csum += row.child_stars; st.cn++; }
+      const st = (demoDb.pstats[row.post_id] = demoDb.pstats[row.post_id] || {up:0, down:0, cup:0, cdown:0});
+      if (row.vote === 1) st.up++; if (row.vote === -1) st.down++; if (row.child_vote === 1) st.cup++; if (row.child_vote === -1) st.cdown++;
       return;
     }
     const {error} = await sb.from("post_ratings").insert(row);
@@ -728,9 +777,23 @@ const api = {
     if (error) throw error;
   },
   async removeRating(id){
-    if (DEMO) { const r = demoDb.ratings.find(x => x.id === id); if (r) { const st = demoDb.pstats[r.post_id]; if (st) { if (r.stars) { st.sum -= r.stars; st.n--; } if (r.child_stars) { st.csum -= r.child_stars; st.cn--; } } } demoDb.ratings = demoDb.ratings.filter(x => x.id !== id); return; }
+    if (DEMO) {
+      const r = demoDb.ratings.find(x => x.id === id), st = r && demoDb.pstats[r.post_id];
+      if (st) { if (r.vote === 1) st.up--; if (r.vote === -1) st.down--; if (r.child_vote === 1) st.cup--; if (r.child_vote === -1) st.cdown--; }
+      demoDb.ratings = demoDb.ratings.filter(x => x.id !== id); return;
+    }
     const {error} = await sb.from("post_ratings").delete().eq("id", id);
     if (error) throw error;
+  },
+  /* delete a post's uploaded photo/audio/video files from storage (best effort; admin only) */
+  async removeMedia(p){
+    if (DEMO) return;
+    const re = /\/storage\/v1\/object\/public\/([^/]+)\/(.+)$/, byBucket = {};
+    [p.image_url, p.audio_url, p.video_url].filter(Boolean).forEach(u => {
+      const m = String(u).match(re);
+      if (m && ["post-media", "post-videos"].includes(m[1])) (byBucket[m[1]] = byBucket[m[1]] || []).push(decodeURIComponent(m[2].split("?")[0]));
+    });
+    for (const [bucket, paths] of Object.entries(byBucket)) { try { await sb.storage.from(bucket).remove(paths); } catch (e) { console.error(e); } }
   },
   async track(row){ if (DEMO) return; try { await sb.from("page_views").insert(row); } catch {} },
   async subscribers(){
@@ -801,7 +864,7 @@ const defaultFilters = () => ({sort:"new", when:"any"});
 const state = {
   countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
   admin:null, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
-  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, ratings:[], rFilter:"New", rCountry:"All", newR:0, pstats:{}, pr:{stars:0, child:0}
+  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, ratings:[], rFilter:"New", rCountry:"All", newR:0, pstats:{}, pr:{vote:0, child:0}, contacts:{}
 };
 /* Cookie-free traffic counting: a random id kept only in this browser tab, no IP address, honours Do Not Track.
    Your own visits are skipped while you are signed in as admin on this browser. */
@@ -809,7 +872,7 @@ const SESSION_ID = (() => { try { let v = sessionStorage.getItem("ic_sid"); if (
 let lastTrack = "";
 function track(path, code){
   try {
-    if (DEMO || navigator.doNotTrack === "1" || store.get("ic_admin", false)) return;
+    if (DEMO || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true || store.get("ic_admin", false)) return;
     const key = path + "|" + Math.floor(Date.now() / 3000);
     if (key === lastTrack) return; lastTrack = key;
     let ref = "";
@@ -899,7 +962,7 @@ function renderGrid(){
 function showCountry(code){
   const c = state.byCode[code];
   if (!c) { location.hash = "#/"; return; }
-  state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = []; state.filters = defaultFilters(); state.pstats = {}; state.pr = {stars:0, child:0};
+  state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = []; state.filters = defaultFilters(); state.pstats = {}; state.pr = {vote:0, child:0}; state.contacts = {};
   store.set("recent", [code, ...store.get("recent", []).filter(x => x !== code)].slice(0,6));
   track("/c/" + code, code);
   setView(`
@@ -955,6 +1018,7 @@ function showCountry(code){
 }
 async function loadPosts(){
   const code = state.country.code;
+  if (AUTOMATED) { $("#posts").innerHTML = ""; $("#postState").innerHTML = `<div class="state"><div class="big">🤖</div><h2>Automated access is not allowed</h2><p>This page is for people. If you are one, please open it in a regular browser.</p></div>`; return; }
   $("#postState").innerHTML = ""; $("#more").hidden = true; $("#resultInfo").textContent = "";
   $("#posts").innerHTML = '<div class="skeleton"></div>'.repeat(6);
   try {
@@ -984,9 +1048,9 @@ function matches(p, ignoreCat){
   }
   return true;
 }
-function score(p){                                   // visitor average if enough ratings, otherwise the admin rating
+function score(p){                                   // share of thumbs up (scaled to 5) if enough votes, otherwise the admin rating
   const st = state.pstats[p.id];
-  if (st && st.n >= MIN_RATINGS_TO_SHOW) return st.sum / st.n;
+  if (st && st.up + st.down >= MIN_RATINGS_TO_SHOW) return 5 * st.up / (st.up + st.down);
   return Number(p.rating ?? -1);
 }
 function sortPosts(list){
@@ -1030,7 +1094,7 @@ function renderPosts(){
   $("#postState").innerHTML = s;
 }
 function postCard(p){
-  const ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
+  const ci = catInfo(p.category), img = mediaUrl(p.image_url), aud = mediaUrl(p.audio_url), vid = mediaUrl(p.video_url), feat = isFeatured(p);
   const long = (p.description || "").length > 220;
   return `<article class="post ${feat ? "featured" : ""}" data-pid="${esc(p.id)}">
     ${img ? `<a class="pic" href="${esc(img)}" target="_blank" rel="noopener"><img src="${esc(img)}" alt="" loading="lazy"></a>` : ""}
@@ -1040,11 +1104,12 @@ function postCard(p){
       <p class="desc ${long ? "clamp" : ""}">${esc(p.description)}</p>
       ${long ? `<button class="linkbtn" type="button" data-act="toggle">Read more</button>` : ""}
       ${srcLine(p)}
-      ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
+      ${contactHtml(p)}
       ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
+      ${vid ? `<video controls preload="metadata" playsinline src="${esc(vid)}"></video>` : ""}
       ${stars(p.rating)}
       ${communityLine(p)}
-      <button class="linkbtn" type="button" data-act="open">★ Rating</button>
+      <button class="linkbtn" type="button" data-act="open">👍 Vote on this post</button>
     </div>
   </article>`;
 }
@@ -1061,7 +1126,7 @@ function openPost(){
   postDlg.showModal();
   (state.country ? $("#pf-title") : $("#pf-country")).focus();
 }
-const FILE_RULES = {img:{max:5*1024*1024, types:["image/jpeg","image/png","image/webp","image/gif"], label:"Photo"}, aud:{max:10*1024*1024, types:["audio/mpeg","audio/wav","audio/mp4","audio/x-m4a","audio/ogg"], label:"Audio file"}};
+const FILE_RULES = {img:{max:5*1024*1024, types:["image/jpeg","image/png","image/webp","image/gif"], label:"Photo"}, aud:{max:10*1024*1024, types:["audio/mpeg","audio/wav","audio/mp4","audio/x-m4a","audio/ogg"], label:"Audio file"}, vid:{max:25*1024*1024, types:["video/mp4","video/webm","video/quicktime"], label:"Video"}};
 function checkFile(f, rule){
   if (!f) return "";
   if (!rule.types.includes(f.type)) return `${rule.label} must be one of the supported file types.`;
@@ -1077,23 +1142,22 @@ $("#postForm").addEventListener("submit", async e => {
   if (!code) return err.textContent = "Choose the country this post is for.";
   if (title.length < 3) return err.textContent = "Add a short title (at least 3 characters).";
   if (desc.length < 3) return err.textContent = "Add some details so people know how to help.";
-  const imgFile = $("#pf-imgfile").files[0], audFile = $("#pf-audfile").files[0];
-  const fe = checkFile(imgFile, FILE_RULES.img) || checkFile(audFile, FILE_RULES.aud);
+  const imgFile = $("#pf-imgfile").files[0], audFile = $("#pf-audfile").files[0], vidFile = $("#pf-vidfile").files[0];
+  const fe = checkFile(imgFile, FILE_RULES.img) || checkFile(audFile, FILE_RULES.aud) || checkFile(vidFile, FILE_RULES.vid);
   if (fe) return err.textContent = fe;
-  const imgUrlIn = $("#pf-imgurl").value.trim(), audUrlIn = $("#pf-audurl").value.trim();
-  if ((imgUrlIn && !safeUrl(imgUrlIn)) || (audUrlIn && !safeUrl(audUrlIn))) return err.textContent = "Links must start with http:// or https://";
   if (Date.now() - lastPost < 15000) return err.textContent = "Please wait a few seconds before posting again.";
-  btn.disabled = true; btn.textContent = "Sharing…";
+  btn.disabled = true; btn.textContent = vidFile ? "Uploading video…" : "Sharing…";
   try {
-    const image_url = imgFile ? await api.upload(imgFile, code) : (safeUrl(imgUrlIn) || null);
-    const audio_url = audFile ? await api.upload(audFile, code) : (safeUrl(audUrlIn) || null);
-    await api.create({country_code:code, title, category:$("#pf-cat").value, description:desc, contact:contact || null, image_url, audio_url});
+    const image_url = imgFile ? await api.upload(imgFile, code) : null;
+    const audio_url = audFile ? await api.upload(audFile, code) : null;
+    const video_url = vidFile ? await api.upload(vidFile, code, VIDEO_BUCKET) : null;
+    await api.create({country_code:code, title, category:$("#pf-cat").value, description:desc, contact:contact || null, image_url, audio_url, ...(video_url ? {video_url} : {})});
     lastPost = Date.now();
     $("#postForm").reset(); postDlg.close();
     toast("Thanks! Your post will appear once an administrator has reviewed it.", "ok");
   } catch (ex) {
     console.error(ex);
-    err.textContent = "We couldn't share your post. Check your connection and try again.";
+    err.textContent = isLimited(ex) ? "You are posting too quickly. Please try again in a while." : "We couldn't share your post. Check your connection and try again.";
   } finally { btn.disabled = false; btn.textContent = "Share post"; }
 });
 
@@ -1219,19 +1283,18 @@ async function showRatings(){
   catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load ratings</h2><p>Make sure you ran supabase_post_ratings.sql and that you are signed in as an administrator.</p></div>`; }
 }
 const rBase = () => state.rCountry === "All" ? state.ratings : state.ratings.filter(r => r.posts?.country_code === state.rCountry);
-const avgOf = arr => arr.length ? arr.reduce((x, y) => x + y, 0) / arr.length : null;
 function renderRatings(){
   const base = rBase();
-  const stars = base.map(r => r.stars).filter(v => v != null).map(Number), kids = base.map(r => r.child_stars).filter(v => v != null).map(Number);
-  const a = avgOf(stars), k = avgOf(kids);
+  const count = (key, v) => base.filter(r => r[key] === v).length;
+  const hu = count("vote", 1), hd = count("vote", -1), cu = count("child_vote", 1), cd = count("child_vote", -1);
   $("#admbody").innerHTML = `
     <div class="stats">
-      <div class="stat"><b>${a ? a.toFixed(1) + " ★" : "–"}</b><span>Average post rating${stars.length ? ` (${stars.length})` : ""}</span></div>
-      <div class="stat"><b>${k ? k.toFixed(1) + " ★" : "–"}</b><span>Average child-friendly rating${kids.length ? ` (${kids.length})` : ""}</span></div>
-      <div class="stat"><b>${base.length}</b><span>Ratings received</span></div>
+      <div class="stat"><b>👍 ${hu} · 👎 ${hd}</b><span>Helpful votes</span></div>
+      <div class="stat"><b>🧒 👍 ${cu} · 👎 ${cd}</b><span>Child-friendly votes</span></div>
+      <div class="stat"><b>${base.length}</b><span>Responses received</span></div>
       <div class="stat"><b>${base.filter(r => r.status === "New").length}</b><span>New</span></div>
     </div>
-    <p class="result-info">Visitors see only the average for each post. Comments and individual ratings are visible here only. Delete a rating to remove it from the average.</p>
+    <p class="result-info">Visitors see only the thumbs counts for each post. Comments and individual votes are visible here only. Delete a vote to remove it from the counts.</p>
     <div class="afilters">
       <label class="sr-only" for="r-cfilter">Country</label>
       <select id="r-cfilter"><option value="All">All countries</option>${state.countries.map(c => `<option value="${esc(c.code)}" ${c.code===state.rCountry?"selected":""}>${esc(c.name)}</option>`).join("")}</select>
@@ -1244,21 +1307,22 @@ function renderRatings(){
   $("#r-status").addEventListener("change", e => { state.rFilter = e.target.value; renderRatingList(); });
   renderRatingList();
 }
+const thumbChip = (v, label, h) => v == null ? "" : `<span class="tag" style="--h:${h}">${v === 1 ? "👍" : "👎"} ${label}</span>`;
 function renderRatingList(){
   const el = $("#rlist"); if (!el) return;
   const list = rBase().filter(r => state.rFilter === "All" || r.status === state.rFilter);
-  $("#r-total").textContent = `${list.length} ${list.length === 1 ? "rating" : "ratings"}`;
+  $("#r-total").textContent = `${list.length} ${list.length === 1 ? "response" : "responses"}`;
   el.innerHTML = list.length ? list.map(r => {
     const c = state.byCode[r.posts?.country_code], ci = catInfo(r.posts?.category);
     return `<div class="srow rrow2" data-id="${esc(r.id)}">
       <div class="em"><strong>${esc(r.posts?.title || "(post deleted)")}</strong>
-        <div class="fchips" style="margin-top:.35rem">${r.stars != null ? `<span class="tag" style="--h:45">Rating <span class="stars">${starText(Number(r.stars))}</span></span>` : ""}${r.child_stars != null ? `<span class="tag" style="--h:150">🧒 Child-friendly <span class="stars">${starText(Number(r.child_stars))}</span></span>` : ""}</div>
+        <div class="fchips" style="margin-top:.35rem">${thumbChip(r.vote, r.vote === 1 ? "Helpful" : "Not helpful", r.vote === 1 ? 150 : 5)}${thumbChip(r.child_vote, r.child_vote === 1 ? "Child-friendly" : "Not child-friendly", r.child_vote === 1 ? 150 : 5)}</div>
         ${r.comment ? `<p class="desc" style="margin:.5rem 0 0">${esc(r.comment)}</p>` : ""}</div>
       <div class="meta"><span class="status ${r.status === "New" ? "Pending" : "Approved"}">${esc(r.status)}</span>${c ? flag(c.code) + " " + esc(c.name) : ""} ${r.posts ? `<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(r.posts.category)}</span>` : ""} <span>${esc(ago(r.created_at))}</span></div>
       <button class="btn ghost small" type="button" data-act="rtoggle">${r.status === "New" ? "Mark reviewed" : "Mark new"}</button>
       <button class="btn danger small" type="button" data-act="rdel">Delete</button>
     </div>`;
-  }).join("") : `<div class="state"><div class="big">⭐</div><h2>No ${state.rFilter === "All" ? "" : state.rFilter.toLowerCase() + " "}ratings</h2><p>Ratings from visitors will appear here.</p></div>`;
+  }).join("") : `<div class="state"><div class="big">👍</div><h2>No ${state.rFilter === "All" ? "" : state.rFilter.toLowerCase() + " "}votes</h2><p>Votes and comments from visitors will appear here.</p></div>`;
 }
 
 /* ---------- Admin: subscribers ---------- */
@@ -1357,7 +1421,7 @@ function renderAdminList(){
     `<div class="state"><div class="big">✅</div><h2>All caught up</h2><p>No ${f.status === "All" ? "" : f.status.toLowerCase() + " "}posts match these filters.</p></div>`;
 }
 function adminRow(p){
-  const c = state.byCode[p.country_code], ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
+  const c = state.byCode[p.country_code], ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), vid = mediaUrl(p.video_url), feat = isFeatured(p);
   return `<div class="arow ${feat ? "is-featured" : ""}" data-id="${esc(p.id)}">
     <div class="arow-top"><span class="status ${esc(p.status)}">${esc(p.status)}</span>${p.external_id ? `<span class="status Pending" title="Imported automatically">Imported</span>` : ""}${feat ? `<span class="status Featured">★ Featured until ${esc(fmtDate(p.featured_until))}</span>` : ""}${c ? flag(c.code) : ""}<strong>${esc(c?.name || p.country_code)}</strong><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><span>${esc(ago(p.created_at))}</span></div>
     <h3>${esc(p.title)}</h3>
@@ -1365,6 +1429,7 @@ function adminRow(p){
     ${srcLine(p)}
     ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener">View photo</a>` : ""} ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
+    ${vid ? `<video controls preload="none" playsinline src="${esc(vid)}"></video>` : (p.video_url ? `<a href="${esc(safeUrl(p.video_url))}" target="_blank" rel="noopener noreferrer">External video link</a>` : "")}
     <div class="arow-actions">
       ${p.status !== "Approved" ? `<button class="btn small" type="button" data-act="approve">Approve</button>` : ""}
       ${p.status === "Approved" ? `<button class="btn accent small" type="button" data-act="boost">${feat ? "Extend boost" : "★ Boost visibility"}</button>` : ""}
@@ -1407,8 +1472,8 @@ async function adminAct(act, id){
   const p = state.adminPosts.find(x => x.id === id); if (!p) return;
   try {
     if (act === "approve") { await api.update(id, {status:"Approved"}); toast("Approved. It's now on the board.", "ok"); }
-    if (act === "reject")  { await api.update(id, {status:"Rejected", featured_until:null}); toast("Rejected."); }
-    if (act === "delete")  { if (!confirm("Delete this post permanently?")) return; await api.remove(id); toast("Deleted."); }
+    if (act === "reject")  { await api.removeMedia(p); await api.update(id, {status:"Rejected", featured_until:null, image_url:null, audio_url:null, video_url:null}); toast("Rejected. Its uploaded files were removed."); }
+    if (act === "delete")  { if (!confirm("Delete this post permanently? Its uploaded photo, audio and video files will be deleted too.")) return; await api.removeMedia(p); await api.remove(id); toast("Deleted."); }
     if (act === "unboost") { await api.update(id, {featured_until:null}); toast("Boost removed."); }
     if (act === "boost") {
       boostingId = id; $("#bf-err").textContent = "";
@@ -1435,30 +1500,35 @@ const voterId = () => { let v = store.get("ic_voter", ""); if (!v) { v = crypto.
 const hasRated = id => store.get("ic_rated", []).includes(String(id));
 const markRated = id => store.set("ic_rated", [...new Set([...store.get("ic_rated", []), String(id)])].slice(-500));
 const avgStars = (sum, n) => n ? sum / n : null;
-/* The visitor average for a post: shown once at least MIN_RATINGS_TO_SHOW people rated */
+/* Visitor votes: thumbs up / thumbs down. Shown once at least MIN_RATINGS_TO_SHOW people have voted. */
+function voteLine(up, down, label, prefix = "") {
+  const total = up + down, pct = Math.round(100 * up / total);
+  return `<div class="rline" title="${up} thumbs up and ${down} thumbs down">${prefix}<span class="thumbs" aria-hidden="true">👍 <b>${up}</b> &nbsp;👎 <b>${down}</b></span> <small>${pct}% ${esc(label)} (${total} votes)</small><span class="sr-only">${up} thumbs up and ${down} thumbs down, ${pct} percent ${esc(label)}</span></div>`;
+}
 function communityLine(p){
   const st = state.pstats[p.id]; if (!st) return "";
-  const chips = [];
-  if (st.n >= MIN_RATINGS_TO_SHOW) { const a = avgStars(st.sum, st.n);
-    chips.push(`<span class="rchip" title="${a.toFixed(1)} out of 5 from ${st.n} visitors"><span class="stars" aria-hidden="true">${starText(Math.round(a))}</span> <b>${a.toFixed(1)}</b> <small>(${st.n})</small><span class="sr-only"> visitor rating ${a.toFixed(1)} out of 5 from ${st.n} ratings</span></span>`); }
-  if (st.cn >= MIN_RATINGS_TO_SHOW) { const a = avgStars(st.csum, st.cn);
-    chips.push(`<span class="rchip" title="${a.toFixed(1)} out of 5 from ${st.cn} visitors"><span aria-hidden="true">🧒</span> <b>${a.toFixed(1)}</b> <small>child-friendly (${st.cn})</small><span class="sr-only"> child-friendly rating ${a.toFixed(1)} out of 5 from ${st.cn} ratings</span></span>`); }
-  return chips.length ? `<div class="crow"><span class="rlabel">Visitor rating</span>${chips.join("")}</div>` : "";
+  const lines = [], total = st.up + st.down, ctotal = st.cup + st.cdown;
+  if (total >= MIN_RATINGS_TO_SHOW) lines.push(voteLine(st.up, st.down, "found this helpful"));
+  else if (total > 0) lines.push(`<div class="rline muted">${total} visitor vote${total > 1 ? "s" : ""} so far</div>`);
+  if (ctotal >= MIN_RATINGS_TO_SHOW) lines.push(voteLine(st.cup, st.cdown, "say child-friendly", `<span aria-hidden="true">🧒</span> `));
+  return lines.join("");
 }
 function rateRowHtml(key){
-  const v = state.pr[key], label = key === "stars" ? "Rate" : "🧒 How child-friendly is it?";
-  return `<div class="fbrow rrow" data-row="${key}"><span class="lab">${label}</span><span class="stars-in" role="group" aria-label="${label}">${[1,2,3,4,5].map(n => `<button type="button" class="st ${n <= v ? "on" : ""}" data-rkey="${key}" data-rval="${n}" aria-label="${n} star${n > 1 ? "s" : ""}" aria-pressed="${n === v}">★</button>`).join("")}</span></div>`;
+  const v = state.pr[key], label = key === "vote" ? "Was this post helpful?" : "🧒 Is it child-friendly?";
+  return `<div class="fbrow rrow" data-row="${key}"><span class="lab">${label}</span><span class="thumbs-in" role="group" aria-label="${label}">
+    <button type="button" class="th up" data-rkey="${key}" data-rval="1" aria-label="Thumbs up" aria-pressed="${v === 1}">👍</button>
+    <button type="button" class="th down" data-rkey="${key}" data-rval="-1" aria-label="Thumbs down" aria-pressed="${v === -1}">👎</button></span></div>`;
 }
 function ratePanelHtml(p){
-  if (hasRated(p.id)) return `<div class="ratepost"><p class="fbhint">✓ You have rated this post. Thank you!</p></div>`;
+  if (hasRated(p.id)) return `<div class="ratepost"><p class="fbhint">✓ You have voted on this post. Thank you!</p></div>`;
   return `<form class="ratepost f" id="rateForm" data-pid="${esc(p.id)}" novalidate style="padding:0">
-    <h3>Rate</h3>
-    ${rateRowHtml("stars")}${rateRowHtml("child")}
+    <h3>What do you think of this post?</h3>
+    ${rateRowHtml("vote")}${rateRowHtml("child")}
     <div class="field"><label for="rp-comment">Brief feedback <span class="hint">(optional, only the admin sees it)</span></label><textarea id="rp-comment" maxlength="300" rows="2"></textarea></div>
     <input class="hp" id="rp-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p class="err" id="rp-err" role="alert"></p>
-    <div class="form-actions" style="justify-content:flex-start"><button class="btn" type="submit" id="rp-send">Send rating</button></div>
-    <p class="fbhint">Everyone sees the average of visitor ratings. This is separate from the admin rating.</p>
+    <div class="form-actions" style="justify-content:flex-start"><button class="btn" type="submit" id="rp-send">Send my vote</button></div>
+    <p class="fbhint">Everyone sees the thumbs up and down counts. This is separate from the admin rating.</p>
   </form>`;
 }
 let lastRate = 0;
@@ -1467,20 +1537,20 @@ document.addEventListener("submit", async e => {
   e.preventDefault();
   const form = e.target, pid = form.dataset.pid, err = $("#rp-err"), btn = $("#rp-send"); err.textContent = "";
   if ($("#rp-website").value) return;                                      // honeypot
-  const {stars, child} = state.pr, comment = $("#rp-comment").value.trim();
-  if (!stars && !child) return err.textContent = "Please tap at least one star rating.";
-  if (hasRated(pid)) return err.textContent = "You have already rated this post.";
-  if (Date.now() - lastRate < 8000) return err.textContent = "Please wait a few seconds before rating another post.";
+  const {vote, child} = state.pr, comment = $("#rp-comment").value.trim();
+  if (!vote && !child) return err.textContent = "Please tap a thumbs up or thumbs down.";
+  if (hasRated(pid)) return err.textContent = "You have already voted on this post.";
+  if (Date.now() - lastRate < 8000) return err.textContent = "Please wait a few seconds before voting on another post.";
   btn.disabled = true; btn.textContent = "Sending…";
   try {
-    try { await api.ratePost({post_id:pid, voter_id:voterId(), stars: stars || null, child_stars: child || null, comment: comment || null}); }
-    catch (ex) { if (ex?.code !== "23505") throw ex; }                     // 23505 = this browser already rated it
+    try { await api.ratePost({post_id:pid, voter_id:voterId(), vote: vote || null, child_vote: child || null, comment: comment || null}); }
+    catch (ex) { if (ex?.code !== "23505") throw ex; }                     // 23505 = this browser already voted
     lastRate = Date.now(); markRated(pid);
-    const st = (state.pstats[pid] = state.pstats[pid] || {sum:0, n:0, csum:0, cn:0});
-    if (stars) { st.sum += stars; st.n++; } if (child) { st.csum += child; st.cn++; }
+    const st = (state.pstats[pid] = state.pstats[pid] || {up:0, down:0, cup:0, cdown:0});
+    if (vote === 1) st.up++; if (vote === -1) st.down++; if (child === 1) st.cup++; if (child === -1) st.cdown++;
     renderPosts();
-    form.outerHTML = `<div class="ratepost"><p class="fbhint">✓ Thank you! Your rating has been recorded.</p></div>`;
-  } catch (ex) { console.error(ex); err.textContent = "We couldn't send your rating. Check your connection and try again."; btn.disabled = false; btn.textContent = "Send rating"; }
+    form.outerHTML = `<div class="ratepost"><p class="fbhint">✓ Thank you! Your vote has been recorded.</p></div>`;
+  } catch (ex) { console.error(ex); err.textContent = isLimited(ex) ? "You have voted on a lot of posts. Please try again later." : "We couldn't send your vote. Check your connection and try again."; btn.disabled = false; btn.textContent = "Send my vote"; }
 });
 
 function showAbout(){
@@ -1503,7 +1573,7 @@ function showAbout(){
       <article class="panel"><h2>Good to know</h2><ul class="know">
         <li>Isle Connect is free to use.</li>
         <li>Posts marked <b>Sponsored</b> are paid placements.</li>
-        <li>Open any post and tap <b>Rate this post</b> to give it stars. Everyone sees the average of visitor ratings. The separate star rating on a post comes from the site admin.</li>
+        <li>Open any post and give it a <b>thumbs up or thumbs down</b>. Everyone sees the counts. The separate star rating on a post comes from the site admin.</li>
         <li>Contact details in a post are public, so only share what you are comfortable with.</li>
         <li>In an emergency, contact your local emergency services and check official sources.</li>
         <li>Isle Connect is a general community board and is not designed specifically for children. Young people should use it with a parent or guardian.</li>
@@ -1534,7 +1604,7 @@ $("#subForm").addEventListener("submit", async e => {
     await api.subscribe({email, country_code:$("#sf-country").value || null, interests, consent:true, source:state.country ? "country" : "home"});
     lastSub = Date.now(); $("#subForm").reset(); $("#subDlg").close();
     toast("Thanks! You're on the list.", "ok");
-  } catch (ex) { console.error(ex); err.textContent = "We couldn't sign you up. Check your connection and try again."; }
+  } catch (ex) { console.error(ex); err.textContent = isLimited(ex) ? "Too many sign-ups from this connection. Please try again later." : "We couldn't sign you up. Check your connection and try again."; }
   finally { btn.disabled = false; btn.textContent = "Subscribe"; }
 });
 
@@ -1568,7 +1638,7 @@ $("#chatForm").addEventListener("submit", async e => {
     const log = $("#chatLog");
     log.insertAdjacentHTML("beforeend", bubble("me", question) + bubble("bot", email ? `Thanks! We've got your question and will reply to ${email}.` : "Thanks! We've got your question. You didn't leave an email, so we can't reply directly. Add one next time if you'd like an answer."));
     log.scrollTop = log.scrollHeight; $("#ch-text").value = "";
-  } catch (ex) { console.error(ex); err.textContent = "We couldn't send that. Check your connection and try again."; }
+  } catch (ex) { console.error(ex); err.textContent = isLimited(ex) ? "You have sent a lot of questions. Please try again later." : "We couldn't send that. Check your connection and try again."; }
   finally { btn.disabled = false; btn.textContent = "Send"; }
 });
 
@@ -1591,21 +1661,23 @@ function showSuggest(){
 }
 function openView(id){
   const p = state.posts.find(x => String(x.id) === String(id)); if (!p) return;
-  state.pr = {stars:0, child:0};
-  const ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), feat = isFeatured(p);
+  if (!$("#viewDlg").open) state.pr = {vote:0, child:0};
+  $("#vd-body").dataset.pid = p.id;
+  const ci = catInfo(p.category), img = mediaUrl(p.image_url), aud = mediaUrl(p.audio_url), vid = mediaUrl(p.video_url), feat = isFeatured(p);
   $("#vd-title").textContent = p.title;
   $("#vd-body").innerHTML = `
     <div class="vmeta">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><time datetime="${esc(p.created_at)}">Posted ${esc(ago(p.created_at))}</time></div>
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener"><img class="vimg" src="${esc(img)}" alt=""></a>` : ""}
     <p class="desc">${esc(p.description)}</p>
     ${srcLine(p)}
-    ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
+    ${contactHtml(p)}
     ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
+    ${vid ? `<video controls preload="metadata" playsinline src="${esc(vid)}"></video>` : ""}
     ${stars(p.rating)}
     ${communityLine(p)}
     ${ratePanelHtml(p)}
     <div class="form-actions"><button class="btn" type="button" data-close>Close</button></div>`;
-  $("#viewDlg").showModal();
+  if (!$("#viewDlg").open) $("#viewDlg").showModal();
 }
 function resetSearch(){
   state.cat = "All"; state.q = ""; state.shown = 24; state.filters = defaultFilters();
@@ -1635,6 +1707,15 @@ document.addEventListener("click", e => {
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "reveal": {
+      const pid = t.closest("[data-pid]")?.dataset.pid; if (!pid) return;
+      t.disabled = true; t.textContent = "Loading…";
+      return api.revealContact(pid).then(text => {
+        state.contacts[pid] = text || ""; renderPosts();
+        if ($("#viewDlg").open && $("#vd-body").dataset.pid === pid) openView(pid);
+      }).catch(ex => { t.disabled = false; t.textContent = "Show contact details"; console.error(ex);
+        toast(isLimited(ex) ? "You have looked up a lot of contacts. Please try again later." : "Couldn't load the contact details.", "error"); });
+    }
     case "rtoggle": { const row = t.closest(".rrow2"); const r = state.ratings.find(x => String(x.id) === row?.dataset.id); if (!r) return;
       const next = r.status === "New" ? "Reviewed" : "New";
       return api.setRating(r.id, next).then(() => { r.status = next; renderRatingList(); refreshOpenQ(); }).catch(() => toast("Couldn't update that rating.", "error")); }
@@ -1680,7 +1761,10 @@ async function updateNav(){
 
 /* ---------- Start ---------- */
 (async function init(){
-  if (DEMO) $("#demoNote").hidden = false;
+  if (DEMO) {
+    $("#demoNote").hidden = false;
+    if (LIB_BLOCKED) $("#demoNote").textContent = "The database library could not load (a security setting or the network blocked it), so sample data is shown. If you just added the integrity hash, check that the script address and version are unchanged.";
+  }
   try { state.countries = (await api.countries()).slice().sort((a,b) => a.name.localeCompare(b.name)); }
   catch { state.countries = LOCAL_COUNTRIES; }
   state.byCode = Object.fromEntries(state.countries.map(c => [c.code, c]));
