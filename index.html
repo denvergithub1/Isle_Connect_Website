@@ -1505,20 +1505,7 @@ function voteLine(up, down, label, prefix = "") {
   const total = up + down, pct = Math.round(100 * up / total);
   return `<div class="rline" title="${up} thumbs up and ${down} thumbs down">${prefix}<span class="thumbs" aria-hidden="true">👍 <b>${up}</b> &nbsp;👎 <b>${down}</b></span> <small>${pct}% ${esc(label)} (${total} votes)</small><span class="sr-only">${up} thumbs up and ${down} thumbs down, ${pct} percent ${esc(label)}</span></div>`;
 }
-function communityLine(p){
-  const st = state.pstats[p.id]; if (!st) return "";
-  const lines = [], total = st.up + st.down, ctotal = st.cup + st.cdown;
-  if (total >= MIN_RATINGS_TO_SHOW) lines.push(voteLine(st.up, st.down, "found this helpful"));
-  else if (total > 0) lines.push(`<div class="rline muted">${total} visitor vote${total > 1 ? "s" : ""} so far</div>`);
-  if (ctotal >= MIN_RATINGS_TO_SHOW) lines.push(voteLine(st.cup, st.cdown, "say child-friendly", `<span aria-hidden="true">🧒</span> `));
-  return lines.join("");
-}
-function rateRowHtml(key){
-  const v = state.pr[key], label = key === "vote" ? "Was this post helpful?" : "🧒 Is it child-friendly?";
-  return `<div class="fbrow rrow" data-row="${key}"><span class="lab">${label}</span><span class="thumbs-in" role="group" aria-label="${label}">
-    <button type="button" class="th up" data-rkey="${key}" data-rval="1" aria-label="Thumbs up" aria-pressed="${v === 1}">👍</button>
-    <button type="button" class="th down" data-rkey="${key}" data-rval="-1" aria-label="Thumbs down" aria-pressed="${v === -1}">👎</button></span></div>`;
-}
+
 function ratePanelHtml(p){
   if (hasRated(p.id)) return `<div class="ratepost"><p class="fbhint">✓ You have voted on this post. Thank you!</p></div>`;
   return `<form class="ratepost f" id="rateForm" data-pid="${esc(p.id)}" novalidate style="padding:0">
