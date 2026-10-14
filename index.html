@@ -368,7 +368,7 @@ footer b{color:#fff}
 
 <footer>
   <div class="wrap">
-    <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a></div>
+    <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a> &nbsp;|&nbsp; <a href="#/privacy">Privacy</a> &nbsp;|&nbsp; <a href="#/terms">Terms</a></div>
     <div>Silver sponsor: ThermoDen &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
   </div>
 </footer>
@@ -407,7 +407,7 @@ footer b{color:#fff}
       <button class="btn ghost" type="button" data-close>Cancel</button>
       <button class="btn" type="submit" id="pf-submit">Share post</button>
     </div>
-    <p class="counter" style="text-align:left;margin:0">Posts are reviewed by an administrator before they appear on the board.</p>
+    <p class="counter" style="text-align:left;margin:0">Posts are reviewed by an administrator before they appear on the board. By posting you agree to the <a href="#/terms" target="_blank" rel="noopener">Terms</a>.</p>
   </form>
 </dialog>
 
@@ -461,7 +461,7 @@ footer b{color:#fff}
     <div class="field"><label for="sf-email">Email address</label><input id="sf-email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></div>
     <div class="field"><label for="sf-country">Country <span class="hint">(optional)</span></label><select id="sf-country"></select></div>
     <div class="field"><span class="lbl">What would you like to hear about? <span class="hint">(optional)</span></span><div class="checks" id="sf-interests" role="group" aria-label="Topics"></div></div>
-    <label class="consent"><input type="checkbox" id="sf-consent"><span>I agree to receive emails from Isle Connect. I can ask to be removed at any time.</span></label>
+    <label class="consent"><input type="checkbox" id="sf-consent"><span>I agree to receive emails from Isle Connect. I can ask to be removed at any time. (<a href="#/privacy" target="_blank" rel="noopener">Privacy</a>)</span></label>
     <input class="hp" id="sf-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p class="err" id="sf-err" role="alert"></p>
     <div class="form-actions">
@@ -533,6 +533,11 @@ const BLOCK_AUTOMATION = true;
 try { if (window.top !== window.self) document.documentElement.style.display = "none"; }       // never show inside someone else's frame
 catch { document.documentElement.style.display = "none"; }
 const AUTOMATED = BLOCK_AUTOMATION && navigator.webdriver === true;
+
+/* Legal pages (Privacy and Terms). FILL THESE IN before you launch: they are shown on those pages. */
+const SITE_OPERATOR = "[Your name or organisation]";
+const CONTACT_EMAIL = "[your contact email address]";
+const LEGAL_UPDATED = "14 October 2026";
 
 const validUrl = u => { try { const x = new URL(u); return x.protocol === "https:" && !x.hostname.includes(".."); } catch { return false; } };
 let sb = null;
@@ -938,6 +943,8 @@ function route(){
   if (h === "#/" || h === "#") return showHome();
   if ((m = h.match(/^#\/c\/([a-z]{2})$/))) return showCountry(m[1]);
   if (h === "#/about") return showAbout();
+  if (h === "#/privacy") return showLegal("privacy");
+  if (h === "#/terms") return showLegal("terms");
   if (h === "#/" + ADMIN_PATH) return showAdmin();
   location.hash = "#/";
 }
@@ -1676,6 +1683,59 @@ document.addEventListener("submit", async e => {
   } catch (ex) { console.error(ex); err.textContent = isLimited(ex) ? "You have voted on a lot of posts. Please try again later." : "We couldn't send your vote. Check your connection and try again."; btn.disabled = false; btn.textContent = "Send my vote"; }
 });
 
+function legalSections(kind, op, mail){
+  if (kind === "privacy") return [
+    {h:"Who we are", html:`<p>${op} runs Isle Connect, a free community board for people across the Caribbean. If you have a question about this notice, or want your information removed, contact ${mail}.</p>`},
+    {h:"What we collect and why", html:`<ul class="know">
+      <li><b>Posts you submit</b>: a title, description, category and country, and optionally contact details, a photo, audio or a video. Once an administrator approves a post it is public. Contact details are shown only when a visitor clicks "Show contact details".</li>
+      <li><b>Email sign-ups</b>: your email address, and optionally your country and topics of interest. We use it only to send the updates you asked for, and you can ask to be removed at any time.</li>
+      <li><b>Questions you send</b> with the chat button: your question, and optionally your email and country. We use them to reply to you.</li>
+      <li><b>Votes and feedback on posts</b>: a thumbs up or down, and an optional comment that only the administrator can see. Everyone else sees only the totals.</li>
+      <li><b>Visit counts</b>: to see which pages are used, we record which page you opened (the home page or a country page), a random code that lasts only while that browser tab is open, and the name of the website you came from. We do not record your IP address and we do not use cookies. We do not count visits when your browser sends Do Not Track or Global Privacy Control, or when the administrator is signed in.</li>
+      <li><b>Spam protection</b>: to stop abuse we keep a scrambled (hashed) form of your network address for a short time, about a day, to count how many requests come from one place. It cannot be turned back into your address.</li></ul>`},
+    {h:"Cookies and what your browser stores", html:`<p>We do not use cookies. Your browser keeps a few small items on your device: the islands you visited recently, a random code and a list showing which posts you have voted on (so a vote cannot be repeated), and, for the administrator only, a note that this device belongs to the administrator. A short-lived code in your browser tab is used for the visit count. You can clear all of these in your browser settings at any time.</p>`},
+    {h:"Other organisations that handle data for us", html:`<ul class="know">
+      <li><b>Supabase</b> stores our database and the files people upload.</li>
+      <li><b>jsDelivr</b> delivers a software library the site needs, and <b>flagcdn.com</b> delivers the country flag images. Both can see your IP address and browser type when your browser asks for those files.</li>
+      <li>Our <b>web host</b> delivers the site, and an <b>email service</b> may send our updates if we use one.</li></ul>
+      <p>We do not sell your information or use it for advertising. We share it only with these service providers, or when the law requires it.</p>`},
+    {h:"How long we keep it", html:`<p>Posts stay until they expire or are removed. Email addresses stay until you ask us to remove them. Questions and votes are kept while they are useful and then deleted. Visit counts are kept for up to 12 months.</p>`},
+    {h:"Your choices", html:`<p>You can ask us to show you, correct or delete your information, to remove your post, or to unsubscribe, by contacting ${mail}. If you live somewhere with a data protection law you may also have the right to complain to the authority that enforces it.</p>`},
+    {h:"Children", html:`<p>Isle Connect is a general community board and is not directed at children. We do not knowingly collect personal information from children. Young people should use the site with a parent or guardian. If you think a child has shared personal information here, contact us and we will delete it.</p>`},
+    {h:"Security", html:`<p>We use access controls, limits on how much any one visitor can request, and a review step before posts appear. No website is perfectly secure, so please do not post anything you want to keep private.</p>`},
+    {h:"Changes", html:`<p>We may update this notice from time to time. The date at the top shows the latest version.</p>`}
+  ];
+  return [
+    {h:"Using Isle Connect", html:`<p>Isle Connect is free to use. By using the site you agree to these terms. If you do not agree, please do not use it.</p>`},
+    {h:"Posting", html:`<p>You are responsible for what you post. Please post only things that are true and that you have the right to share. You must not post anything that:</p><ul class="know">
+      <li>breaks the law, or encourages others to;</li><li>harasses, threatens, or discriminates against people;</li>
+      <li>is sexual, or exploits or endangers children;</li><li>is a scam, a fake offer, or misleading;</li>
+      <li>shares another person's private information without their permission;</li><li>copies someone else's work without permission (only upload photos, audio and video you have the right to use);</li>
+      <li>is spam, or an advertisement in the wrong category, or contains harmful software.</li></ul>`},
+    {h:"Review and removal", html:`<p>An administrator reviews posts before they appear. We may approve, edit, reject or remove any post or uploaded file at any time, without notice. Approval does not mean we endorse a post or the person who wrote it.</p>`},
+    {h:"Your content", html:`<p>You keep ownership of what you post. By posting, you give ${op} a free, non-exclusive right to show it on Isle Connect (including in lists, search and ratings) until it is removed.</p>`},
+    {h:"Contact details and meeting people", html:`<p>Contact details in a post become visible to anyone who clicks to see them. Be careful with people you do not know: meet in a public place, never send money in advance, and report anything suspicious with the <b>Ask a question</b> button.</p>`},
+    {h:"Sponsored posts and ratings", html:`<p>Posts marked <b>Sponsored</b> are paid placements and are not recommendations. Visitor votes and the star rating set by the administrator are opinions, not guarantees.</p>`},
+    {h:"Information on the site", html:`<p>Holiday dates, event details, job and scholarship notices and other information are provided for general information. They may be incomplete or out of date, so check with the official source named or linked on the post. In an emergency, contact your local emergency services and do not rely on this site.</p>`},
+    {h:"Fair use", html:`<p>Do not use automated tools to copy the site's posts or contact details in bulk, try to get around its limits, or interfere with how it works.</p>`},
+    {h:"No guarantee, and limits on responsibility", html:`<p>The site is provided "as is". To the extent the law allows, ${op} is not responsible for posts written by visitors, for dealings between visitors, or for losses caused by using the site or relying on its information. Nothing here limits any right you have under the law that cannot be limited.</p>`},
+    {h:"Changes and contact", html:`<p>We may change these terms. The date at the top shows the latest version. Questions: ${mail}.</p>`}
+  ];
+}
+function showLegal(kind){
+  state.country = null;
+  const op = esc(SITE_OPERATOR);
+  const mail = /^[^\s@\[\]]+@[^\s@\[\]]+\.[^\s@\[\]]+$/.test(CONTACT_EMAIL) ? `<a href="mailto:${esc(CONTACT_EMAIL)}">${esc(CONTACT_EMAIL)}</a>` : esc(CONTACT_EMAIL);
+  const warn = state.isAdmin && /\[/.test(SITE_OPERATOR + CONTACT_EMAIL)
+    ? `<div class="demo-note" style="border-radius:12px">Admin note (visitors do not see this): fill in SITE_OPERATOR and CONTACT_EMAIL near the top of the script in index.html.</div>` : "";
+  setView(`
+    <section class="band"><div class="wrap">
+      <a class="back" href="#/">&lsaquo; All Caribbean</a>
+      <h1>${kind === "privacy" ? "Privacy notice" : "Terms of use"}</h1><div class="sub">Last updated ${esc(LEGAL_UPDATED)}</div>
+    </div></section>
+    <section class="wrap about">${warn}${legalSections(kind, op, mail).map(x => `<article class="panel"><h2>${x.h}</h2>${x.html}</article>`).join("")}</section>`,
+    kind === "privacy" ? "Privacy notice" : "Terms of use", true);
+}
 function showAbout(){
   state.country = null;
   setView(`
