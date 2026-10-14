@@ -322,6 +322,14 @@ footer a{color:#cfe3e6}
 footer a:hover{color:#fff}
 @media(max-width:560px){#navCountries{display:none}}
 
+/* Admin: post to many countries */
+.bcform{display:grid;gap:1rem}
+.bc-region{border:1.5px solid var(--line);border-radius:14px;padding:.6rem .8rem .8rem;margin:0}
+.bc-region legend{font-weight:700;padding:0 .4rem}
+.bc-grid{display:flex;flex-wrap:wrap;gap:.45rem}
+.bc-grid .check .flag{width:24px;height:18px}
+.bc-tools{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+
 /* Footer & toast */
 footer{background:var(--ink);color:#9fc0c6;padding:1.6rem 0;font-size:.9rem;margin-top:auto}
 footer .wrap{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:space-between}
@@ -786,14 +794,38 @@ const api = {
     const {error} = await sb.from("post_ratings").delete().eq("id", id);
     if (error) throw error;
   },
-  /* delete a post's uploaded photo/audio/video files from storage (best effort; admin only) */
+  /* "Post to all": publish the same post to many countries in one request (admin only) */
+  async createMany(rows){
+    if (DEMO) { rows.forEach((r, i) => demoDb.posts.unshift({...r, id:"b" + Date.now() + "-" + i, rating:null, created_at:new Date().toISOString()})); return; }
+    const {error} = await sb.from("posts").insert(rows);
+    if (error) throw error;
+  },
+  async broadcasts(){
+    if (DEMO) return demoDb.posts.filter(p => p.broadcast_id).sort((a, b) => b.created_at.localeCompare(a.created_at));
+    const {data, error} = await sb.from("posts").select("id,broadcast_id,country_code,title,category,status,created_at,expires_at,featured_until").not("broadcast_id", "is", null).order("created_at", {ascending:false}).limit(2000);
+    if (error) throw error;
+    return data;
+  },
+  async removeBroadcast(bid){
+    if (DEMO) { demoDb.posts = demoDb.posts.filter(p => p.broadcast_id !== bid); return; }
+    const {data} = await sb.from("posts").select("image_url,audio_url,video_url").eq("broadcast_id", bid).limit(1);
+    const {error} = await sb.from("posts").delete().eq("broadcast_id", bid);
+    if (error) throw error;
+    if (data && data[0]) await api.removeMedia(data[0]);              // every copy is gone, so the shared files can go too
+  },
+  /* delete a post's uploaded photo/audio/video files from storage (best effort; admin only).
+     A file that another post still uses (for example the other copies of a "Post to all") is left alone. */
   async removeMedia(p){
     if (DEMO) return;
     const re = /\/storage\/v1\/object\/public\/([^/]+)\/(.+)$/, byBucket = {};
-    [p.image_url, p.audio_url, p.video_url].filter(Boolean).forEach(u => {
+    for (const [col, u] of [["image_url", p.image_url], ["audio_url", p.audio_url], ["video_url", p.video_url]]) {
+      if (!u) continue;
       const m = String(u).match(re);
-      if (m && ["post-media", "post-videos"].includes(m[1])) (byBucket[m[1]] = byBucket[m[1]] || []).push(decodeURIComponent(m[2].split("?")[0]));
-    });
+      if (!m || !["post-media", "post-videos"].includes(m[1])) continue;
+      try { const {count} = await sb.from("posts").select("id", {count:"exact", head:true}).eq(col, u); if ((count || 0) > 1) continue; }
+      catch { continue; }
+      (byBucket[m[1]] = byBucket[m[1]] || []).push(decodeURIComponent(m[2].split("?")[0]));
+    }
     for (const [bucket, paths] of Object.entries(byBucket)) { try { await sb.storage.from(bucket).remove(paths); } catch (e) { console.error(e); } }
   },
   async track(row){ if (DEMO) return; try { await sb.from("page_views").insert(row); } catch {} },
@@ -1209,7 +1241,7 @@ async function showAdmin(){
 }
 function renderAdminTabs(){
   const el = $("#admtabs"); if (!el) return;
-  el.innerHTML = [["posts","Posts"],["questions", "Questions" + (state.openQ ? ` (${state.openQ})` : "")],["ratings", "Ratings" + (state.newR ? ` (${state.newR})` : "")],["subs","Subscribers"],["traffic","Traffic"]]
+  el.innerHTML = [["posts","Posts"],["broadcast","Post to all"],["questions", "Questions" + (state.openQ ? ` (${state.openQ})` : "")],["ratings", "Ratings" + (state.newR ? ` (${state.newR})` : "")],["subs","Subscribers"],["traffic","Traffic"]]
     .map(([k,l]) => `<button class="chip" type="button" data-tab="${k}" aria-pressed="${state.adminTab===k}">${l}</button>`).join("");
 }
 async function refreshOpenQ(){
@@ -1220,6 +1252,7 @@ async function refreshOpenQ(){
 function renderAdminTab(){
   const tab = state.adminTab;
   renderAdminTabs(); refreshOpenQ();
+  if (tab === "broadcast") return showBroadcast();
   if (tab === "questions") return showQuestions();
   if (tab === "ratings") return showRatings();
   if (tab === "subs") return showSubs();
@@ -1247,6 +1280,89 @@ function showAdminPosts(){
   $("#af-q").addEventListener("input", e => { f.q = e.target.value; renderAdminList(); });
   loadAdmin();
 }
+
+/* ---------- Admin: post to many countries at once ---------- */
+function updateBcCount(){
+  const boxes = [...document.querySelectorAll('#bcForm input[name="bc-c"]')], n = boxes.filter(b => b.checked).length;
+  const c = $("#bcCount"); if (c) c.textContent = `${n} of ${boxes.length} countries selected`;
+  const b = $("#bc-send"); if (b && !b.disabled) b.textContent = n ? `Publish to ${n} ${n === 1 ? "country" : "countries"}` : "Choose at least one country";
+}
+function setBcChecked(v){ document.querySelectorAll('#bcForm input[name="bc-c"]').forEach(b => { b.checked = v; }); updateBcCount(); }
+function showBroadcast(){
+  const countries = state.countries.map(c => ({...c})), regions = regionList();
+  $("#admbody").innerHTML = `
+    <form class="f bcform" id="bcForm" novalidate style="padding:1rem 0 0">
+      <p class="boost-info">Write a post once and publish it in several countries at the same time. It goes live straight away (no approval step) and appears in each country you tick below.</p>
+      <div class="row2">
+        <div class="field"><label for="bc-cat">Category</label><select id="bc-cat">${CATEGORIES.map(c => `<option value="${esc(c.id)}">${c.icon} ${esc(c.id)}</option>`).join("")}</select></div>
+        <div class="field"><label for="bc-title">Title</label><input id="bc-title" maxlength="120" placeholder="e.g. Hurricane preparedness reminder" required></div>
+      </div>
+      <div class="field"><label for="bc-desc">Details</label><textarea id="bc-desc" maxlength="1500" placeholder="What do people need to know?" required></textarea></div>
+      <div class="field"><label for="bc-contact">Contact <span class="hint">(optional, shown when a visitor clicks "Show contact details")</span></label><input id="bc-contact" maxlength="200"></div>
+      <details class="media"><summary>Add a photo, audio or video (optional, uploaded once and shared by every copy)</summary><div class="inner">
+        <div class="field"><label for="bc-img">Photo</label><input id="bc-img" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
+        <div class="field"><label for="bc-aud">Audio</label><input id="bc-aud" type="file" accept="audio/mpeg,audio/wav,audio/mp4,audio/x-m4a,audio/ogg"></div>
+        <div class="field"><label for="bc-vid">Video</label><input id="bc-vid" type="file" accept="video/mp4,video/webm,video/quicktime"></div>
+      </div></details>
+      <div class="row2">
+        <div class="field"><label for="bc-pin">Pin to the top (Sponsored)</label><select id="bc-pin"><option value="0">No</option><option value="7">For 7 days</option><option value="14">For 14 days</option><option value="30">For 30 days</option></select></div>
+        <div class="field"><label for="bc-expire">Hide automatically after</label><select id="bc-expire"><option value="0">Never (until I delete it)</option><option value="7">7 days</option><option value="14">14 days</option><option value="30">30 days</option><option value="90">90 days</option></select></div>
+      </div>
+      <div class="bc-tools"><strong>Countries</strong><button class="btn ghost small" type="button" data-act="bc-all">Select all</button><button class="btn ghost small" type="button" data-act="bc-none">Clear all</button><span class="result-info" id="bcCount"></span></div>
+      ${regions.map(r => `<fieldset class="bc-region"><legend>${esc(r)} <button type="button" class="linkbtn" data-act="bc-region" data-rg="${esc(r)}">select / clear</button></legend><div class="bc-grid">${countries.filter(c => c.region === r).map(c => `<label class="check"><input type="checkbox" name="bc-c" value="${esc(c.code)}" data-rg="${esc(r)}" checked> ${flag(c.code)} ${esc(c.name)}</label>`).join("")}</div></fieldset>`).join("")}
+      <p class="err" id="bc-err" role="alert"></p>
+      <div class="form-actions" style="justify-content:flex-start"><button class="btn accent" type="submit" id="bc-send">Publish</button></div>
+    </form>
+    <h2 style="font-size:1.25rem;margin:1.6rem 0 .6rem">Earlier posts to many countries</h2>
+    <div id="bchist" class="alist"><div class="skeleton" style="height:70px"></div></div>`;
+  updateBcCount(); loadBroadcasts();
+}
+async function loadBroadcasts(){
+  const el = $("#bchist"); if (!el) return;
+  try {
+    const rows = await api.broadcasts(), groups = {};
+    rows.forEach(r => { (groups[r.broadcast_id] = groups[r.broadcast_id] || []).push(r); });
+    const list = Object.entries(groups).map(([id, rs]) => ({id, rs, first:rs[0]})).sort((a, b) => b.first.created_at.localeCompare(a.first.created_at));
+    el.innerHTML = list.length ? list.map(g => {
+      const f = g.first, ci = catInfo(f.category), names = g.rs.map(r => state.byCode[r.country_code]?.name || r.country_code).sort().join(", ");
+      return `<div class="srow bcrow" data-bid="${esc(g.id)}">
+        <div class="em"><strong>${esc(f.title)}</strong>
+          <div class="meta" style="margin-top:.3rem"><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(f.category)}</span><span>${g.rs.length} ${g.rs.length === 1 ? "country" : "countries"}</span><span>${esc(ago(f.created_at))}</span>${f.expires_at ? `<span>hides ${esc(fmtDate(f.expires_at))}</span>` : ""}${isFeatured(f) ? `<span>pinned until ${esc(fmtDate(f.featured_until))}</span>` : ""}</div>
+          <details style="margin-top:.35rem"><summary>Show countries</summary><p class="desc" style="margin:.3rem 0 0">${esc(names)}</p></details></div>
+        <button class="btn danger small" type="button" data-act="bcdel">Delete all copies</button></div>`;
+    }).join("") : `<p class="result-info">Nothing has been published to many countries yet.</p>`;
+  } catch (e) { console.error(e); el.innerHTML = `<p class="result-info">Couldn't load earlier posts. Make sure you ran supabase_broadcast.sql.</p>`; }
+}
+document.addEventListener("change", e => { if (e.target.name === "bc-c") updateBcCount(); });
+document.addEventListener("submit", async e => {
+  if (e.target.id !== "bcForm") return;
+  e.preventDefault();
+  const err = $("#bc-err"), btn = $("#bc-send"); err.textContent = "";
+  const title = $("#bc-title").value.trim(), description = $("#bc-desc").value.trim(), contact = $("#bc-contact").value.trim();
+  const codes = [...document.querySelectorAll('#bcForm input[name="bc-c"]:checked')].map(b => b.value);
+  if (title.length < 3) return err.textContent = "Add a title (at least 3 characters).";
+  if (description.length < 3) return err.textContent = "Add some details.";
+  if (!codes.length) return err.textContent = "Choose at least one country.";
+  const imgF = $("#bc-img").files[0], audF = $("#bc-aud").files[0], vidF = $("#bc-vid").files[0];
+  const fe = checkFile(imgF, FILE_RULES.img) || checkFile(audF, FILE_RULES.aud) || checkFile(vidF, FILE_RULES.vid);
+  if (fe) return err.textContent = fe;
+  if (!confirm(`Publish "${title}" in ${codes.length} ${codes.length === 1 ? "country" : "countries"} right now?`)) return;
+  btn.disabled = true; btn.textContent = "Publishing…";
+  try {
+    const image_url = imgF ? await api.upload(imgF, "all") : null, audio_url = audF ? await api.upload(audF, "all") : null;
+    const video_url = vidF ? await api.upload(vidF, "all", VIDEO_BUCKET) : null;
+    const pin = Number($("#bc-pin").value), exp = Number($("#bc-expire").value), now = Date.now(), broadcast_id = crypto.randomUUID();
+    const rows = codes.map(code => ({country_code:code, title, category:$("#bc-cat").value, description, contact:contact || null, status:"Approved", broadcast_id, image_url, audio_url,
+      ...(video_url ? {video_url} : {}), ...(pin ? {featured_until:new Date(now + pin * 864e5).toISOString()} : {}), ...(exp ? {expires_at:new Date(now + exp * 864e5).toISOString()} : {})}));
+    await api.createMany(rows);
+    toast(`Published in ${codes.length} ${codes.length === 1 ? "country" : "countries"}.`, "ok");
+    showBroadcast();
+  } catch (ex) {
+    console.error(ex);
+    err.textContent = "Couldn't publish. Make sure you ran supabase_broadcast.sql and are signed in as the administrator." + (/expires_at|featured_until|video_url/.test(String(ex?.message)) ? " (A column is missing: run the SQL files in the order listed in START-HERE.md.)" : "");
+    btn.disabled = false; updateBcCount();
+  }
+});
 
 /* ---------- Admin: questions ---------- */
 async function showQuestions(){
@@ -1430,7 +1546,7 @@ function renderAdminList(){
 function adminRow(p){
   const c = state.byCode[p.country_code], ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), vid = mediaUrl(p.video_url), feat = isFeatured(p);
   return `<div class="arow ${feat ? "is-featured" : ""}" data-id="${esc(p.id)}">
-    <div class="arow-top"><span class="status ${esc(p.status)}">${esc(p.status)}</span>${p.external_id ? `<span class="status Pending" title="Imported automatically">Imported</span>` : ""}${feat ? `<span class="status Featured">★ Featured until ${esc(fmtDate(p.featured_until))}</span>` : ""}${c ? flag(c.code) : ""}<strong>${esc(c?.name || p.country_code)}</strong><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><span>${esc(ago(p.created_at))}</span></div>
+    <div class="arow-top"><span class="status ${esc(p.status)}">${esc(p.status)}</span>${p.external_id ? `<span class="status Pending" title="Imported automatically">Imported</span>` : ""}${p.broadcast_id ? `<span class="status Approved" title="Published to many countries at once">Post to all</span>` : ""}${feat ? `<span class="status Featured">★ Featured until ${esc(fmtDate(p.featured_until))}</span>` : ""}${c ? flag(c.code) : ""}<strong>${esc(c?.name || p.country_code)}</strong><span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><span>${esc(ago(p.created_at))}</span></div>
     <h3>${esc(p.title)}</h3>
     <p class="desc">${esc(p.description)}</p>
     ${srcLine(p)}
@@ -1714,6 +1830,12 @@ document.addEventListener("click", e => {
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
+    case "bc-all": return setBcChecked(true);
+    case "bc-none": return setBcChecked(false);
+    case "bc-region": { const boxes = [...document.querySelectorAll('#bcForm input[name="bc-c"]')].filter(b => b.dataset.rg === t.dataset.rg); const all = boxes.every(b => b.checked); boxes.forEach(b => { b.checked = !all; }); return updateBcCount(); }
+    case "bcdel": { const row = t.closest(".bcrow"); if (!row) return; const n = row.querySelector(".meta span:nth-child(2)")?.textContent || "all";
+      if (!confirm(`Delete this post from ${n}? Its uploaded files will be deleted too.`)) return;
+      return api.removeBroadcast(row.dataset.bid).then(() => { toast("Deleted from every country."); loadBroadcasts(); }).catch(() => toast("Couldn't delete those posts.", "error")); }
     case "reveal": {
       const pid = t.closest("[data-pid]")?.dataset.pid; if (!pid) return;
       t.disabled = true; t.textContent = "Loading…";
