@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Isle Connect – community resources across the Caribbean</title>
 <meta name="description" content="Find jobs, food, transport, education and emergency help posted by people across the Caribbean.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Isle Connect: jobs, rides, school notices and help across the Caribbean">
+<meta property="og:description" content="A free community board for Saint Lucia, Barbados, Grenada and the rest of the Caribbean. Choose your island and see what people are sharing.">
+<meta name="twitter:card" content="summary">
 <!-- Security & privacy: only your own page, the pinned Supabase library (checked with an integrity hash) and your own Supabase project may load.
      If you use a custom Supabase domain, add it to connect-src and img-src/media-src below. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co https://flagcdn.com; media-src 'self' blob: https://*.supabase.co; font-src 'self'; connect-src 'self' https://*.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
@@ -45,6 +49,7 @@ h1:focus,h1:focus-visible{outline:none}
 .nav{margin-left:auto;display:flex;align-items:center;gap:.5rem}
 .nav .link{color:#cfe3e6;text-decoration:none;font-weight:600;font-size:.92rem;padding:.5rem .7rem;border-radius:10px;background:none;border:0;cursor:pointer;font-family:inherit}
 .nav .link:hover{color:#fff;background:rgba(255,255,255,.1)}
+.nav .link,.nav .btn,.logo{white-space:nowrap}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;font:600 .98rem/1 var(--body);padding:.8rem 1.15rem;border-radius:12px;border:2px solid transparent;cursor:pointer;background:var(--palm);color:#fff;text-decoration:none;transition:background .15s,transform .1s}
@@ -272,6 +277,18 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 @media(max-width:520px){.chat-fab-t{display:none}.chat-fab{padding:.9rem}}
 
 /* About + feedback */
+.pkgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:.8rem}
+.pkg{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem}
+.pkg.pop{border-color:var(--sun);box-shadow:0 10px 26px -14px rgba(224,161,20,.8)}
+.pop-tag{position:absolute;top:-.7rem;right:1rem;background:var(--sun);color:var(--ink);font-weight:800;font-size:.78rem;padding:.2rem .65rem;border-radius:99px}
+.pkg h3{font-size:1.15rem}
+.pkg .price{font:800 2rem/1.1 var(--display);color:var(--ink)}
+.pkg .price small{font:600 .85rem var(--body);color:var(--muted)}
+.pkg p{margin:.2rem 0;color:#2c4852}
+.pkg .fit{font-size:.92rem;color:var(--muted)}
+.pkg-actions{margin-top:auto;padding-top:.8rem;display:flex;flex-wrap:wrap;gap:.5rem}
+.subbar.promo{background:#fff8e1;border-color:#f1d98a}
+.status.Featured{background:#fff3c4;color:#6a4b00}
 .about{padding:1.5rem 0 3rem;display:grid;gap:1rem}
 .about h2{font-size:1.35rem;margin-bottom:.5rem}
 .about p{margin:.3rem 0;color:#2c4852}
@@ -320,7 +337,8 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .fchips{display:flex;gap:.35rem;flex-wrap:wrap}
 footer a{color:#cfe3e6}
 footer a:hover{color:#fff}
-@media(max-width:560px){#navCountries{display:none}}
+@media(max-width:700px){#navAbout,#navCountries{display:none}}
+@media(max-width:560px){#navCountries,.nav [data-act="subscribe"]{display:none}.logo{font-size:1.15rem;white-space:nowrap}.nav .link{padding:.5rem .55rem}.nav{gap:.2rem}}
 
 /* Admin: post to many countries */
 .bcform{display:grid;gap:1rem}
@@ -356,6 +374,7 @@ footer b{color:#fff}
     <nav class="nav" aria-label="Main">
       <a class="link" href="#/" id="navCountries">Countries</a>
       <a class="link" href="#/about" id="navAbout">About</a>
+      <a class="link" href="#/advertise" id="navAdvertise">Advertise</a>
       <!-- Only shown after an administrator signs in (see updateNav) -->
       <a class="link" href="#/" id="navAdmin" hidden>Review posts</a>
       <button class="link" data-act="subscribe" type="button">Get updates</button>
@@ -368,7 +387,7 @@ footer b{color:#fff}
 
 <footer>
   <div class="wrap">
-    <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a> &nbsp;|&nbsp; <a href="#/privacy">Privacy</a> &nbsp;|&nbsp; <a href="#/terms">Terms</a></div>
+    <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a> &nbsp;|&nbsp; <a href="#/advertise">Advertise</a> &nbsp;|&nbsp; <a href="#/privacy">Privacy</a> &nbsp;|&nbsp; <a href="#/terms">Terms</a></div>
     <div>Silver sponsor: ThermoDen &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
   </div>
 </footer>
@@ -535,9 +554,24 @@ catch { document.documentElement.style.display = "none"; }
 const AUTOMATED = BLOCK_AUTOMATION && navigator.webdriver === true;
 
 /* Legal pages (Privacy and Terms). FILL THESE IN before you launch: they are shown on those pages. */
-const SITE_OPERATOR = "[Your name or organisation]";
-const CONTACT_EMAIL = "[your contact email address]";
-const LEGAL_UPDATED = "14 October 2026";
+const SITE_OPERATOR = "[name or organisation pending]";
+const CONTACT_EMAIL = "jsurvey758@gmail.com";
+const LEGAL_UPDATED = "15 October 2026";
+
+/* ---------- Advertising: edit these, then upload the file again ----------
+   PAYMENT_LINKS: paste one payment link per package (Stripe Payment Links, PayPal checkout links or PayPal.me).
+   Leave a link as "" and that package shows "Request this package" instead of "Pay by card".
+   AD_PACKAGES: the prices and wording shown on the Advertise page. Prices are in US dollars. */
+const PAYMENT_LINKS = {boost7:"", boost30:"", boost90:"", job:"", event:"", broadcast:""};
+const AD_TURNAROUND = "usually within one working day";
+const AD_PACKAGES = [
+  {id:"boost7",  name:"Boost: 7 days",  price:15,  per:"7 days",  blurb:"Your post pinned to the top of your island page, with a gold border and a Sponsored tag.", fit:"Weekend offers and one-off promotions"},
+  {id:"boost30", name:"Boost: 30 days", price:40,  per:"30 days", popular:true, blurb:"The same pinned spot for a full month, so regular visitors keep seeing you.", fit:"Restaurants, tutors, tour operators and shops"},
+  {id:"boost90", name:"Boost: 90 days", price:90,  per:"90 days", blurb:"Three months of steady visibility, at the lowest price per day.", fit:"Businesses that want to be known on their island"},
+  {id:"job",     name:"Featured job",   price:25,  per:"30 days", blurb:"Your job post pinned to the top of your island page for 30 days.", fit:"Local employers. Hotels and large companies: ask for a quote"},
+  {id:"event",   name:"Event bundle",   price:30,  per:"14 days", blurb:"Your event pinned for two weeks, ahead of the day.", fit:"Fetes, concerts, festivals, school and church events"},
+  {id:"broadcast", name:"All-islands campaign", price:300, per:"14 days", blurb:"One message pinned on every island page, all 28 of them.", fit:"Telecoms, banks, airlines, charities and public campaigns"}
+];
 
 const validUrl = u => { try { const x = new URL(u); return x.protocol === "https:" && !x.hostname.includes(".."); } catch { return false; } };
 let sb = null;
@@ -943,6 +977,7 @@ function route(){
   if (h === "#/" || h === "#") return showHome();
   if ((m = h.match(/^#\/c\/([a-z]{2})$/))) return showCountry(m[1]);
   if (h === "#/about") return showAbout();
+  if ((m = h.match(/^#\/advertise(?:\?(.*))?$/))) return showAdvertise(m[1] || "");
   if (h === "#/privacy") return showLegal("privacy");
   if (h === "#/terms") return showLegal("terms");
   if (h === "#/" + ADMIN_PATH) return showAdmin();
@@ -980,6 +1015,11 @@ function showHome(){
   $("#cq").addEventListener("keydown", e => {
     if (e.key === "Enter") { const r = filteredCountries(); if (r.length === 1) location.hash = "#/c/" + r[0].code; }
   });
+}
+/* Share a country page on WhatsApp (link only: no tracking added) */
+function waShare(c){
+  const url = location.href.split("#")[0] + "#/c/" + c.code;
+  return "https://wa.me/?text=" + encodeURIComponent(`Jobs, rides, school notices and community help for ${c.name} on Isle Connect: ${url}`);
 }
 function filteredCountries(){
   const q = state.cq.trim().toLowerCase();
@@ -1022,6 +1062,7 @@ function showCountry(code){
             <label class="sr-only" for="switch">Switch country</label>
             <select class="switch" id="switch">${state.countries.map(x => `<option value="${esc(x.code)}" ${x.code===code?"selected":""}>${esc(x.name)}</option>`).join("")}</select>
             <button class="btn accent" type="button" data-act="post">+ Post in ${esc(c.name)}</button>
+            <a class="btn small" href="${esc(waShare(c))}" target="_blank" rel="noopener noreferrer" aria-label="Share ${esc(c.name)} on WhatsApp (opens in a new tab)">Share on WhatsApp</a>
           </div>
         </div>
       </div>
@@ -1043,6 +1084,7 @@ function showCountry(code){
       <p class="result-info" id="resultInfo" aria-live="polite"></p>
     </section>
     <section class="wrap" aria-live="polite"><div id="posts" class="posts"></div><div id="postState"></div><div id="more" class="more" hidden></div></section>
+    <section class="wrap"><div class="subbar promo"><div><h2>Promote your business in ${esc(c.name)}</h2><p>Pin your post to the top of this page. Boosts start at US$${Math.min(...AD_PACKAGES.map(x => x.price))}.</p></div><a class="btn" href="#/advertise?c=${esc(c.code)}">See packages</a></div></section>
     <section class="wrap"><div class="subbar"><div><h2>Get ${esc(c.name)} updates by email</h2><p>New jobs, scholarships, holidays and community notices, straight to your inbox.</p></div><button class="btn accent" type="button" data-act="subscribe">Subscribe</button></div></section>
   `, c.name, true);
   $("#switch").addEventListener("change", e => location.hash = "#/c/" + e.target.value);
@@ -1396,8 +1438,8 @@ function renderQuestionList(){
     const c = state.byCode[q.country_code];
     const reply = q.email ? `mailto:${q.email}?subject=${encodeURIComponent("Re: your question on Isle Connect")}&body=${encodeURIComponent(`Hi,\n\nYou asked:\n"${q.question}"\n\n`)}` : "";
     return `<div class="srow qrow" data-id="${esc(q.id)}">
-      <div class="em">${esc(q.question)}</div>
-      <div class="meta"><span class="status ${q.status === "Open" ? "Pending" : "Approved"}">${esc(q.status)}</span>${c ? flag(c.code) + " " + esc(c.name) : "No country"} <span>${q.email ? esc(q.email) : "no email left"}</span> <span>${esc(ago(q.created_at))}</span></div>
+      <div class="em" style="white-space:pre-wrap">${esc(q.question)}</div>
+      <div class="meta">${/^ADVERTISING REQUEST/.test(q.question) ? '<span class="status Featured">Advertising</span>' : ""}<span class="status ${q.status === "Open" ? "Pending" : "Approved"}">${esc(q.status)}</span>${c ? flag(c.code) + " " + esc(c.name) : "No country"} <span>${q.email ? esc(q.email) : "no email left"}</span> <span>${esc(ago(q.created_at))}</span></div>
       ${q.email ? `<a class="btn small" href="${esc(reply)}" target="_blank" rel="noopener noreferrer">Reply by email</a>` : ""}
       <button class="btn ghost small" type="button" data-act="qtoggle">${q.status === "Open" ? "Mark answered" : "Reopen"}</button>
       <button class="btn danger small" type="button" data-act="qdel">Delete</button>
@@ -1689,7 +1731,7 @@ function legalSections(kind, op, mail){
     {h:"What we collect and why", html:`<ul class="know">
       <li><b>Posts you submit</b>: a title, description, category and country, and optionally contact details, a photo, audio or a video. Once an administrator approves a post it is public. Contact details are shown only when a visitor clicks "Show contact details".</li>
       <li><b>Email sign-ups</b>: your email address, and optionally your country and topics of interest. We use it only to send the updates you asked for, and you can ask to be removed at any time.</li>
-      <li><b>Questions you send</b> with the chat button: your question, and optionally your email and country. We use them to reply to you.</li>
+      <li><b>Questions and advertising requests you send</b> with the chat button or the Advertise form: your message, your business name if you give one, and optionally your email and country. We use them to reply to you and to arrange payment.</li>
       <li><b>Votes and feedback on posts</b>: a thumbs up or down, and an optional comment that only the administrator can see. Everyone else sees only the totals.</li>
       <li><b>Visit counts</b>: to see which pages are used, we record which page you opened (the home page or a country page), a random code that lasts only while that browser tab is open, and the name of the website you came from. We do not record your IP address and we do not use cookies. We do not count visits when your browser sends Do Not Track or Global Privacy Control, or when the administrator is signed in.</li>
       <li><b>Spam protection</b>: to stop abuse we keep a scrambled (hashed) form of your network address for a short time, about a day, to count how many requests come from one place. It cannot be turned back into your address.</li></ul>`},
@@ -1697,6 +1739,7 @@ function legalSections(kind, op, mail){
     {h:"Other organisations that handle data for us", html:`<ul class="know">
       <li><b>Supabase</b> stores our database and the files people upload.</li>
       <li><b>jsDelivr</b> delivers a software library the site needs, and <b>flagcdn.com</b> delivers the country flag images. Both can see your IP address and browser type when your browser asks for those files.</li>
+      <li>A <b>payment provider</b> (for example Stripe or PayPal) takes card payments for advertising on its own secure page. It receives your card details directly. We never see or store them.</li>
       <li>Our <b>web host</b> delivers the site, and an <b>email service</b> may send our updates if we use one.</li></ul>
       <p>We do not sell your information or use it for advertising. We share it only with these service providers, or when the law requires it.</p>`},
     {h:"How long we keep it", html:`<p>Posts stay until they expire or are removed. Email addresses stay until you ask us to remove them. Questions and votes are kept while they are useful and then deleted. Visit counts are kept for up to 12 months.</p>`},
@@ -1715,7 +1758,7 @@ function legalSections(kind, op, mail){
     {h:"Review and removal", html:`<p>An administrator reviews posts before they appear. We may approve, edit, reject or remove any post or uploaded file at any time, without notice. Approval does not mean we endorse a post or the person who wrote it.</p>`},
     {h:"Your content", html:`<p>You keep ownership of what you post. By posting, you give ${op} a free, non-exclusive right to show it on Isle Connect (including in lists, search and ratings) until it is removed.</p>`},
     {h:"Contact details and meeting people", html:`<p>Contact details in a post become visible to anyone who clicks to see them. Be careful with people you do not know: meet in a public place, never send money in advance, and report anything suspicious with the <b>Ask a question</b> button.</p>`},
-    {h:"Sponsored posts and ratings", html:`<p>Posts marked <b>Sponsored</b> are paid placements and are not recommendations. Visitor votes and the star rating set by the administrator are opinions, not guarantees.</p>`},
+    {h:"Sponsored posts, payments and refunds", html:`<p>Posts marked <b>Sponsored</b> are paid placements and are not recommendations. Prices are shown on the Advertise page, in US dollars. Payment is taken before a boost starts. We may decline or remove any advertisement that breaks these terms. If we decline an advertisement, or cannot run it, we refund you in full. Once a boost is live it is not refundable except at our discretion, and we do not guarantee any number of views, visits or replies.</p><p>Visitor votes and the star rating set by the administrator are opinions, not guarantees.</p>`},
     {h:"Information on the site", html:`<p>Holiday dates, event details, job and scholarship notices and other information are provided for general information. They may be incomplete or out of date, so check with the official source named or linked on the post. In an emergency, contact your local emergency services and do not rely on this site.</p>`},
     {h:"Fair use", html:`<p>Do not use automated tools to copy the site's posts or contact details in bulk, try to get around its limits, or interfere with how it works.</p>`},
     {h:"No guarantee, and limits on responsibility", html:`<p>The site is provided "as is". To the extent the law allows, ${op} is not responsible for posts written by visitors, for dealings between visitors, or for losses caused by using the site or relying on its information. Nothing here limits any right you have under the law that cannot be limited.</p>`},
@@ -1763,6 +1806,76 @@ function showAbout(){
         <li>Have a question? Tap <b>Ask a question</b> at the bottom right of any page.</li></ul></article>
     </section>`, "About", true);
 }
+/* ---------- Advertise ---------- */
+const adPayUrl = id => safeUrl(PAYMENT_LINKS[id] || "");
+function showAdvertise(query){
+  state.country = null;
+  const q = new URLSearchParams(query), focus = ["lc", "bb", "gd"];
+  const island = state.byCode[q.get("c")] ? q.get("c") : "";
+  const pkg = AD_PACKAGES.some(p => p.id === q.get("pkg")) ? q.get("pkg") : "boost30";
+  const ordered = [...focus.map(c => state.byCode[c]).filter(Boolean), ...state.countries.filter(c => !focus.includes(c.code))];
+  setView(`
+    <section class="band"><div class="wrap">
+      <a class="back" href="#/">&lsaquo; All Caribbean</a>
+      <h1>Advertise on Isle Connect</h1><div class="sub">Reach people on your island, from US$${Math.min(...AD_PACKAGES.map(p => p.price))}</div>
+    </div></section>
+    <section class="wrap about">
+      <article class="panel"><h2>Be the first thing people see</h2>
+        <p>Posting is free. A boost pins your post to the top of your island page with a gold border and a <b>Sponsored</b> tag, so people looking for jobs, food, rides and events see you first. Boosts are for businesses, events and employers.</p></article>
+      <article class="panel"><h2>Packages</h2><div class="pkgs">${AD_PACKAGES.map(p => { const pay = adPayUrl(p.id); return `
+        <div class="pkg ${p.popular ? "pop" : ""}">${p.popular ? '<span class="pop-tag">Most popular</span>' : ""}
+          <h3>${esc(p.name)}</h3><div class="price">US$${esc(p.price)}<small> for ${esc(p.per)}</small></div>
+          <p>${esc(p.blurb)}</p><p class="fit"><b>Good for:</b> ${esc(p.fit)}</p>
+          <div class="pkg-actions">${pay ? `<a class="btn accent" href="${esc(pay)}" target="_blank" rel="noopener noreferrer">Pay by card <span class="sr-only">(opens a secure payment page in a new tab)</span></a>` : ""}
+            <button class="btn ${pay ? "ghost" : ""}" type="button" data-act="adreq" data-pkg="${esc(p.id)}">Request this package</button></div></div>`; }).join("")}</div>
+        <p class="counter" style="margin:.8rem 0 0">Card payments are handled by a secure payment provider. We never see or store your card details.</p></article>
+      <article class="panel"><h2>How it works</h2><div class="steps">
+        <div class="step"><span class="num">1</span><b>Post for free</b><p>Add your business, job or event on your island page. An administrator reviews it first.</p></div>
+        <div class="step"><span class="num">2</span><b>Choose a package</b><p>Pay by card, or send the request form below and we'll reply with other ways to pay.</p></div>
+        <div class="step"><span class="num">3</span><b>We boost your post</b><p>After payment is confirmed, your post is pinned (${esc(AD_TURNAROUND)}).</p></div>
+        <div class="step"><span class="num">4</span><b>See how it did</b><p>Ask any time for a simple report of page views for your island.</p></div></div></article>
+      <article class="panel" id="request"><h2>Request a package</h2>
+        <form class="f" id="adForm" novalidate>
+          <div class="row2"><div class="field"><label for="ad-biz">Business or your name</label><input id="ad-biz" maxlength="120" autocomplete="organization" required></div>
+            <div class="field"><label for="ad-email">Email</label><input id="ad-email" type="email" maxlength="254" autocomplete="email" required></div></div>
+          <div class="row2"><div class="field"><label for="ad-island">Island</label><select id="ad-island">${ordered.map(c => `<option value="${esc(c.code)}" ${c.code === (island || "lc") ? "selected" : ""}>${esc(c.name)}</option>`).join("")}</select></div>
+            <div class="field"><label for="ad-pkg">Package</label><select id="ad-pkg">${AD_PACKAGES.map(p => `<option value="${esc(p.id)}" ${p.id === pkg ? "selected" : ""}>${esc(p.name)}, US$${esc(p.price)}</option>`).join("")}</select></div></div>
+          <div class="field"><label for="ad-post">Your post <span class="hint">(its title, if it is already on the site)</span></label><input id="ad-post" maxlength="160"></div>
+          <div class="field"><label for="ad-msg">Anything else? <span class="hint">(optional)</span></label><textarea id="ad-msg" maxlength="500" rows="3"></textarea></div>
+          <input class="hp" id="ad-web" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="err" id="ad-err" role="alert"></p>
+          <div><button class="btn accent" type="submit" id="ad-send">Send request</button></div></form></article>
+      <article class="panel"><h2>Good to know</h2><ul class="know">
+        <li>Every ad is labelled <b>Sponsored</b> and must follow the <a href="#/terms">Terms</a>. We may decline an ad that does not.</li>
+        <li>If we decline an ad, or cannot run it, you get a full refund. Once a boost is live it is not refundable, and we cannot promise a number of views or replies.</li>
+        <li>Prices are in US dollars and may change. The price you pay is the one shown when you pay.</li></ul></article>
+    </section>`, "Advertise", true);
+}
+let lastAd = 0;
+document.addEventListener("click", e => {
+  const b = e.target.closest('[data-act="adreq"]'); if (!b) return;
+  const sel = $("#ad-pkg"); if (sel) sel.value = b.dataset.pkg;
+  $("#request")?.scrollIntoView({behavior:"smooth", block:"start"}); setTimeout(() => $("#ad-biz")?.focus(), 350);
+});
+document.addEventListener("submit", async e => {
+  if (e.target.id !== "adForm") return;
+  e.preventDefault();
+  const err = $("#ad-err"), btn = $("#ad-send"); err.textContent = "";
+  if ($("#ad-web").value) return;
+  const biz = $("#ad-biz").value.trim(), email = $("#ad-email").value.trim().toLowerCase(), code = $("#ad-island").value;
+  const pk = AD_PACKAGES.find(p => p.id === $("#ad-pkg").value), post = $("#ad-post").value.trim(), msg = $("#ad-msg").value.trim();
+  if (biz.length < 2) return err.textContent = "Enter your business name or your name.";
+  if (!EMAIL_RE.test(email) || email.length > 254) return err.textContent = "Enter a valid email address so we can reply.";
+  if (!state.byCode[code] || !pk) return err.textContent = "Choose an island and a package.";
+  if (Date.now() - lastAd < 10000) return err.textContent = "Please wait a few seconds before sending another request.";
+  const question = ["ADVERTISING REQUEST", `Package: ${pk.name} (US$${pk.price}, ${pk.per})`, `Business: ${biz}`, `Island: ${state.byCode[code].name}`, post ? `Post: ${post}` : "", msg ? `Message: ${msg}` : ""].filter(Boolean).join("\n").slice(0, 1000);
+  btn.disabled = true; btn.textContent = "Sending…";
+  try {
+    await api.ask({question, email, country_code:code}); lastAd = Date.now();
+    $("#adForm").outerHTML = `<div role="status"><h3 style="font-size:1.3rem">Thank you!</h3><p>We have your request and will email ${esc(email)} ${esc(AD_TURNAROUND)} with the next step.</p></div>`;
+  } catch (ex) { console.error(ex); err.textContent = isLimited(ex) ? "You have sent several messages recently. Please try again later." : "We couldn't send that. Check your connection and try again."; btn.disabled = false; btn.textContent = "Send request"; }
+});
+
 /* ---------- Subscribe ---------- */
 function openSub(code){
   $("#sf-country").innerHTML = `<option value="">Any country</option>` + state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("");
