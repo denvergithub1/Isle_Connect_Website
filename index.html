@@ -50,6 +50,18 @@ h1:focus,h1:focus-visible{outline:none}
 .nav .link{color:#cfe3e6;text-decoration:none;font-weight:600;font-size:.92rem;padding:.5rem .7rem;border-radius:10px;background:none;border:0;cursor:pointer;font-family:inherit}
 .nav .link:hover{color:#fff;background:rgba(255,255,255,.1)}
 .nav .link,.nav .btn,.logo{white-space:nowrap}
+.langsel{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:.42rem .4rem;font:600 .8rem var(--body);cursor:pointer}
+.langsel option{color:#0b2c36}
+.langs{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.55rem}
+.lang{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:.28rem .75rem;font:600 .82rem var(--body);cursor:pointer}
+.lang[aria-pressed="true"]{background:var(--sun);color:var(--ink);border-color:var(--sun)}
+.tbar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin:.15rem 0 .35rem;font-size:.85rem}
+.tbadge{background:#e8f1ff;color:#16418a;border-radius:99px;padding:.1rem .6rem;font-weight:700;font-size:.78rem}
+.footlang{margin-bottom:.4rem}.footlang select{background:transparent;color:inherit;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:.2rem .4rem;font:inherit}
+.footlang select option{color:#0b2c36}
+.en-only{background:#fff8e1;border:1px solid #f1d98a;border-radius:12px;padding:.6rem .9rem;margin:1rem 0 0;font-size:.92rem}
+html[lang="en"] .en-only{display:none}
+@media(max-width:420px){#navAdvertise{display:none}}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;font:600 .98rem/1 var(--body);padding:.8rem 1.15rem;border-radius:12px;border:2px solid transparent;cursor:pointer;background:var(--palm);color:#fff;text-decoration:none;transition:background .15s,transform .1s}
@@ -157,6 +169,9 @@ h1:focus,h1:focus-visible{outline:none}
 .post h3{font-size:1.25rem;font-weight:700;letter-spacing:-.01em}
 .desc{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#2c4852}
 .desc.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.vshare{margin:.2rem 0 .7rem}
+.pactions{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.1rem}
+a.linkbtn.share{align-self:auto}
 .linkbtn{align-self:flex-start;background:none;border:0;padding:0;font:600 .9rem var(--body);color:var(--palm);cursor:pointer;text-decoration:underline}
 .contact{background:#eef6f2;border-radius:12px;padding:.6rem .8rem;font-size:.93rem;overflow-wrap:anywhere}
 .contact b{color:var(--palm-d)}
@@ -348,6 +363,37 @@ footer a:hover{color:#fff}
 .bc-grid .check .flag{width:24px;height:18px}
 .bc-tools{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
 
+/* Choosing islands: search first, pick one or several */
+.picker2{padding:1.2rem 0 1rem}
+.tray{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.2rem 0 .7rem}
+.tray .lbl{font-weight:700;color:var(--ink)}
+.selchip{display:inline-flex;align-items:center;gap:.45rem;background:#fff;border:1.5px solid var(--line);border-radius:99px;padding:.3rem .65rem .3rem .45rem;font:600 .92rem var(--body);color:var(--ink);cursor:pointer}
+.selchip:hover{border-color:var(--palm)}
+.selchip .flag{width:22px;height:16px;border-radius:3px}
+.selchip .x{font-size:1.15rem;line-height:1;opacity:.65}
+.results{list-style:none;padding:0;margin:.3rem 0 .8rem;display:grid;gap:.5rem}
+.res{display:flex;align-items:center;gap:.7rem;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.55rem .8rem;flex-wrap:wrap}
+.res .rname{flex:1;display:flex;align-items:center;gap:.65rem;min-width:180px}
+.res .rname .flag{width:34px;height:25px;border-radius:4px}
+.res small{color:var(--muted)}
+.pk-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;margin:.4rem 0}
+.recent a.rtext{padding:.3rem .8rem}
+.flagstack{display:flex;align-items:center}
+.flagstack .flag{margin-left:-10px;border:2px solid var(--ink);border-radius:6px;width:48px;height:36px}
+.flagstack .flag:first-child{margin-left:0}
+.ctag{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--muted);font-weight:600}
+.ctag .flag{width:20px;height:15px;border-radius:3px}
+#islandDlg .f{display:grid;gap:.8rem;padding:.2rem 1.4rem 1.4rem}
+/* Per-post statistics (admin) */
+.pstat{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem 1rem;margin:.55rem 0;color:var(--ink);font-weight:600;font-size:.92rem}
+.pstat span{white-space:nowrap}
+.pstat small{color:var(--muted);font-weight:500}
+.ptable{width:100%;border-collapse:collapse;font-size:.92rem}
+.ptable th,.ptable td{padding:.5rem .55rem;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.ptable th:first-child,.ptable td:first-child{text-align:left;white-space:normal;min-width:220px}
+.ptable td small{display:block;color:var(--muted)}
+#pstatsDlg{width:min(760px,100% - 1.5rem)}
+#pstatsDlg .f{display:grid;gap:.9rem;padding:.2rem 1.4rem 1.4rem}
 /* Footer & toast */
 footer{background:var(--ink);color:#9fc0c6;padding:1.6rem 0;font-size:.9rem;margin-top:auto}
 footer .wrap{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:space-between}
@@ -378,6 +424,7 @@ footer b{color:#fff}
       <!-- Only shown after an administrator signs in (see updateNav) -->
       <a class="link" href="#/" id="navAdmin" hidden>Review posts</a>
       <button class="link" data-act="subscribe" type="button">Get updates</button>
+      <select class="langsel" id="langSel" aria-label="Language" title="Language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="nl">NL</option></select>
       <button class="btn accent small" data-act="post" type="button">+ Post</button>
     </nav>
   </div>
@@ -388,6 +435,7 @@ footer b{color:#fff}
 <footer>
   <div class="wrap">
     <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a> &nbsp;|&nbsp; <a href="#/advertise">Advertise</a> &nbsp;|&nbsp; <a href="#/privacy">Privacy</a> &nbsp;|&nbsp; <a href="#/terms">Terms</a></div>
+    <div class="footlang"><label for="langSelF">Language:</label> <select id="langSelF"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="nl">Nederlands</option></select></div>
     <div>Silver sponsor: ThermoDen &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
   </div>
 </footer>
@@ -430,8 +478,28 @@ footer b{color:#fff}
   </form>
 </dialog>
 
+<!-- Choose islands dialog -->
+<dialog id="islandDlg" aria-labelledby="islandDlgTitle">
+  <div class="dlg-head"><h2 id="islandDlgTitle">Choose islands</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
+  <div class="f">
+    <p class="counter" style="text-align:left;margin:0">Search for an island, then press + Add. You can choose several.</p>
+    <div class="search small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.500-3.500"/></svg><label class="sr-only" for="iq">Search countries</label><input id="iq" type="search" placeholder="Search your island, e.g. Barbados" autocomplete="off"></div>
+    <div class="tray" id="itray" aria-live="polite"></div>
+    <div id="iresults" aria-live="polite"></div>
+    <div class="pk-actions"><button class="linkbtn" type="button" id="ibrowsebtn" data-pk="browse" aria-expanded="false" aria-controls="ibrowse">Browse all islands</button></div>
+    <div id="ibrowse" hidden></div>
+    <div class="form-actions"><button class="btn ghost" type="button" data-close>Cancel</button><button class="btn" type="button" id="iapply" data-pk="apply" hidden>Open</button></div>
+  </div>
+</dialog>
+
+<!-- Post statistics dialog (admin) -->
+<dialog id="pstatsDlg" data-noi18n aria-labelledby="psTitle">
+  <div class="dlg-head"><h2 id="psTitle">Post statistics</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
+  <div class="f" id="psBody"></div>
+</dialog>
+
 <!-- Edit dialog (admin) -->
-<dialog id="editDlg" aria-labelledby="editDlgTitle">
+<dialog id="editDlg" data-noi18n aria-labelledby="editDlgTitle">
   <div class="dlg-head"><h2 id="editDlgTitle">Edit post</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <form class="f" id="editForm" novalidate>
     <div class="field"><label for="ef-title">Title</label><input id="ef-title" maxlength="120" required></div>
@@ -450,7 +518,7 @@ footer b{color:#fff}
 </dialog>
 
 <!-- Boost visibility dialog (admin) -->
-<dialog id="boostDlg" aria-labelledby="boostDlgTitle">
+<dialog id="boostDlg" data-noi18n aria-labelledby="boostDlgTitle">
   <div class="dlg-head"><h2 id="boostDlgTitle">Boost visibility</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <form class="f" id="boostForm" novalidate>
     <p class="boost-info" id="bf-info"></p>
@@ -526,11 +594,10 @@ footer b{color:#fff}
    in supabase_setup.sql are what protect the data.)
    ===================================================================== */
 const CONFIG = {
-  SUPABASE_URL: "https://gbsxezbqvtsdljiehfpw.supabase.co", 
-  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdic3hlemJxdnRzZGxqaWVoZnB3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1ODk0ODYsImV4cCI6MjEwNzE2NTQ4Nn0.xea-XyckCRIfbbcfR4xExQ__AnDc0TJusv6WtoGqooc",
+  SUPABASE_URL: "....", 
+  SUPABASE_ANON_KEY: "....xea-XyckCRIfbbcfR4xExQ__AnDc0TJusv6WtoGqooc",
   MEDIA_BUCKET: "post-media"
 };
-
 
 
 /* Private address of the admin sign-in page, e.g. https://yoursite.com/#/owner-7k3q
@@ -556,7 +623,7 @@ const AUTOMATED = BLOCK_AUTOMATION && navigator.webdriver === true;
 /* Legal pages (Privacy and Terms). FILL THESE IN before you launch: they are shown on those pages. */
 const SITE_OPERATOR = "[Your name or organisation]";
 const CONTACT_EMAIL = "[your contact email address]";
-const LEGAL_UPDATED = "15 October 2026";
+const LEGAL_UPDATED = "16 October 2026";
 
 /* ---------- Advertising: edit these, then upload the file again ----------
    PAYMENT_LINKS: paste one payment link per package (Stripe Payment Links, PayPal checkout links or PayPal.me).
@@ -629,14 +696,185 @@ const store = {
   get(k, d){ try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
   set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 };
-const rtf = new Intl.RelativeTimeFormat(undefined, {numeric:"auto"});
+let rtf = new Intl.RelativeTimeFormat(undefined, {numeric:"auto"});
+
+/* ---------- Languages: each country has its own language(s); everyone can switch ----------
+   The page text is written in English. When another language is chosen, the visible interface text is swapped in place
+   from the dictionary below (visitor posts are never touched), and official posts can carry their own translations. */
+const LANGS = {en:{name:"English",locale:"en"}, es:{name:"Español",locale:"es"}, fr:{name:"Français",locale:"fr"}, nl:{name:"Nederlands",locale:"nl"}};
+/* The language people in each country most likely read and write. The first one is the default for that country's page. */
+const COUNTRY_LANGS = {cu:["es","en"], do:["es","en"], pr:["es","en"], ht:["fr","en"], gp:["fr","en"], mq:["fr","en"], aw:["nl","en"], cw:["nl","en"], sr:["nl","en"], sx:["en","nl"], bz:["en","es"]};
+let UILANG = "en";
+const countryLangs = code => COUNTRY_LANGS[code] || ["en"];
+const dateLocale = () => UILANG === "en" ? undefined : LANGS[UILANG].locale;
+/* Which language to show: your own choice for that country, else the country's own language, else your general choice. */
+function chooseLang(code){
+  const per = store.get("ic_lang_c", {}), g = store.get("ic_lang", null);
+  if (code) {
+    if (LANGS[per[code]]) return per[code];
+    const own = countryLangs(code)[0]; if (own !== "en") return own;
+    return LANGS[g] ? g : "en";
+  }
+  if (LANGS[g]) return g;
+  const b = String(navigator.language || "en").slice(0, 2).toLowerCase(); return LANGS[b] ? b : "en";
+}
+const I18N = (() => {
+  const raw = {"es":{"m":{"Isle Connect – community resources across the Caribbean":"Isle Connect: recursos comunitarios del Caribe","Countries":"Países","About":"Acerca de","Advertise":"Anunciar","Get updates":"Recibir novedades","+ Post":"+ Publicar","Privacy":"Privacidad","Terms":"Términos","Main":"Principal","Isle Connect home":"Inicio de Isle Connect","Close":"Cerrar","Language":"Idioma","Language:":"Idioma:","This page is available in English only for now.":"Esta página solo está disponible en inglés por ahora.","Loading…":"Cargando…","Sending…":"Enviando…","just now":"justo ahora","The Latest Community Posts":"Lo más reciente de la comunidad","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Empleos, comidas, transporte, avisos escolares y ayuda en emergencias, compartidos por personas de todo el Caribe. Empieza eligiendo tu isla.","Search countries":"Buscar países","Search your island, e.g. Barbados":"Busca tu isla, p. ej., Barbados","Recently visited:":"Visitados recientemente:","All Caribbean":"Todo el Caribe","Greater Antilles":"Antillas Mayores","Lesser Antilles":"Antillas Menores","Bahamas and Turks & Caicos":"Bahamas y Turcas y Caicos","Mainland Caribbean":"Caribe continental","Choose an island":"Elige una isla","Filter by region":"Filtrar por región","Get updates from your island":"Recibe novedades de tu isla","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Empleos, becas, feriados y noticias de la comunidad por correo. Puedes darte de baja cuando quieras.","Subscribe":"Suscribirme","Switch country":"Cambiar de país","Share on WhatsApp":"Compartir en WhatsApp","Search posts":"Buscar publicaciones","Filters":"Filtros","Refresh":"Actualizar","Sort by":"Ordenar por","Newest first":"Más recientes primero","Oldest first":"Más antiguas primero","Highest rated":"Mejor valoradas","Posted":"Publicado","Any time":"Cualquier fecha","Last 24 hours":"Últimas 24 horas","Last 7 days":"Últimos 7 días","Last 30 days":"Últimos 30 días","Clear all filters":"Quitar todos los filtros","Filter by category":"Filtrar por categoría","All":"Todo","Major news":"Noticias importantes","Jobs":"Empleos","Food":"Comida","Education":"Educación","Transport":"Transporte","Emergency":"Emergencias","Holiday":"Feriados","Advertisement":"Anuncios","Sports":"Deportes","Other":"Otros","Report a problem":"Reportar un problema","Nothing here yet":"Todavía no hay nada","No matching posts":"Sin publicaciones coincidentes","Try another category, relax a filter, or clear your search.":"Prueba otra categoría, relaja un filtro o borra tu búsqueda.","Clear search and filters":"Borrar búsqueda y filtros","We couldn't load the posts":"No pudimos cargar las publicaciones","Check your connection and try again.":"Revisa tu conexión e inténtalo de nuevo.","Try again":"Intentar de nuevo","Show more posts":"Mostrar más publicaciones","Automated access is not allowed":"No se permite el acceso automatizado","This page is for people. If you are one, please open it in a regular browser.":"Esta página es para personas. Si eres una, ábrela en un navegador normal.","See packages":"Ver paquetes","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Empleos nuevos, becas, feriados y avisos de la comunidad, directo a tu correo.","Sponsored":"Patrocinado","Read more":"Leer más","Source:":"Fuente:","Contact:":"Contacto:","Show contact details":"Mostrar datos de contacto","Vote on this post":"Votar esta publicación","Official notice":"Aviso oficial","Translate":"Traducir","Translate (opens Google Translate)":"Traducir (abre Google Traductor)","Translating…":"Traduciendo…","Translated":"Traducido","Machine translation":"Traducción automática","Show original":"Ver original","Show translation":"Ver traducción","This post is already in your language.":"Esta publicación ya está en tu idioma.","Couldn't translate here. Opening Google Translate instead.":"No se pudo traducir aquí. Abriendo Google Traductor.","What do you think of this post?":"¿Qué opinas de esta publicación?","Was this post helpful?":"¿Fue útil esta publicación?","🧒 Is it child-friendly?":"🧒 ¿Es apta para niños?","Brief feedback":"Comentario breve","(optional, only the admin sees it)":"(opcional, solo lo ve el administrador)","Send my vote":"Enviar mi voto","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Todos ven el recuento de pulgares arriba y abajo. Es independiente de la calificación del administrador.","✓ You have voted on this post. Thank you!":"✓ Ya votaste en esta publicación. ¡Gracias!","✓ Thank you! Your vote has been recorded.":"✓ ¡Gracias! Tu voto quedó registrado.","Please tap a thumbs up or thumbs down.":"Toca un pulgar arriba o abajo.","You have already voted on this post.":"Ya votaste en esta publicación.","Please wait a few seconds before voting on another post.":"Espera unos segundos antes de votar en otra publicación.","You have voted on a lot of posts. Please try again later.":"Has votado en muchas publicaciones. Inténtalo más tarde.","We couldn't send your vote. Check your connection and try again.":"No pudimos enviar tu voto. Revisa tu conexión e inténtalo de nuevo.","Couldn't load the contact details.":"No se pudieron cargar los datos de contacto.","You have looked up a lot of contacts. Please try again later.":"Has consultado muchos contactos. Inténtalo más tarde.","Share a post":"Comparte una publicación","Country":"País","Category":"Categoría","What do you need or offer?":"¿Qué necesitas u ofreces?","Details":"Detalles","How should people reach you?":"¿Cómo pueden contactarte?","(phone, email or WhatsApp)":"(teléfono, correo o WhatsApp)","Add a photo, audio or video (optional)":"Añade una foto, audio o video (opcional)","Photo":"Foto","(JPG, PNG, WebP – up to 5 MB)":"(JPG, PNG, WebP – hasta 5 MB)","Audio":"Audio","(MP3, WAV, M4A, OGG – up to 10 MB)":"(MP3, WAV, M4A, OGG – hasta 10 MB)","Video":"Video","(MP4, WebM or MOV – up to 25 MB)":"(MP4, WebM o MOV – hasta 25 MB)","Cancel":"Cancelar","Share post":"Publicar","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Un administrador revisa las publicaciones antes de que aparezcan en el tablón. Al publicar aceptas los","e.g. Looking for a part-time job":"p. ej., Busco un trabajo de medio tiempo","Tell people what's happening, when and where.":"Cuéntale a la gente qué pasa, cuándo y dónde.","e.g. +1 555 123 4567":"p. ej., +1 555 123 4567","Choose the country this post is for.":"Elige el país al que va dirigida esta publicación.","Add a short title (at least 3 characters).":"Añade un título corto (mínimo 3 caracteres).","Add some details so people know how to help.":"Añade algunos detalles para que la gente sepa cómo ayudar.","Please wait a few seconds before posting again.":"Espera unos segundos antes de publicar de nuevo.","Thanks! Your post will appear once an administrator has reviewed it.":"¡Gracias! Tu publicación aparecerá cuando un administrador la revise.","Get updates by email":"Recibe novedades por correo","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Empleos, becas, feriados y noticias de la comunidad de tu isla, directo a tu correo.","Email address":"Correo electrónico","(optional)":"(opcional)","What would you like to hear about?":"¿Sobre qué te gustaría recibir información?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"Acepto recibir correos de Isle Connect. Puedo pedir que me eliminen en cualquier momento. (","Enter a valid email address.":"Escribe un correo electrónico válido.","Please tick the box to agree to receive emails.":"Marca la casilla para aceptar recibir correos.","Please wait a few seconds and try again.":"Espera unos segundos e inténtalo de nuevo.","Subscribing…":"Suscribiendo…","Thanks! You're on the list.":"¡Gracias! Ya estás en la lista.","Any country":"Cualquier país","Country (optional)":"País (opcional)","Ask a question":"Haz una pregunta","We read every message":"Leemos cada mensaje","Your question":"Tu pregunta","Your email":"Tu correo","Send":"Enviar","Topics":"Temas","Close chat":"Cerrar chat","Type your question…":"Escribe tu pregunta…","Your email, so we can reply (optional)":"Tu correo, para poder responderte (opcional)","Please type your question first.":"Escribe primero tu pregunta.","That email address doesn't look right.":"Ese correo no parece correcto.","Please wait a few seconds before sending another question.":"Espera unos segundos antes de enviar otra pregunta.","Show less":"Mostrar menos","found this helpful":"lo encontró útil","say child-friendly":"dicen que es apta para niños","Cayman Islands":"Islas Caimán","Cuba":"Cuba","Dominican Republic":"República Dominicana","Haiti":"Haití","Jamaica":"Jamaica","Puerto Rico":"Puerto Rico","Anguilla":"Anguila","Antigua and Barbuda":"Antigua y Barbuda","Aruba":"Aruba","Barbados":"Barbados","British Virgin Islands":"Islas Vírgenes Británicas","Curaçao":"Curazao","Dominica":"Dominica","Grenada":"Granada","Guadeloupe":"Guadalupe","Martinique":"Martinica","Montserrat":"Montserrat","Saint Kitts and Nevis":"San Cristóbal y Nieves","Saint Lucia":"Santa Lucía","Saint Vincent and the Grenadines":"San Vicente y las Granadinas","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinidad y Tobago","U.S. Virgin Islands":"Islas Vírgenes de EE. UU.","Bahamas":"Bahamas","Turks and Caicos Islands":"Islas Turcas y Caicos","Belize":"Belice","Guyana":"Guyana","Suriname":"Surinam","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Empleos, comidas, transporte, avisos escolares y ayuda en emergencias, compartidos por personas de todo el Caribe. Busca tu isla y añade más de una si quieres.","Your islands:":"Tus islas:","Open":"Abrir","+ Add":"+ Añadir","Added":"Añadida","Browse all islands":"Ver todas las islas","Hide the list":"Ocultar la lista","Choose islands":"Elegir islas","Search for an island, then press + Add. You can choose several.":"Busca una isla y pulsa + Añadir. Puedes elegir varias.","Change islands":"Cambiar islas","Search posts in these islands":"Buscar publicaciones en estas islas","Promote your business here":"Promociona tu negocio aquí","Get updates for these islands by email":"Recibe novedades de estas islas por correo","You can choose up to 8 islands.":"Puedes elegir hasta 8 islas.","Matching posts":"Publicaciones coincidentes","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"¡Hola! 👋 Pregúntanos lo que quieras sobre empleos, becas, feriados o el uso del sitio. Deja tu correo si quieres una respuesta.","That post is no longer available.":"Esa publicación ya no está disponible."},"p":[["^\\+ Post in (.+)$","+ Publicar en $1"],["^Search posts in (.+)$","Buscar publicaciones en $1"],["^Get (.+) updates by email$","Recibe novedades de $1 por correo"],["^Promote your business in (.+)$","Promociona tu negocio en $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Fija tu publicación en la parte superior de esta página. Los impulsos empiezan en US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Nadie ha publicado en $1 todavía. Sé el primero en compartir una necesidad o una oferta."],["^1 post match your search and filters$","1 publicación coincide con tu búsqueda y filtros"],["^(\\d+) posts match your search and filters$","$1 publicaciones coinciden con tu búsqueda y filtros"],["^1 post$","1 publicación"],["^(\\d+) posts$","$1 publicaciones"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Nada coincide con “$1”. Revisa la ortografía o borra la búsqueda para ver todas las islas y países del Caribe."],["^Shown until (.+)$","Se muestra hasta el $1"],["^Closes (.+)$","Cierra el $1"],["^Posted (.+)$","Publicado $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Compartir $1 en WhatsApp (se abre en una pestaña nueva)"],["^(.+) – Isle Connect$","$1 – Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 pulgares arriba y $2 pulgares abajo"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 pulgares arriba y $2 pulgares abajo, $3 por ciento $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1 % $2 (1 voto)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1 % $2 ($3 votos)"],["^1 visitor vote so far$","1 voto de visitantes hasta ahora"],["^(\\d+) visitor votes so far$","$1 votos de visitantes hasta ahora"],["^Rated ([\\d.]+) out of 5$","Calificación $1 de 5"],["^([\\d.]+) · admin rating$","$1 · calificación del administrador"],["^Open (.+)$","Abrir $1"],["^See posts from (\\d+) islands$","Ver publicaciones de $1 islas"],["^Remove (.+)$","Quitar $1"],["^(\\d+) islands$","$1 islas"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Nada coincide con “$1”. Revisa la ortografía o elige Ver todas las islas."]]},"fr":{"m":{"Isle Connect – community resources across the Caribbean":"Isle Connect : ressources communautaires des Caraïbes","Countries":"Pays","About":"À propos","Advertise":"Annoncer","Get updates":"Recevoir les nouveautés","+ Post":"+ Publier","Privacy":"Confidentialité","Terms":"Conditions","Main":"Principal","Isle Connect home":"Accueil d'Isle Connect","Close":"Fermer","Language":"Langue","Language:":"Langue :","This page is available in English only for now.":"Cette page n'est disponible qu'en anglais pour le moment.","Loading…":"Chargement…","Sending…":"Envoi…","just now":"à l'instant","The Latest Community Posts":"Les dernières publications de la communauté","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Emplois, repas, trajets, avis scolaires et aide d'urgence, partagés par des habitants de toutes les Caraïbes. Commencez par choisir votre île.","Search countries":"Rechercher un pays","Search your island, e.g. Barbados":"Recherchez votre île, p. ex. la Barbade","Recently visited:":"Visités récemment :","All Caribbean":"Toutes les Caraïbes","Greater Antilles":"Grandes Antilles","Lesser Antilles":"Petites Antilles","Bahamas and Turks & Caicos":"Bahamas et Turks-et-Caïcos","Mainland Caribbean":"Caraïbes continentales","Choose an island":"Choisissez une île","Filter by region":"Filtrer par région","Get updates from your island":"Recevez les nouveautés de votre île","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Emplois, bourses, jours fériés et nouvelles de la communauté par e-mail. Désabonnez-vous à tout moment.","Subscribe":"S'abonner","Switch country":"Changer de pays","Share on WhatsApp":"Partager sur WhatsApp","Search posts":"Rechercher des publications","Filters":"Filtres","Refresh":"Actualiser","Sort by":"Trier par","Newest first":"Plus récentes d'abord","Oldest first":"Plus anciennes d'abord","Highest rated":"Mieux notées","Posted":"Publié","Any time":"N'importe quand","Last 24 hours":"Dernières 24 heures","Last 7 days":"7 derniers jours","Last 30 days":"30 derniers jours","Clear all filters":"Effacer tous les filtres","Filter by category":"Filtrer par catégorie","All":"Tout","Major news":"Actualités majeures","Jobs":"Emplois","Food":"Alimentation","Education":"Éducation","Transport":"Transport","Emergency":"Urgences","Holiday":"Jours fériés","Advertisement":"Annonces","Sports":"Sports","Other":"Autres","Report a problem":"Signaler un problème","Nothing here yet":"Rien pour l'instant","No matching posts":"Aucune publication correspondante","Try another category, relax a filter, or clear your search.":"Essayez une autre catégorie, assouplissez un filtre ou effacez votre recherche.","Clear search and filters":"Effacer la recherche et les filtres","We couldn't load the posts":"Impossible de charger les publications","Check your connection and try again.":"Vérifiez votre connexion et réessayez.","Try again":"Réessayer","Show more posts":"Afficher plus de publications","Automated access is not allowed":"L'accès automatisé n'est pas autorisé","This page is for people. If you are one, please open it in a regular browser.":"Cette page est destinée aux personnes. Si vous en êtes une, ouvrez-la dans un navigateur ordinaire.","See packages":"Voir les formules","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Nouveaux emplois, bourses, jours fériés et avis de la communauté, directement dans votre boîte de réception.","Sponsored":"Sponsorisé","Read more":"Lire la suite","Source:":"Source :","Contact:":"Contact :","Show contact details":"Afficher les coordonnées","Vote on this post":"Voter pour cette publication","Official notice":"Avis officiel","Translate":"Traduire","Translate (opens Google Translate)":"Traduire (ouvre Google Traduction)","Translating…":"Traduction en cours…","Translated":"Traduit","Machine translation":"Traduction automatique","Show original":"Voir l'original","Show translation":"Voir la traduction","This post is already in your language.":"Cette publication est déjà dans votre langue.","Couldn't translate here. Opening Google Translate instead.":"Traduction impossible ici. Ouverture de Google Traduction.","What do you think of this post?":"Que pensez-vous de cette publication ?","Was this post helpful?":"Cette publication vous a-t-elle été utile ?","🧒 Is it child-friendly?":"🧒 Convient-elle aux enfants ?","Brief feedback":"Commentaire bref","(optional, only the admin sees it)":"(facultatif, seul l'administrateur le voit)","Send my vote":"Envoyer mon vote","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Tout le monde voit le nombre de pouces levés et baissés. C'est distinct de la note de l'administrateur.","✓ You have voted on this post. Thank you!":"✓ Vous avez déjà voté pour cette publication. Merci !","✓ Thank you! Your vote has been recorded.":"✓ Merci ! Votre vote a été enregistré.","Please tap a thumbs up or thumbs down.":"Touchez un pouce levé ou baissé.","You have already voted on this post.":"Vous avez déjà voté pour cette publication.","Please wait a few seconds before voting on another post.":"Patientez quelques secondes avant de voter pour une autre publication.","You have voted on a lot of posts. Please try again later.":"Vous avez voté pour beaucoup de publications. Réessayez plus tard.","We couldn't send your vote. Check your connection and try again.":"Impossible d'envoyer votre vote. Vérifiez votre connexion et réessayez.","Couldn't load the contact details.":"Impossible de charger les coordonnées.","You have looked up a lot of contacts. Please try again later.":"Vous avez consulté beaucoup de contacts. Réessayez plus tard.","Share a post":"Partagez une publication","Country":"Pays","Category":"Catégorie","What do you need or offer?":"De quoi avez-vous besoin ou que proposez-vous ?","Details":"Détails","How should people reach you?":"Comment peut-on vous joindre ?","(phone, email or WhatsApp)":"(téléphone, e-mail ou WhatsApp)","Add a photo, audio or video (optional)":"Ajoutez une photo, un audio ou une vidéo (facultatif)","Photo":"Photo","(JPG, PNG, WebP – up to 5 MB)":"(JPG, PNG, WebP – jusqu'à 5 Mo)","Audio":"Audio","(MP3, WAV, M4A, OGG – up to 10 MB)":"(MP3, WAV, M4A, OGG – jusqu'à 10 Mo)","Video":"Vidéo","(MP4, WebM or MOV – up to 25 MB)":"(MP4, WebM ou MOV – jusqu'à 25 Mo)","Cancel":"Annuler","Share post":"Publier","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Un administrateur vérifie les publications avant qu'elles n'apparaissent sur le tableau. En publiant, vous acceptez les","e.g. Looking for a part-time job":"p. ex. Je cherche un emploi à temps partiel","Tell people what's happening, when and where.":"Dites aux gens ce qui se passe, quand et où.","e.g. +1 555 123 4567":"p. ex. +1 555 123 4567","Choose the country this post is for.":"Choisissez le pays concerné par cette publication.","Add a short title (at least 3 characters).":"Ajoutez un titre court (3 caractères minimum).","Add some details so people know how to help.":"Ajoutez quelques détails pour que les gens sachent comment aider.","Please wait a few seconds before posting again.":"Patientez quelques secondes avant de publier à nouveau.","Thanks! Your post will appear once an administrator has reviewed it.":"Merci ! Votre publication apparaîtra dès qu'un administrateur l'aura vérifiée.","Get updates by email":"Recevez les nouveautés par e-mail","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Emplois, bourses, jours fériés et nouvelles de la communauté de votre île, directement dans votre boîte de réception.","Email address":"Adresse e-mail","(optional)":"(facultatif)","What would you like to hear about?":"Sur quels sujets souhaitez-vous être informé(e) ?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"J'accepte de recevoir des e-mails d'Isle Connect. Je peux demander à être retiré(e) à tout moment. (","Enter a valid email address.":"Saisissez une adresse e-mail valide.","Please tick the box to agree to receive emails.":"Cochez la case pour accepter de recevoir des e-mails.","Please wait a few seconds and try again.":"Patientez quelques secondes et réessayez.","Subscribing…":"Inscription…","Thanks! You're on the list.":"Merci ! Vous êtes inscrit(e).","Any country":"Tous les pays","Country (optional)":"Pays (facultatif)","Ask a question":"Poser une question","We read every message":"Nous lisons chaque message","Your question":"Votre question","Your email":"Votre e-mail","Send":"Envoyer","Topics":"Sujets","Close chat":"Fermer le chat","Type your question…":"Saisissez votre question…","Your email, so we can reply (optional)":"Votre e-mail, pour que nous puissions répondre (facultatif)","Please type your question first.":"Saisissez d'abord votre question.","That email address doesn't look right.":"Cette adresse e-mail ne semble pas correcte.","Please wait a few seconds before sending another question.":"Patientez quelques secondes avant d'envoyer une autre question.","Show less":"Voir moins","found this helpful":"l'ont trouvée utile","say child-friendly":"estiment qu'elle convient aux enfants","Cayman Islands":"Îles Caïmans","Cuba":"Cuba","Dominican Republic":"République dominicaine","Haiti":"Haïti","Jamaica":"Jamaïque","Puerto Rico":"Porto Rico","Anguilla":"Anguilla","Antigua and Barbuda":"Antigua-et-Barbuda","Aruba":"Aruba","Barbados":"Barbade","British Virgin Islands":"Îles Vierges britanniques","Curaçao":"Curaçao","Dominica":"Dominique","Grenada":"Grenade","Guadeloupe":"Guadeloupe","Martinique":"Martinique","Montserrat":"Montserrat","Saint Kitts and Nevis":"Saint-Christophe-et-Niévès","Saint Lucia":"Sainte-Lucie","Saint Vincent and the Grenadines":"Saint-Vincent-et-les-Grenadines","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinité-et-Tobago","U.S. Virgin Islands":"Îles Vierges des États-Unis","Bahamas":"Bahamas","Turks and Caicos Islands":"Îles Turques-et-Caïques","Belize":"Belize","Guyana":"Guyana","Suriname":"Suriname","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Emplois, repas, trajets, avis scolaires et aide d'urgence, partagés par des habitants de toute la Caraïbe. Cherchez votre île et ajoutez-en plusieurs si vous le souhaitez.","Your islands:":"Vos îles :","Open":"Ouvrir","+ Add":"+ Ajouter","Added":"Ajoutée","Browse all islands":"Voir toutes les îles","Hide the list":"Masquer la liste","Choose islands":"Choisir des îles","Search for an island, then press + Add. You can choose several.":"Cherchez une île, puis appuyez sur + Ajouter. Vous pouvez en choisir plusieurs.","Change islands":"Changer d'îles","Search posts in these islands":"Rechercher dans les publications de ces îles","Promote your business here":"Promouvez votre entreprise ici","Get updates for these islands by email":"Recevez par e-mail les nouveautés de ces îles","You can choose up to 8 islands.":"Vous pouvez choisir jusqu'à 8 îles.","Matching posts":"Publications correspondantes","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"Bonjour ! 👋 Posez-nous vos questions sur les emplois, les bourses, les jours fériés ou l'utilisation du site. Laissez votre e-mail si vous souhaitez une réponse.","That post is no longer available.":"Cette publication n'est plus disponible."},"p":[["^\\+ Post in (.+)$","+ Publier — $1"],["^Search posts in (.+)$","Rechercher des publications : $1"],["^Get (.+) updates by email$","Recevez les nouveautés de $1 par e-mail"],["^Promote your business in (.+)$","Promouvez votre entreprise : $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Épinglez votre publication en haut de cette page. Les mises en avant commencent à US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Personne n'a encore publié pour $1. Soyez le premier à partager un besoin ou une offre."],["^1 post match your search and filters$","1 publication correspond à votre recherche et à vos filtres"],["^(\\d+) posts match your search and filters$","$1 publications correspondent à votre recherche et à vos filtres"],["^1 post$","1 publication"],["^(\\d+) posts$","$1 publications"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Aucun résultat pour « $1 ». Vérifiez l'orthographe ou effacez la recherche pour voir toutes les îles et tous les pays des Caraïbes."],["^Shown until (.+)$","Affiché jusqu'au $1"],["^Closes (.+)$","Se termine le $1"],["^Posted (.+)$","Publié $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Partager $1 sur WhatsApp (s'ouvre dans un nouvel onglet)"],["^(.+) – Isle Connect$","$1 – Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 pouces levés et $2 pouces baissés"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 pouces levés et $2 pouces baissés, $3 pour cent $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1 % $2 (1 vote)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1 % $2 ($3 votes)"],["^1 visitor vote so far$","1 vote de visiteur pour l'instant"],["^(\\d+) visitor votes so far$","$1 votes de visiteurs pour l'instant"],["^Rated ([\\d.]+) out of 5$","Noté $1 sur 5"],["^([\\d.]+) · admin rating$","$1 · note de l'administrateur"],["^Open (.+)$","Ouvrir $1"],["^See posts from (\\d+) islands$","Voir les publications de $1 îles"],["^Remove (.+)$","Retirer $1"],["^(\\d+) islands$","$1 îles"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Aucun résultat pour « $1 ». Vérifiez l'orthographe ou choisissez Voir toutes les îles."]]},"nl":{"m":{"Isle Connect – community resources across the Caribbean":"Isle Connect: lokale hulp en nieuws in het Caribisch gebied","Countries":"Landen","About":"Over ons","Advertise":"Adverteren","Get updates":"Updates ontvangen","+ Post":"+ Plaatsen","Privacy":"Privacy","Terms":"Voorwaarden","Main":"Hoofdmenu","Isle Connect home":"Startpagina van Isle Connect","Close":"Sluiten","Language":"Taal","Language:":"Taal:","This page is available in English only for now.":"Deze pagina is voorlopig alleen in het Engels beschikbaar.","Loading…":"Laden…","Sending…":"Versturen…","just now":"zojuist","The Latest Community Posts":"Het laatste nieuws uit de gemeenschap","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Banen, maaltijden, ritten, schoolberichten en noodhulp, gedeeld door mensen uit het hele Caribisch gebied. Begin met het kiezen van je eiland.","Search countries":"Landen zoeken","Search your island, e.g. Barbados":"Zoek je eiland, bijv. Barbados","Recently visited:":"Onlangs bezocht:","All Caribbean":"Heel het Caribisch gebied","Greater Antilles":"Grote Antillen","Lesser Antilles":"Kleine Antillen","Bahamas and Turks & Caicos":"Bahama's en Turks- en Caicoseilanden","Mainland Caribbean":"Caribisch vasteland","Choose an island":"Kies een eiland","Filter by region":"Filteren op regio","Get updates from your island":"Ontvang updates uit je eiland","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Banen, beurzen, feestdagen en nieuws uit de gemeenschap per e-mail. Je kunt je op elk moment afmelden.","Subscribe":"Aanmelden","Switch country":"Ander land kiezen","Share on WhatsApp":"Delen via WhatsApp","Search posts":"Berichten zoeken","Filters":"Filters","Refresh":"Vernieuwen","Sort by":"Sorteren op","Newest first":"Nieuwste eerst","Oldest first":"Oudste eerst","Highest rated":"Hoogst beoordeeld","Posted":"Geplaatst","Any time":"Op elk moment","Last 24 hours":"Laatste 24 uur","Last 7 days":"Laatste 7 dagen","Last 30 days":"Laatste 30 dagen","Clear all filters":"Alle filters wissen","Filter by category":"Filteren op categorie","All":"Alles","Major news":"Groot nieuws","Jobs":"Vacatures","Food":"Eten","Education":"Onderwijs","Transport":"Vervoer","Emergency":"Noodgevallen","Holiday":"Feestdagen","Advertisement":"Advertenties","Sports":"Sport","Other":"Overig","Report a problem":"Een probleem melden","Nothing here yet":"Nog niets hier","No matching posts":"Geen overeenkomende berichten","Try another category, relax a filter, or clear your search.":"Probeer een andere categorie, versoepel een filter of wis je zoekopdracht.","Clear search and filters":"Zoekopdracht en filters wissen","We couldn't load the posts":"We konden de berichten niet laden","Check your connection and try again.":"Controleer je verbinding en probeer het opnieuw.","Try again":"Opnieuw proberen","Show more posts":"Meer berichten tonen","Automated access is not allowed":"Geautomatiseerde toegang is niet toegestaan","This page is for people. If you are one, please open it in a regular browser.":"Deze pagina is voor mensen. Ben je er een, open haar dan in een gewone browser.","See packages":"Pakketten bekijken","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Nieuwe banen, beurzen, feestdagen en mededelingen uit de gemeenschap, rechtstreeks in je inbox.","Sponsored":"Gesponsord","Read more":"Lees meer","Source:":"Bron:","Contact:":"Contact:","Show contact details":"Contactgegevens tonen","Vote on this post":"Stem op dit bericht","Official notice":"Officiële mededeling","Translate":"Vertalen","Translate (opens Google Translate)":"Vertalen (opent Google Translate)","Translating…":"Vertalen…","Translated":"Vertaald","Machine translation":"Automatische vertaling","Show original":"Origineel tonen","Show translation":"Vertaling tonen","This post is already in your language.":"Dit bericht staat al in jouw taal.","Couldn't translate here. Opening Google Translate instead.":"Vertalen lukt hier niet. Google Translate wordt geopend.","What do you think of this post?":"Wat vind je van dit bericht?","Was this post helpful?":"Was dit bericht nuttig?","🧒 Is it child-friendly?":"🧒 Is het kindvriendelijk?","Brief feedback":"Korte reactie","(optional, only the admin sees it)":"(optioneel, alleen de beheerder ziet het)","Send my vote":"Mijn stem versturen","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Iedereen ziet het aantal duimen omhoog en omlaag. Dit staat los van de beoordeling van de beheerder.","✓ You have voted on this post. Thank you!":"✓ Je hebt al gestemd op dit bericht. Bedankt!","✓ Thank you! Your vote has been recorded.":"✓ Bedankt! Je stem is opgeslagen.","Please tap a thumbs up or thumbs down.":"Tik op een duim omhoog of omlaag.","You have already voted on this post.":"Je hebt al op dit bericht gestemd.","Please wait a few seconds before voting on another post.":"Wacht een paar seconden voordat je op een ander bericht stemt.","You have voted on a lot of posts. Please try again later.":"Je hebt op veel berichten gestemd. Probeer het later opnieuw.","We couldn't send your vote. Check your connection and try again.":"We konden je stem niet versturen. Controleer je verbinding en probeer het opnieuw.","Couldn't load the contact details.":"De contactgegevens konden niet worden geladen.","You have looked up a lot of contacts. Please try again later.":"Je hebt veel contactgegevens opgevraagd. Probeer het later opnieuw.","Share a post":"Deel een bericht","Country":"Land","Category":"Categorie","What do you need or offer?":"Wat zoek of bied je aan?","Details":"Details","How should people reach you?":"Hoe kunnen mensen je bereiken?","(phone, email or WhatsApp)":"(telefoon, e-mail of WhatsApp)","Add a photo, audio or video (optional)":"Voeg een foto, audio of video toe (optioneel)","Photo":"Foto","(JPG, PNG, WebP – up to 5 MB)":"(JPG, PNG, WebP – tot 5 MB)","Audio":"Audio","(MP3, WAV, M4A, OGG – up to 10 MB)":"(MP3, WAV, M4A, OGG – tot 10 MB)","Video":"Video","(MP4, WebM or MOV – up to 25 MB)":"(MP4, WebM of MOV – tot 25 MB)","Cancel":"Annuleren","Share post":"Bericht plaatsen","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Een beheerder controleert berichten voordat ze op het prikbord verschijnen. Door te plaatsen ga je akkoord met de","e.g. Looking for a part-time job":"bijv. Ik zoek een bijbaan","Tell people what's happening, when and where.":"Vertel mensen wat er gebeurt, wanneer en waar.","e.g. +1 555 123 4567":"bijv. +1 555 123 4567","Choose the country this post is for.":"Kies het land waarvoor dit bericht bedoeld is.","Add a short title (at least 3 characters).":"Voeg een korte titel toe (minstens 3 tekens).","Add some details so people know how to help.":"Voeg wat details toe zodat mensen weten hoe ze kunnen helpen.","Please wait a few seconds before posting again.":"Wacht een paar seconden voordat je opnieuw plaatst.","Thanks! Your post will appear once an administrator has reviewed it.":"Bedankt! Je bericht verschijnt zodra een beheerder het heeft gecontroleerd.","Get updates by email":"Ontvang updates per e-mail","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Banen, beurzen, feestdagen en nieuws uit de gemeenschap van je eiland, rechtstreeks in je inbox.","Email address":"E-mailadres","(optional)":"(optioneel)","What would you like to hear about?":"Waarover wil je berichten ontvangen?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"Ik ga akkoord met het ontvangen van e-mails van Isle Connect. Ik kan me op elk moment laten verwijderen. (","Enter a valid email address.":"Voer een geldig e-mailadres in.","Please tick the box to agree to receive emails.":"Vink het vakje aan om te akkoord te gaan met het ontvangen van e-mails.","Please wait a few seconds and try again.":"Wacht een paar seconden en probeer het opnieuw.","Subscribing…":"Aanmelden…","Thanks! You're on the list.":"Bedankt! Je staat op de lijst.","Any country":"Elk land","Country (optional)":"Land (optioneel)","Ask a question":"Stel een vraag","We read every message":"We lezen elk bericht","Your question":"Je vraag","Your email":"Je e-mail","Send":"Versturen","Topics":"Onderwerpen","Close chat":"Chat sluiten","Type your question…":"Typ je vraag…","Your email, so we can reply (optional)":"Je e-mail, zodat we kunnen antwoorden (optioneel)","Please type your question first.":"Typ eerst je vraag.","That email address doesn't look right.":"Dat e-mailadres lijkt niet te kloppen.","Please wait a few seconds before sending another question.":"Wacht een paar seconden voordat je nog een vraag verstuurt.","Show less":"Minder tonen","found this helpful":"vonden dit nuttig","say child-friendly":"vinden het kindvriendelijk","Cayman Islands":"Kaaimaneilanden","Cuba":"Cuba","Dominican Republic":"Dominicaanse Republiek","Haiti":"Haïti","Jamaica":"Jamaica","Puerto Rico":"Puerto Rico","Anguilla":"Anguilla","Antigua and Barbuda":"Antigua en Barbuda","Aruba":"Aruba","Barbados":"Barbados","British Virgin Islands":"Britse Maagdeneilanden","Curaçao":"Curaçao","Dominica":"Dominica","Grenada":"Grenada","Guadeloupe":"Guadeloupe","Martinique":"Martinique","Montserrat":"Montserrat","Saint Kitts and Nevis":"Saint Kitts en Nevis","Saint Lucia":"Saint Lucia","Saint Vincent and the Grenadines":"Saint Vincent en de Grenadines","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinidad en Tobago","U.S. Virgin Islands":"Amerikaanse Maagdeneilanden","Bahamas":"Bahama's","Turks and Caicos Islands":"Turks- en Caicoseilanden","Belize":"Belize","Guyana":"Guyana","Suriname":"Suriname","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Banen, maaltijden, ritten, schoolberichten en noodhulp, gedeeld door mensen in het hele Caribisch gebied. Zoek je eiland en voeg er gerust meer dan één toe.","Your islands:":"Jouw eilanden:","Open":"Openen","+ Add":"+ Toevoegen","Added":"Toegevoegd","Browse all islands":"Alle eilanden bekijken","Hide the list":"Lijst verbergen","Choose islands":"Eilanden kiezen","Search for an island, then press + Add. You can choose several.":"Zoek een eiland en druk op + Toevoegen. Je kunt er meerdere kiezen.","Change islands":"Eilanden wijzigen","Search posts in these islands":"Zoek berichten op deze eilanden","Promote your business here":"Promoot je bedrijf hier","Get updates for these islands by email":"Ontvang nieuws over deze eilanden per e-mail","You can choose up to 8 islands.":"Je kunt maximaal 8 eilanden kiezen.","Matching posts":"Overeenkomende berichten","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"Hoi! 👋 Vraag ons alles over banen, beurzen, feestdagen of het gebruik van de site. Laat je e-mailadres achter als je antwoord wilt.","That post is no longer available.":"Dat bericht is niet meer beschikbaar."},"p":[["^\\+ Post in (.+)$","+ Plaatsen in $1"],["^Search posts in (.+)$","Berichten zoeken in $1"],["^Get (.+) updates by email$","Ontvang updates uit $1 per e-mail"],["^Promote your business in (.+)$","Promoot je bedrijf in $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Zet je bericht bovenaan deze pagina. Boosts beginnen bij US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Er heeft nog niemand iets geplaatst in $1. Wees de eerste die een vraag of aanbod deelt."],["^1 post match your search and filters$","1 bericht komt overeen met je zoekopdracht en filters"],["^(\\d+) posts match your search and filters$","$1 berichten komen overeen met je zoekopdracht en filters"],["^1 post$","1 bericht"],["^(\\d+) posts$","$1 berichten"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Niets komt overeen met “$1”. Controleer de spelling of wis de zoekopdracht om alle eilanden en landen van het Caribisch gebied te zien."],["^Shown until (.+)$","Zichtbaar tot $1"],["^Closes (.+)$","Sluit op $1"],["^Posted (.+)$","Geplaatst $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Deel $1 via WhatsApp (opent in een nieuw tabblad)"],["^(.+) – Isle Connect$","$1 – Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 duimen omhoog en $2 duimen omlaag"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 duimen omhoog en $2 duimen omlaag, $3 procent $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1% $2 (1 stem)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1% $2 ($3 stemmen)"],["^1 visitor vote so far$","1 stem van bezoekers tot nu toe"],["^(\\d+) visitor votes so far$","$1 stemmen van bezoekers tot nu toe"],["^Rated ([\\d.]+) out of 5$","Beoordeeld met $1 van 5"],["^([\\d.]+) · admin rating$","$1 · beoordeling beheerder"],["^Open (.+)$","$1 openen"],["^See posts from (\\d+) islands$","Berichten van $1 eilanden bekijken"],["^Remove (.+)$","$1 verwijderen"],["^(\\d+) islands$","$1 eilanden"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Niets gevonden voor “$1”. Controleer de spelling of kies Alle eilanden bekijken."]]}};
+  for (const l in raw) raw[l].p = raw[l].p.map(([r, t]) => [new RegExp(r), t]);
+  return raw;
+})();
+const hasOwn = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+const norm = s => String(s).replace(/[\s\u00a0]+/g, " ").trim();
+function trStr(s, lang = UILANG){
+  const d = I18N[lang]; if (!d) return null;
+  const n = norm(s); if (!n) return null;
+  if (hasOwn(d.m, n)) return d.m[n];
+  const fill = (t, m) => t.replace(/\$(\d)/g, (_, i) => { const g = m[+i]; return g == null ? "" : (trStr(g, lang) ?? g); });
+  for (const [re, t] of d.p) { const m = n.match(re); if (m) return fill(t, m); }
+  const mm = n.match(/^([^\p{L}\p{N}]*)(.*?)([^\p{L}\p{N}]*)$/u);
+  if (mm && mm[2] && mm[2] !== n) {
+    const core = mm[2];
+    if (hasOwn(d.m, core)) return mm[1] + d.m[core] + mm[3];
+    for (const [re, t] of d.p) { const m = core.match(re); if (m) return mm[1] + fill(t, m) + mm[3]; }
+  }
+  return null;
+}
+const trName = name => (UILANG !== "en" && I18N[UILANG] && hasOwn(I18N[UILANG].m, name)) ? I18N[UILANG].m[name] : name;
+const I18N_ATTRS = ["placeholder", "aria-label", "title", "alt"];
+const origText = new WeakMap(), origAttr = new WeakMap();
+/* Never translate: visitor-written text, the admin screens, scripts. A banner inside an English-only page can opt back in. */
+function i18nSkip(el, forAttr){
+  if (!el) return true;
+  if (el.closest(forAttr ? "script,style,pre,code" : "script,style,textarea,pre,code")) return true;
+  const s = el.closest("[data-ugc],.admin,[data-noi18n]"); if (!s) return false;
+  const f = el.closest("[data-i18n-force]"); return !(f && s.contains(f));
+}
+const withSpace = (base, out) => base.match(/^[\s\u00a0]*/)[0] + out + base.match(/[\s\u00a0]*$/)[0];
+function i18nAttrs(el){
+  for (const a of I18N_ATTRS) {
+    if (!el.hasAttribute(a)) continue;
+    let rec = origAttr.get(el); const cur = el.getAttribute(a), r = rec && rec[a];
+    const base = r && (cur === r.base || cur === r.last) ? r.base : cur;
+    const out = UILANG === "en" ? null : trStr(base);
+    if (out != null) { if (!rec) origAttr.set(el, rec = {}); rec[a] = {base, last:out}; if (cur !== out) el.setAttribute(a, out); }
+    else if (r) { if (cur !== base && (cur === r.last)) el.setAttribute(a, base); delete rec[a]; }
+  }
+}
+function i18nApply(root){
+  if (!root || !root.isConnected) return;
+  const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), nodes = []; let n;
+  while ((n = tw.nextNode())) nodes.push(n);
+  for (const t of nodes) {
+    if (i18nSkip(t.parentElement)) continue;
+    const rec = origText.get(t), cur = t.nodeValue;
+    const base = rec && (cur === rec.base || cur === rec.last) ? rec.base : cur;     // text the app changed itself counts as new English
+    if (!/\p{L}/u.test(base)) { if (rec) origText.delete(t); continue; }
+    const out = UILANG === "en" ? null : trStr(base);
+    if (out != null) { const val = withSpace(base, out); origText.set(t, {base, last:val}); if (cur !== val) t.nodeValue = val; }
+    else if (rec) { if (cur === rec.last && cur !== base) t.nodeValue = base; origText.delete(t); }
+  }
+  const els = root.nodeType === 1 ? [root, ...root.querySelectorAll(I18N_ATTRS.map(a => `[${a}]`).join(","))] : [];
+  for (const el of els) if (!i18nSkip(el, true)) i18nAttrs(el);
+}
+let i18nBusy = false;
+const i18nObs = new MutationObserver(muts => {
+  if (i18nBusy) return;
+  i18nBusy = true;
+  try {
+    const roots = new Set();
+    for (const m of muts) {
+      if (m.type === "childList") m.addedNodes.forEach(x => roots.add(x.nodeType === 1 ? x : x.parentElement));
+      else if (m.type === "characterData") roots.add(m.target.parentElement);
+      else roots.add(m.target);
+    }
+    if (UILANG !== "en") roots.forEach(r => r && i18nApply(r));
+  } finally { i18nObs.takeRecords(); i18nBusy = false; }
+});
+function i18nStart(){ i18nObs.observe(document.documentElement, {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:I18N_ATTRS}); }
+function translateAll(){ i18nBusy = true; try { i18nApply(document.body); } finally { i18nObs.takeRecords(); i18nBusy = false; } }
+function syncLangUI(){
+  document.documentElement.lang = LANGS[UILANG].locale;
+  rtf = new Intl.RelativeTimeFormat(dateLocale(), {numeric:"auto"});
+  for (const id of ["#langSel", "#langSelF"]) { const s = $(id); if (s) s.value = UILANG; }
+}
+/* Switch language. Everything on screen is rebuilt from the English templates (without counting a new page view), then translated. */
+/* Island pages: #/c/lc, #/c/bb,gd (several) and #/c/lc?p=<post id> (opens that one post) */
+const COUNTRY_HASH = /^#\/c\/([a-z]{2}(?:,[a-z]{2}){0,7})(?:\?p=([\w-]{1,64}))?$/;
+function setLang(lang, scope){
+  if (!LANGS[lang]) lang = "en";
+  const m0 = location.hash.match(COUNTRY_HASH), m = m0 && [m0[0], m0[1].slice(0, 2)];
+  if (scope === "global") { store.set("ic_lang", lang); if (m) { const per = store.get("ic_lang_c", {}); per[m[1]] = lang; store.set("ic_lang_c", per); } }
+  else if (m) { const per = store.get("ic_lang_c", {}); per[m[1]] = lang; store.set("ic_lang_c", per); }
+  UILANG = lang; syncLangUI();
+  if (location.hash !== "#/" + ADMIN_PATH) { state.silent = true; try { route(); } finally { state.silent = false; } }
+  translateAll();
+}
+const langOrder = code => { const own = countryLangs(code); return [...own, ...Object.keys(LANGS).filter(l => !own.includes(l))]; };
+const langPills = c => `<div class="langs" role="group" aria-label="Language">${langOrder(c.code).map(l => `<button class="lang" type="button" data-lang="${l}" lang="${l}" aria-pressed="${l === UILANG}">${LANGS[l].name}</button>`).join("")}</div>`;
+/* ----- post translations: official posts carry their own (translations column); any post can be machine-translated on request ----- */
+function postView(p){
+  state.mt = state.mt || {}; state.orig = state.orig || {};
+  const t = p.translations && typeof p.translations === "object" ? p.translations[UILANG] : null;
+  const official = t && typeof t.title === "string" && typeof t.description === "string" ? t : null;
+  const x = official || state.mt[p.id + ":" + UILANG] || null;
+  if (!x) return {title:p.title, description:p.description, kind:null};
+  if (state.orig[p.id]) return {title:p.title, description:p.description, kind:"original"};
+  return {title:x.title, description:x.description, kind:official ? "official" : "machine"};
+}
+const gtUrl = p => "https://translate.google.com/?sl=auto&tl=" + UILANG + "&op=translate&text=" + encodeURIComponent((p.title + "\n\n" + p.description).slice(0, 1800));
+const deviceCanTranslate = () => typeof self.Translator !== "undefined";
+function transBar(p, v){
+  if (v.kind === "official") return `<div class="tbar"><span class="tbadge">🌐 Translated</span><button class="linkbtn" type="button" data-act="orig">Show original</button></div>`;
+  if (v.kind === "machine") return `<div class="tbar"><span class="tbadge">🌐 Machine translation</span><button class="linkbtn" type="button" data-act="orig">Show original</button></div>`;
+  if (v.kind === "original") return `<div class="tbar"><button class="linkbtn" type="button" data-act="orig">Show translation</button></div>`;
+  if (UILANG === countryLangs(p.country_code)[0]) return "";   // already the language people there normally write in
+  return `<div class="tbar">${deviceCanTranslate()
+    ? `<button class="linkbtn" type="button" data-act="mt">🌐 Translate</button>`
+    : `<a class="linkbtn" href="${esc(gtUrl(p))}" ${NEWWIN}>🌐 Translate (opens Google Translate)</a>`}</div>`;
+}
+async function deviceTranslate(p){
+  const target = UILANG; let source = countryLangs(p.country_code)[0];
+  if (typeof self.LanguageDetector !== "undefined") {
+    try { const det = await self.LanguageDetector.create(); const r = await det.detect(p.title + ". " + p.description); if (r && r[0] && r[0].detectedLanguage && r[0].confidence > 0.5) source = r[0].detectedLanguage; } catch {}
+  }
+  if (source === target) return {same:true};
+  const o = {sourceLanguage:source, targetLanguage:target};
+  if ((await self.Translator.availability(o)) === "unavailable") throw new Error("unavailable");
+  const tr = await self.Translator.create(o);
+  return {title:await tr.translate(p.title), description:await tr.translate(p.description)};
+}
+function refreshPost(pid){
+  const p = state.posts.find(x => String(x.id) === String(pid)); if (!p) return;
+  const card = [...document.querySelectorAll(".post[data-pid]")].find(c => c.dataset.pid === String(pid));
+  if (card) card.outerHTML = postCard(p);
+  if ($("#viewDlg").open && $("#vd-body").dataset.pid === String(pid)) openView(pid);
+}
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-lang],[data-act=\"orig\"],[data-act=\"mt\"]"); if (!b) return;
+  if (b.dataset.lang) { e.preventDefault(); setLang(b.dataset.lang, "country"); return; }
+  const pid = b.closest(".post[data-pid]")?.dataset.pid || ($("#viewDlg").open ? $("#vd-body").dataset.pid : null); if (!pid) return;
+  const p = state.posts.find(x => String(x.id) === String(pid)); if (!p) return;
+  state.mt = state.mt || {}; state.orig = state.orig || {};
+  if (b.dataset.act === "orig") { state.orig[pid] = !state.orig[pid]; refreshPost(pid); return; }
+  b.disabled = true; b.textContent = "Translating…";
+  try {
+    const r = await deviceTranslate(p);
+    if (r.same) { toast("This post is already in your language."); b.disabled = false; b.textContent = "🌐 Translate"; return; }
+    state.mt[pid + ":" + UILANG] = {title:r.title, description:r.description}; state.orig[pid] = false; refreshPost(pid);
+  } catch (ex) {
+    console.error(ex); toast("Couldn't translate here. Opening Google Translate instead.", "error");
+    window.open(gtUrl(p), "_blank", "noopener,noreferrer"); b.disabled = false; b.textContent = "🌐 Translate";
+  }
+});
+document.addEventListener("change", e => { if (e.target.id === "langSel" || e.target.id === "langSelF") setLang(e.target.value, "global"); });
+
 function ago(iso){
   const s = (new Date(iso) - Date.now()) / 1000, a = Math.abs(s);
   if (a < 60) return "just now";
   if (a < 3600) return rtf.format(Math.round(s/60), "minute");
   if (a < 86400) return rtf.format(Math.round(s/3600), "hour");
   if (a < 2592000) return rtf.format(Math.round(s/86400), "day");
-  return new Date(iso).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+  return new Date(iso).toLocaleDateString(dateLocale(),{year:"numeric",month:"short",day:"numeric"});
 }
 /* Turn web addresses, emails and phone numbers inside contact text into links.
    Web addresses (with or without https://) and emails open in a new window/tab. */
@@ -644,7 +882,7 @@ const CONTACT_RE = /(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)|([A-Za-z0-9._%+-]+@[A-
 const NEWWIN = 'target="_blank" rel="noopener noreferrer"';
 /* Links are made clickable ONLY in administrator-written "Major news" posts. Visitor posts always stay plain text. */
 const linkNews = escaped => escaped.replace(/https:\/\/[^\s<"]+[^\s<".,;:!?)\]]/g, u => `<a href="${u}" ${NEWWIN}>${u}</a>`);
-const descHtml = p => p.category === "Major news" ? linkNews(esc(p.description || "")) : esc(p.description || "");
+const descHtml = (p, text) => { const d = text ?? p.description ?? ""; return p.category === "Major news" ? linkNews(esc(d)) : esc(d); };
 function linkify(text){
   const src = String(text ?? ""); let out = "", last = 0, m;
   CONTACT_RE.lastIndex = 0;
@@ -668,17 +906,17 @@ function linkify(text){
 }
 function srcLine(p){
   const u = safeUrl(p.source_url); if (!u) return "";
-  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}>${esc(p.source_name || "Official notice")} ↗</a>${p.expires_at ? ` · ${p.category === "Major news" ? "Shown until" : "Closes"} ${esc(fmtDate(p.expires_at))}` : ""}</div>`;
+  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}><span data-ugc>${esc(p.source_name || "")}</span>${p.source_name ? "" : "Official notice"} ↗</a>${p.expires_at ? ` · ${(p.category === "Major news" || (p.translations && typeof p.translations === "object")) ? "Shown until" : "Closes"} ${esc(fmtDate(p.expires_at))}` : ""}</div>`;
 }
 /* Contact details are not part of the public post list. A visitor clicks to reveal one at a time. */
 function contactHtml(p){
   const shown = state.contacts[p.id];
   const text = shown !== undefined ? shown : (p.contact || "");        // admin and not-yet-hardened databases already include it
-  if (text) return `<div class="contact"><b>Contact:</b> ${linkify(text)}</div>`;
+  if (text) return `<div class="contact"><b>Contact:</b> <span data-ugc>${linkify(text)}</span></div>`;
   if (shown !== undefined || !p.has_contact) return "";
   return `<button class="btn ghost small" type="button" data-act="reveal">Show contact details</button>`;
 }
-const fmtDate = d => new Date(d).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+const fmtDate = d => new Date(d).toLocaleDateString(dateLocale(),{year:"numeric",month:"short",day:"numeric"});
 const isFeatured = p => !!p.featured_until && new Date(p.featured_until).getTime() > Date.now();
 function toast(msg, type=""){
   const t = document.createElement("div");
@@ -722,6 +960,51 @@ demoDb.subs = [
   {id:"s2",email:"marcus@example.com",country_code:"tt",interests:["Sports"],source:"country",created_at:daysAgo(5)},
   {id:"s3",email:"keisha@example.com",country_code:"bb",interests:[],source:"home",created_at:daysAgo(9)}
 ];
+/* Demo mode only: sample per-post statistics so the admin screens can be tried. Real events from this browser are added to them. */
+demoDb.postEvents = []; demoDb._seeded = false;
+function ensureDemoEvents(){
+  if (demoDb._seeded) return; demoDb._seeded = true;
+  let seed = 4242; const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+  const real = demoDb.postEvents; demoDb.postEvents = [];
+  demoDb.posts.filter(p => p.status === "Approved").forEach((p, i) => {
+    const base = 50 + Math.floor(rnd() * 230);
+    for (let d = 0; d < 90; d++) {
+      const n = Math.floor(base / 90 * (0.4 + rnd() * 1.2));
+      for (let k = 0; k < n; k++) {
+        const at = () => new Date(Date.now() - d * 864e5 - rnd() * 864e5 * 0.9).toISOString(), sid = "demo-" + i + "-" + d + "-" + (k % 9);
+        demoDb.postEvents.push({post_id:p.id, country_code:p.country_code, event:"view", session_id:sid, created_at:at()});
+        if (rnd() < 0.24) demoDb.postEvents.push({post_id:p.id, country_code:p.country_code, event:"open", session_id:sid, created_at:at()});
+        if (rnd() < 0.06) demoDb.postEvents.push({post_id:p.id, country_code:p.country_code, event:"share", session_id:sid, created_at:at()});
+        if (rnd() < 0.05) demoDb.postEvents.push({post_id:p.id, country_code:p.country_code, event:"contact", session_id:sid, created_at:at()});
+        if (p.source_url && rnd() < 0.05) demoDb.postEvents.push({post_id:p.id, country_code:p.country_code, event:"source", session_id:sid, created_at:at()});
+        if (rnd() < 0.02) demoDb.postEvents.push({post_id:p.id, country_code:p.country_code, event:"arrive", session_id:sid, created_at:at()});
+      }
+    }
+  });
+  demoDb.postEvents.push(...real);
+}
+function demoPostTraffic(days, country, limit){
+  ensureDemoEvents();
+  const since = Date.now() - days * 864e5, by = {};
+  for (const e of demoDb.postEvents) {
+    if (new Date(e.created_at).getTime() < since) continue;
+    const p = demoDb.posts.find(x => String(x.id) === String(e.post_id)); if (!p || (country && p.country_code !== country)) continue;
+    const r = by[p.id] = by[p.id] || {post_id:p.id, title:p.title, country_code:p.country_code, category:p.category, status:p.status, views:0, opens:0, shares:0, contacts:0, sources:0, arrivals:0, _s:new Set(), last_event:e.created_at};
+    r[{view:"views", open:"opens", share:"shares", contact:"contacts", source:"sources", arrive:"arrivals"}[e.event]]++; r._s.add(e.session_id); if (e.created_at > r.last_event) r.last_event = e.created_at;
+  }
+  return Object.values(by).map(({_s, ...r}) => ({...r, sessions:_s.size})).sort((a, b) => b.opens - a.opens || b.views - a.views).slice(0, limit);
+}
+function demoPostDays(id, days){
+  ensureDemoEvents();
+  const since = Date.now() - days * 864e5, t = {views:0, opens:0, shares:0, contacts:0, sources:0, arrivals:0}, sess = new Set(), byDay = {};
+  for (const e of demoDb.postEvents) {
+    if (String(e.post_id) !== String(id) || new Date(e.created_at).getTime() < since) continue;
+    t[{view:"views", open:"opens", share:"shares", contact:"contacts", source:"sources", arrive:"arrivals"}[e.event]]++; sess.add(e.session_id);
+    const day = e.created_at.slice(0, 10), b = byDay[day] = byDay[day] || {day, views:0, opens:0, shares:0};
+    if (e.event === "view") b.views++; if (e.event === "open") b.opens++; if (e.event === "share") b.shares++;
+  }
+  return {post_id:id, totals:{...t, sessions:sess.size}, by_day:Object.values(byDay).sort((a, b) => a.day.localeCompare(b.day))};
+}
 const api = {
   async countries(){
     if (DEMO) return LOCAL_COUNTRIES;
@@ -729,11 +1012,11 @@ const api = {
     if (error || !data?.length) return LOCAL_COUNTRIES;
     return data;
   },
-  async posts(code){
-    const live = p => !p.expires_at || new Date(p.expires_at).getTime() > Date.now();
-    if (DEMO) return demoDb.posts.filter(p => p.country_code === code && p.status === "Approved" && p.category !== REPORT.id && live(p)).map(({contact, ...rest}) => ({...rest, has_contact: !!contact}));
-    const PUBLIC_COLS = "id,country_code,title,category,description,image_url,audio_url,video_url,rating,created_at,featured_until,source_name,source_url,expires_at,has_contact";
-    const load = cols => sb.from("posts").select(cols).eq("country_code", code).eq("status","Approved").neq("category", REPORT.id).order("created_at",{ascending:false}).limit(300);
+  async posts(arg){
+    const codes = [].concat(arg), live = p => !p.expires_at || new Date(p.expires_at).getTime() > Date.now();
+    if (DEMO) return demoDb.posts.filter(p => codes.includes(p.country_code) && p.status === "Approved" && p.category !== REPORT.id && live(p)).map(({contact, ...rest}) => ({...rest, has_contact: !!contact}));
+    const PUBLIC_COLS = "id,country_code,title,category,description,image_url,audio_url,video_url,rating,created_at,featured_until,source_name,source_url,expires_at,has_contact,translations";
+    const load = cols => sb.from("posts").select(cols).in("country_code", codes).eq("status","Approved").neq("category", REPORT.id).order("created_at",{ascending:false}).limit(Math.min(900, 300 * codes.length));
     let {data, error} = await load(PUBLIC_COLS);
     if (error && /does not exist|column/i.test(error.message || "")) ({data, error} = await load("*"));     // database not hardened/updated yet
     if (error) throw error;
@@ -784,13 +1067,13 @@ const api = {
     const {error} = await sb.from("questions").delete().eq("id", id);
     if (error) throw error;
   },
-  async postStats(code){
-    const out = {};
+  async postStats(arg){
+    const codes = [].concat(arg), out = {};
     if (DEMO) {
-      demoDb.posts.filter(p => p.country_code === code && demoDb.pstats[p.id]).forEach(p => out[p.id] = {...demoDb.pstats[p.id]});
+      demoDb.posts.filter(p => codes.includes(p.country_code) && demoDb.pstats[p.id]).forEach(p => out[p.id] = {...demoDb.pstats[p.id]});
       return out;
     }
-    const {data, error} = await sb.from("post_rating_stats").select("post_id,up_count,down_count,child_up_count,child_down_count").eq("country_code", code);
+    const {data, error} = await sb.from("post_rating_stats").select("post_id,up_count,down_count,child_up_count,child_down_count").in("country_code", codes);
     if (error) throw error;
     (data || []).forEach(r => out[r.post_id] = {up:r.up_count, down:r.down_count, cup:r.child_up_count, cdown:r.child_down_count});
     return out;
@@ -873,6 +1156,19 @@ const api = {
     for (const [bucket, paths] of Object.entries(byBucket)) { try { await sb.storage.from(bucket).remove(paths); } catch (e) { console.error(e); } }
   },
   async track(row){ if (DEMO) return; try { await sb.from("page_views").insert(row); } catch {} },
+  async logPostEvents(rows){
+    if (DEMO) { const now = new Date().toISOString(); rows.forEach(r => demoDb.postEvents.push({...r, created_at:now})); return; }
+    try { const {error} = await sb.from("post_events").insert(rows); if (!error) return; throw error; }
+    catch { if (rows.length > 1) for (const r of rows.slice(0, 40)) { try { await sb.from("post_events").insert(r); } catch {} } }   // one stale post must not lose the others
+  },
+  async postTraffic(days, country, limit = 300){
+    if (DEMO) return demoPostTraffic(days, country, limit);
+    const {data, error} = await sb.rpc("post_traffic", {p_days:days, p_country:country || null, p_limit:limit}); if (error) throw error; return data || [];
+  },
+  async postTrafficDays(id, days){
+    if (DEMO) return demoPostDays(id, days);
+    const {data, error} = await sb.rpc("post_traffic_days", {p_post:id, p_days:days}); if (error) throw error; return data;
+  },
   async subscribers(){
     if (DEMO) return [...demoDb.subs].sort((a,b) => b.created_at.localeCompare(a.created_at));
     const {data, error} = await sb.from("subscribers").select("*").order("created_at",{ascending:false}).limit(2000);
@@ -941,7 +1237,8 @@ const defaultFilters = () => ({sort:"new", when:"any"});
 const state = {
   countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
   admin:null, isAdmin:false, demoAdmin:false, adminFilter:{status:"Pending", country:"All", cat:"All", q:""}, adminPosts:[],
-  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, ratings:[], rFilter:"New", rCountry:"All", newR:0, pstats:{}, pr:{vote:0, child:0}, contacts:{}
+  region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, ratings:[], rFilter:"New", rCountry:"All", newR:0, pstats:{}, pr:{vote:0, child:0}, contacts:{},
+  postStats:{}, postStatsOk:null, topPosts:[], topSort:"opens", topOk:null, psDays:30, psPost:null, psData:null
 };
 /* Cookie-free traffic counting: a random id kept only in this browser tab, no IP address, honours Do Not Track.
    Your own visits are skipped while you are signed in as admin on this browser. */
@@ -953,6 +1250,7 @@ let adminCheckDone; const adminCheck = new Promise(r => { adminCheckDone = r; })
 const isAdminBrowser = () => state.isAdmin === true || store.get("ic_admin", false) === true;
 async function track(path, code){
   try {
+    if (state.silent) return;
     if (DEMO || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true || isAdminBrowser()) return;
     await Promise.race([adminCheck, new Promise(r => setTimeout(r, 4000))]);   // wait (briefly) for the admin check
     if (isAdminBrowser()) return;
@@ -966,11 +1264,56 @@ async function track(path, code){
     api.track({path:path.slice(0,200), country_code:code || null, referrer:ref.slice(0,200), session_id:SESSION_ID});
   } catch {}
 }
+/* ---------- Per-post statistics: anonymous, cookie-free, never your own visits ----------
+   What is counted: a post shown on screen, opened, shared on WhatsApp, its contact details or source link used, and a visit
+   that arrives through a shared link. Same rules as page views: a random code kept only in this tab, nothing personal,
+   skipped when the browser sends Do Not Track or Global Privacy Control, and skipped while you are signed in as administrator. */
+const POST_EVENTS = ["view", "open", "share", "contact", "source", "arrive"], COUNT_ONCE = new Set(["view", "open", "contact", "arrive"]);
+const seenPE = (() => { try { return new Set(JSON.parse(sessionStorage.getItem("ic_pe") || "[]")); } catch { return new Set(); } })();
+const postQueue = []; let postTimer = null;
+function postEvent(p, event){
+  try {
+    if (!p || !p.id || !POST_EVENTS.includes(event)) return;
+    if (state.silent || AUTOMATED || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true || isAdminBrowser()) return;
+    if (COUNT_ONCE.has(event)) {                                     // once per post per browser tab, so reloading does not inflate the numbers
+      const k = event + "|" + p.id; if (seenPE.has(k)) return; seenPE.add(k);
+      try { sessionStorage.setItem("ic_pe", JSON.stringify([...seenPE].slice(-800))); } catch {}
+    }
+    postQueue.push({post_id:String(p.id), country_code:p.country_code, event, session_id:SESSION_ID});
+    clearTimeout(postTimer); postTimer = setTimeout(flushPostEvents, postQueue.length >= 40 ? 0 : 1500);
+  } catch {}
+}
+async function flushPostEvents(){
+  if (!postQueue.length) return;
+  await Promise.race([adminCheck, new Promise(r => setTimeout(r, 4000))]);   // wait (briefly) to learn whether this is the administrator
+  if (isAdminBrowser()) { postQueue.length = 0; return; }
+  const rows = postQueue.splice(0, 60);
+  try { await api.logPostEvents(rows); } catch {}
+  if (postQueue.length) { clearTimeout(postTimer); postTimer = setTimeout(flushPostEvents, 500); }
+}
+addEventListener("pagehide", () => { if (postQueue.length) flushPostEvents(); });
+/* A post counts as "seen" when at least half of it has been on screen for a moment (not when it merely scrolls past). */
+let viewObs = null; const viewTimers = new Map();
+function observeViews(){
+  if (viewObs) viewObs.disconnect();
+  viewTimers.forEach(t => clearTimeout(t)); viewTimers.clear();
+  if (!("IntersectionObserver" in window)) return;
+  viewObs = new IntersectionObserver(entries => {
+    for (const en of entries) {
+      const pid = en.target.dataset.pid;
+      if (en.isIntersecting) {
+        if (!viewTimers.has(pid)) viewTimers.set(pid, setTimeout(() => { viewTimers.delete(pid); const p = state.posts.find(x => String(x.id) === pid); if (p) postEvent(p, "view"); }, 800));
+      } else { clearTimeout(viewTimers.get(pid)); viewTimers.delete(pid); }
+    }
+  }, {threshold:0.5});
+  document.querySelectorAll("#posts .post[data-pid]").forEach(el => viewObs.observe(el));
+}
 const app = $("#app");
-function setView(html, title, solidHeader){
+function setView(html, title, solidHeader, enOnly){
   app.innerHTML = html;
+  if (enOnly) { app.setAttribute("data-noi18n", "1"); app.insertAdjacentHTML("afterbegin", '<div class="wrap"><p class="en-only" role="note" data-i18n-force>This page is available in English only for now.</p></div>'); } else app.removeAttribute("data-noi18n");
   $("#siteHeader").classList.toggle("solid", !!solidHeader);
-  document.title = title ? `${title} – Isle Connect` : "Isle Connect – community resources across the Caribbean";
+  { const t = title ? `${title} – Isle Connect` : "Isle Connect – community resources across the Caribbean"; document.title = UILANG === "en" ? t : (trStr(t) ?? t); }
   window.scrollTo(0,0);
   const h = app.querySelector("h1"); if (h){ h.tabIndex = -1; h.focus({preventScroll:true}); }
 }
@@ -979,8 +1322,13 @@ function setView(html, title, solidHeader){
 function route(){
   const h = location.hash || "#/";
   let m;
+  { const cm = h.match(COUNTRY_HASH); const L = chooseLang(cm ? cm[1].slice(0, 2) : null); if (L !== UILANG) { UILANG = L; } syncLangUI(); }
+  const out = routeInner(h); translateAll(); return out;
+}
+function routeInner(h){
+  let m;
   if (h === "#/" || h === "#") return showHome();
-  if ((m = h.match(/^#\/c\/([a-z]{2})$/))) return showCountry(m[1]);
+  if ((m = h.match(COUNTRY_HASH))) return showCountry(m[1], m[2]);
   if (h === "#/about") return showAbout();
   if ((m = h.match(/^#\/advertise(?:\?(.*))?$/))) return showAdvertise(m[1] || "");
   if (h === "#/privacy") return showLegal("privacy");
@@ -990,91 +1338,147 @@ function route(){
 }
 window.addEventListener("hashchange", route);
 
-/* ---------- Home: country picker ---------- */
+/* ---------- Home: search first, then pick one island or several ---------- */
 const searchIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.500-3.500"/></svg>`;
+const MAX_ISLANDS = 8;
+const plain = s => String(s).normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+const normName = s => plain(s).replace(/\bst\b\.?/g, "saint").replace(/[^a-z0-9]+/g, " ").trim();      // "St. Lucia" finds Saint Lucia; accents are ignored
+const parseCodes = str => { const out = []; for (const c of String(str || "").split(",")) if (state.byCode[c] && !out.includes(c)) out.push(c); return out.slice(0, MAX_ISLANDS); };
+/* One picker used on the home page and in the "Change islands" window. pre = id prefix of its elements. */
+function mountPicker(pre, {root, initial = [], initialQ = "", onApply, onChange}){
+  const S = {sel: parseCodes([].concat(initial).join(",")), q: initialQ, browse: false};
+  const el = id => document.getElementById(pre + id);
+  const q$ = el("q"), tray$ = el("tray"), res$ = el("results"), bb$ = el("browsebtn"), br$ = el("browse"), ap$ = el("apply");
+  const matchList = () => { const q = normName(S.q); return q ? state.countries.filter(c => normName(c.name).includes(q) || normName(trName(c.name)).includes(q)) : []; };
+  function renderTray(){
+    tray$.innerHTML = S.sel.length ? `<span class="lbl">Your islands:</span>` + S.sel.map(code => { const c = state.byCode[code];
+      return `<button class="selchip" type="button" data-pk="remove" data-code="${esc(code)}" aria-label="Remove ${esc(c.name)}">${flag(code)}<span>${esc(c.name)}</span><span class="x" aria-hidden="true">&times;</span></button>`; }).join("") : "";
+    ap$.hidden = !S.sel.length;
+    ap$.textContent = S.sel.length === 1 ? `Open ${state.byCode[S.sel[0]].name}` : `See posts from ${S.sel.length} islands`;
+  }
+  function renderResults(){
+    const list = matchList(), q = S.q.trim();
+    if (!q) { res$.innerHTML = ""; return; }
+    if (!list.length) { res$.innerHTML = `<p class="empty-grid">Nothing matches “${esc(q)}”. Check the spelling, or choose Browse all islands.</p>`; return; }
+    res$.innerHTML = `<ul class="results">` + list.map(c => { const on = S.sel.includes(c.code);
+      return `<li class="res"><span class="rname">${flag(c.code)}<span><b>${esc(c.name)}</b> <small>${esc(c.region)}</small></span></span>` +
+        `<button class="btn small" type="button" data-pk="open" data-code="${esc(c.code)}">Open</button>` +
+        `<button class="btn ghost small" type="button" data-pk="toggle" data-code="${esc(c.code)}" aria-pressed="${on}">${on ? "✓ Added" : "+ Add"}</button></li>`; }).join("") + `</ul>`;
+  }
+  function renderBrowse(){
+    br$.hidden = !S.browse; bb$.setAttribute("aria-expanded", String(S.browse)); bb$.textContent = S.browse ? "Hide the list" : "Browse all islands";
+    br$.innerHTML = S.browse ? regionList().map(r => `<fieldset class="bc-region"><legend>${esc(r)}</legend><div class="bc-grid">` +
+      state.countries.filter(c => c.region === r).map(c => `<label class="check"><input type="checkbox" data-pk="check" value="${esc(c.code)}" ${S.sel.includes(c.code) ? "checked" : ""}> ${esc(c.name)}</label>`).join("") + `</div></fieldset>`).join("") : "";
+  }
+  const sync = () => { renderTray(); renderResults(); if (onChange) onChange([...S.sel], S.q); };
+  function toggle(code){
+    if (S.sel.includes(code)) S.sel = S.sel.filter(c => c !== code);
+    else if (S.sel.length >= MAX_ISLANDS) { toast(`You can choose up to ${MAX_ISLANDS} islands.`, "error"); return false; }
+    else S.sel.push(code);
+    sync(); return true;
+  }
+  root.onclick = e => {
+    const b = e.target.closest("[data-pk]"); if (!b || !root.contains(b)) return;
+    const k = b.dataset.pk, code = b.dataset.code;
+    if (k === "open") return onApply([code]);
+    if (k === "toggle") { toggle(code); return; }
+    if (k === "remove") { toggle(code); renderBrowse(); q$.focus(); return; }
+    if (k === "apply") return onApply([...S.sel]);
+    if (k === "browse") { S.browse = !S.browse; renderBrowse(); }
+  };
+  root.onchange = e => { const c = e.target.closest('input[data-pk="check"]'); if (!c) return; if (!toggle(c.value)) c.checked = false; };
+  q$.oninput = () => { S.q = q$.value; renderResults(); if (onChange) onChange([...S.sel], S.q); };
+  q$.onkeydown = e => {
+    if (e.key !== "Enter") return;
+    e.preventDefault(); const list = matchList();
+    if (list.length === 1) { if (S.sel.length) { if (!S.sel.includes(list[0].code)) toggle(list[0].code); S.q = ""; q$.value = ""; sync(); } else onApply([list[0].code]); }
+    else if (!S.q.trim() && S.sel.length) onApply([...S.sel]);
+  };
+  q$.value = S.q; renderTray(); renderResults(); renderBrowse();
+  return {S, sync};
+}
 function showHome(){
-  state.country = null;
+  state.country = null; state.sel = [];
+  if (!state.silent) { state.pick = []; state.cq = ""; }          // coming back to the home page starts fresh (a language switch keeps your choice)
   track("/", null);
-  const recent = store.get("recent", []).map(c => state.byCode[c]).filter(Boolean);
+  const recent = store.get("recent", []).map(parseCodes).filter(a => a.length).slice(0, 4);
   setView(`
     <section class="hero">
       <div class="wrap">
         <h1>The Latest Community Posts</h1>
-        <p>Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.</p>
+        <p>Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.</p>
         <div class="search">
           ${searchIcon}
-          <label class="sr-only" for="cq">Search countries</label>
-          <input id="cq" type="search" placeholder="Search your island, e.g. Barbados" autocomplete="off" value="${esc(state.cq)}">
+          <label class="sr-only" for="hq">Search countries</label>
+          <input id="hq" type="search" placeholder="Search your island, e.g. Barbados" autocomplete="off">
         </div>
-        ${recent.length ? `<div class="recent">Recently visited: ${recent.slice(0,4).map(c => `<a href="#/c/${esc(c.code)}">${flag(c.code)}${esc(c.name)}</a>`).join("")}</div>` : ""}
+        ${recent.length ? `<div class="recent">Recently visited: ${recent.map(a => `<a class="rtext" href="#/c/${esc(a.join(","))}">${esc(a.map(c => state.byCode[c].name).join(" + "))}</a>`).join("")}</div>` : ""}
       </div>
       <svg class="wave" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 28C120 56 240 56 360 36s240-36 360-20 240 40 360 36 240-40 360-24v40H0z"/></svg>
     </section>
-    <section class="wrap picker" aria-label="Choose an island">
-      <div class="regions" id="regions" role="group" aria-label="Filter by region"></div>
-      <div id="cgrid"></div>
+    <section class="wrap picker2" aria-label="Choose islands">
+      <div class="tray" id="htray" aria-live="polite"></div>
+      <div id="hresults" aria-live="polite"></div>
+      <div class="pk-actions"><button class="btn accent" type="button" id="happly" data-pk="apply" hidden>Open</button><button class="linkbtn" type="button" id="hbrowsebtn" data-pk="browse" aria-expanded="false" aria-controls="hbrowse">Browse all islands</button></div>
+      <div id="hbrowse" hidden></div>
     </section>
     <section class="wrap"><div class="subbar"><div><h2>Get updates from your island</h2><p>Jobs, scholarships, holidays and community news by email. Remove yourself any time.</p></div><button class="btn accent" type="button" data-act="subscribe">Subscribe</button></div></section>`, null, false);
-  renderRegions(); renderGrid();
-  $("#cq").addEventListener("input", e => { state.cq = e.target.value; renderGrid(); });
-  $("#cq").addEventListener("keydown", e => {
-    if (e.key === "Enter") { const r = filteredCountries(); if (r.length === 1) location.hash = "#/c/" + r[0].code; }
-  });
+  mountPicker("h", {root: $("#app"), initial: state.pick || [], initialQ: state.cq || "",
+    onApply: codes => { location.hash = "#/c/" + codes.join(","); }, onChange: (sel, q) => { state.pick = sel; state.cq = q; }});
 }
 /* Share a country page on WhatsApp (link only: no tracking added) */
-function waShare(c){
-  const url = location.href.split("#")[0] + "#/c/" + c.code;
-  return "https://wa.me/?text=" + encodeURIComponent(`Jobs, rides, school notices and community help for ${c.name} on Isle Connect: ${url}`);
+function waShare(list){
+  const arr = Array.isArray(list) ? list : [list];
+  const url = location.href.split("#")[0] + "#/c/" + arr.map(c => c.code).join(",");
+  const joinNames = (lang, names) => names.length < 2 ? names[0] : names.slice(0, -1).join(", ") + ({en:" and ", es:" y ", fr:" et ", nl:" en "}[lang] || " and ") + names[names.length - 1];
+  const nm = lang => joinNames(lang, arr.map(c => lang === "en" ? c.name : trName(c.name)));
+  const msg = {en:`Jobs, rides, school notices and community help for ${nm("en")} on Isle Connect: ${url}`, es:`Empleos, transporte, avisos escolares y ayuda comunitaria en ${nm("es")} en Isle Connect: ${url}`, fr:`Emplois, trajets, avis scolaires et entraide communautaire : ${nm("fr")} sur Isle Connect : ${url}`, nl:`Banen, ritten, schoolberichten en hulp uit de gemeenschap in ${nm("nl")} op Isle Connect: ${url}`}[UILANG] || "";
+  return "https://wa.me/?text=" + encodeURIComponent(msg);
 }
-function filteredCountries(){
-  const q = state.cq.trim().toLowerCase();
-  return state.countries.filter(c => (state.region === "All" || c.region === state.region) && (!q || c.name.toLowerCase().includes(q)));
+/* Share ONE post on WhatsApp. The message carries the title, a short excerpt, the island and a link that opens exactly this post.
+   Contact details are never included. */
+const postLink = p => location.href.split("#")[0] + "#/c/" + p.country_code + "?p=" + encodeURIComponent(p.id);
+function waSharePost(p){
+  const v = postView(p), isl = state.byCode[p.country_code], name = isl ? (UILANG === "en" ? isl.name : trName(isl.name)) : "";
+  const clean = t => String(t || "").replace(/[*_~`]/g, "").replace(/\s+/g, " ").trim();
+  const title = clean(v.title), body = clean(v.description);
+  const snippet = body.length > 140 ? body.slice(0, 140).replace(/\s+\S*$/, "") + "…" : body;
+  const where = {en:`${name} on Isle Connect`, es:`${name} en Isle Connect`, fr:`${name} sur Isle Connect`, nl:`${name} op Isle Connect`}[UILANG] || `${name} on Isle Connect`;
+  return "https://wa.me/?text=" + encodeURIComponent(`*${title}*\n${snippet}\n${where}\n${postLink(p)}`);
 }
+const shareLink = (p, cls) => `<a class="${cls}" href="${esc(waSharePost(p))}" ${NEWWIN} aria-label="Share “${esc(postView(p).title)}” on WhatsApp (opens in a new tab)">📲 Share on WhatsApp</a>`;
 function regionList(){
   const set = [...new Set(state.countries.map(c => c.region))];
   return set.sort((a,b) => (REGION_ORDER.indexOf(a)+1||99) - (REGION_ORDER.indexOf(b)+1||99));
 }
-function renderRegions(){
-  const el = $("#regions"); if (!el) return;
-  el.innerHTML = ["All", ...regionList()].map(r => `<button class="chip" type="button" data-region="${esc(r)}" aria-pressed="${state.region===r}">${esc(r === "All" ? "All Caribbean" : r)}</button>`).join("");
-}
-function renderGrid(){
-  const list = filteredCountries(), el = $("#cgrid"); if (!el) return;
-  if (!list.length) { el.innerHTML = `<div class="empty-grid">Nothing matches “${esc(state.cq)}”. Check the spelling or clear the search to see every Caribbean island and country.</div>`; return; }
-  const card = c => `<a class="ccard" href="#/c/${esc(c.code)}">${flag(c.code)}<span>${esc(c.name)}</span></a>`;
-  if (state.region === "All" && !state.cq.trim()) {
-    el.innerHTML = regionList().map(r => `<h2 class="region-title">${esc(r)}</h2><div class="cgrid">${list.filter(c => c.region === r).map(card).join("")}</div>`).join("");
-  } else {
-    el.innerHTML = `<div class="cgrid" style="margin-top:.6rem">${list.map(card).join("")}</div>`;
-  }
-}
-
 /* ---------- Country page ---------- */
-function showCountry(code){
-  const c = state.byCode[code];
-  if (!c) { location.hash = "#/"; return; }
-  state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = []; state.filters = defaultFilters(); state.pstats = {}; state.pr = {vote:0, child:0}; state.contacts = {};
-  store.set("recent", [code, ...store.get("recent", []).filter(x => x !== code)].slice(0,6));
-  track("/c/" + code, code);
+function showCountry(arg, openPid){
+  const codes = parseCodes(arg);
+  if (!codes.length) { location.hash = "#/"; return; }
+  const list = codes.map(x => state.byCode[x]), c = list[0], multi = list.length > 1, key = codes.join(",");
+  const title = list.map(x => x.name).join(" · ");
+  state.openPid = openPid || null;
+  state.sel = codes; state.country = c; state.cat = "All"; state.q = ""; state.shown = 24; state.posts = []; state.filters = defaultFilters(); state.pstats = {}; state.pr = {vote:0, child:0}; state.contacts = {};
+  store.set("recent", [key, ...store.get("recent", []).filter(x => x !== key)].slice(0,6));
+  codes.slice(0, 5).forEach(x => track("/c/" + x, x));
   setView(`
     <section class="band">
       <div class="wrap">
         <a class="back" href="#/">&lsaquo; All Caribbean</a>
         <div class="band-row">
-          ${flag(c.code, "lg")}
-          <div class="grow"><h1>${esc(c.name)}</h1><div class="sub">${esc(c.region)}</div></div>
+          ${multi ? `<div class="flagstack">${list.slice(0, 4).map(x => flag(x.code, "lg")).join("")}</div>` : flag(c.code, "lg")}
+          <div class="grow"><h1>${esc(title)}</h1><div class="sub">${multi ? `${list.length} islands` : esc(c.region)}</div>${langPills(c)}</div>
           <div class="actions">
-            <label class="sr-only" for="switch">Switch country</label>
-            <select class="switch" id="switch">${state.countries.map(x => `<option value="${esc(x.code)}" ${x.code===code?"selected":""}>${esc(x.name)}</option>`).join("")}</select>
-            <button class="btn accent" type="button" data-act="post">+ Post in ${esc(c.name)}</button>
-            <a class="btn small" href="${esc(waShare(c))}" target="_blank" rel="noopener noreferrer" aria-label="Share ${esc(c.name)} on WhatsApp (opens in a new tab)">Share on WhatsApp</a>
+            <button class="btn small" type="button" data-act="islands">Change islands</button>
+            <button class="btn accent" type="button" data-act="post">${multi ? "+ Post" : `+ Post in ${esc(c.name)}`}</button>
+            <a class="btn small" href="${esc(waShare(list))}" target="_blank" rel="noopener noreferrer" aria-label="Share ${esc(title)} on WhatsApp (opens in a new tab)">Share on WhatsApp</a>
           </div>
         </div>
       </div>
     </section>
     <section class="wrap toolbar">
       <div class="toolbar-row">
-        <div class="search small">${searchIcon}<label class="sr-only" for="pq">Search posts</label><input id="pq" type="search" placeholder="Search posts in ${esc(c.name)}" autocomplete="off" aria-autocomplete="list" aria-controls="suggest"><div class="suggest" id="suggest" role="listbox" aria-label="Matching posts" hidden></div></div>
+        <div class="search small">${searchIcon}<label class="sr-only" for="pq">Search posts</label><input id="pq" type="search" placeholder="${multi ? "Search posts in these islands" : `Search posts in ${esc(c.name)}`}" autocomplete="off" aria-autocomplete="list" aria-controls="suggest"><div class="suggest" id="suggest" role="listbox" aria-label="Matching posts" hidden></div></div>
         <button class="btn ghost small" type="button" data-act="filters" id="fbtn" aria-expanded="false" aria-controls="fpanel">Filters <span class="fcount" id="fcount" hidden></span></button>
         <button class="btn ghost small" type="button" data-act="refresh">Refresh</button>
       </div>
@@ -1089,10 +1493,9 @@ function showCountry(code){
       <p class="result-info" id="resultInfo" aria-live="polite"></p>
     </section>
     <section class="wrap" aria-live="polite"><div id="posts" class="posts"></div><div id="postState"></div><div id="more" class="more" hidden></div></section>
-    <section class="wrap"><div class="subbar promo"><div><h2>Promote your business in ${esc(c.name)}</h2><p>Pin your post to the top of this page. Boosts start at US$${Math.min(...AD_PACKAGES.map(x => x.price))}.</p></div><a class="btn" href="#/advertise?c=${esc(c.code)}">See packages</a></div></section>
-    <section class="wrap"><div class="subbar"><div><h2>Get ${esc(c.name)} updates by email</h2><p>New jobs, scholarships, holidays and community notices, straight to your inbox.</p></div><button class="btn accent" type="button" data-act="subscribe">Subscribe</button></div></section>
-  `, c.name, true);
-  $("#switch").addEventListener("change", e => location.hash = "#/c/" + e.target.value);
+    <section class="wrap"><div class="subbar promo"><div><h2>${multi ? "Promote your business here" : `Promote your business in ${esc(c.name)}`}</h2><p>Pin your post to the top of this page. Boosts start at US$${Math.min(...AD_PACKAGES.map(x => x.price))}.</p></div><a class="btn" href="#/advertise?c=${esc(c.code)}">See packages</a></div></section>
+    <section class="wrap"><div class="subbar"><div><h2>${multi ? "Get updates for these islands by email" : `Get ${esc(c.name)} updates by email`}</h2><p>New jobs, scholarships, holidays and community notices, straight to your inbox.</p></div><button class="btn accent" type="button" data-act="subscribe">Subscribe</button></div></section>
+  `, title, true);
   $("#pq").addEventListener("input", e => { state.q = e.target.value; state.shown = 24; renderCats(); renderPosts(); showSuggest(); });
   $("#pq").addEventListener("focus", showSuggest);
   $("#pq").addEventListener("keydown", e => {
@@ -1110,15 +1513,21 @@ function showCountry(code){
   renderCats(); loadPosts();
 }
 async function loadPosts(){
-  const code = state.country.code;
+  const codes = state.sel.slice(), key = codes.join(",");
   if (AUTOMATED) { $("#posts").innerHTML = ""; $("#postState").innerHTML = `<div class="state"><div class="big">🤖</div><h2>Automated access is not allowed</h2><p>This page is for people. If you are one, please open it in a regular browser.</p></div>`; return; }
   $("#postState").innerHTML = ""; $("#more").hidden = true; $("#resultInfo").textContent = "";
   $("#posts").innerHTML = '<div class="skeleton"></div>'.repeat(6);
   try {
-    const rows = await api.posts(code);
-    if (state.country?.code !== code) return;
+    const rows = await api.posts(codes);
+    if (state.sel.join(",") !== key) return;
     state.posts = rows; renderCats(); renderPosts();
-    api.postStats(code).then(st => { if (state.country?.code === code) { state.pstats = st; renderPosts(); } }).catch(() => {});
+    if (state.openPid) {                                   // someone shared a single post with you: open it
+      const pid = state.openPid; state.openPid = null;
+      history.replaceState(null, "", "#/c/" + key);       // tidy the address (no re-load), so closing or reloading does not reopen it
+      const hit = rows.find(x => String(x.id) === pid);
+      if (hit) { postEvent(hit, "arrive"); openView(hit.id); } else toast("That post is no longer available.", "error");
+    }
+    api.postStats(codes).then(st => { if (state.sel.join(",") === key) { state.pstats = st; renderPosts(); } }).catch(() => {});
   } catch (e) {
     console.error(e);
     $("#posts").innerHTML = "";
@@ -1134,7 +1543,7 @@ function activeFilterCount(){
 function matches(p, ignoreCat){
   const f = state.filters, q = state.q.trim().toLowerCase();
   if (!ignoreCat && state.cat !== "All" && p.category !== state.cat) return false;
-  if (q && !(p.title + " " + p.description + " " + p.category).toLowerCase().includes(q)) return false;
+  if (q) { const v = postView(p); if (!(p.title + " " + p.description + " " + p.category + " " + v.title + " " + v.description + " " + trName(p.category)).toLowerCase().includes(q)) return false; }
   if (f.when !== "any") {
     const days = {day:1, week:7, month:30}[f.when];
     if (Date.now() - new Date(p.created_at).getTime() > days * 86400000) return false;
@@ -1186,33 +1595,40 @@ function renderPosts(){
       : `<div class="state"><div class="big">🔎</div><h2>No matching posts</h2><p>Try another category, relax a filter, or clear your search.</p><button class="btn ghost" type="button" data-act="reset">Clear search and filters</button></div>`;
   }
   $("#postState").innerHTML = s;
+  observeViews();
 }
 function postCard(p){
-  const ci = catInfo(p.category), img = mediaUrl(p.image_url), aud = mediaUrl(p.audio_url), vid = mediaUrl(p.video_url), feat = isFeatured(p);
-  const long = (p.description || "").length > 220;
+  const ci = catInfo(p.category), img = mediaUrl(p.image_url), aud = mediaUrl(p.audio_url), vid = mediaUrl(p.video_url), feat = isFeatured(p), v = postView(p);
+  const long = (v.description || "").length > 220;
   return `<article class="post ${feat ? "featured" : ""}" data-pid="${esc(p.id)}">
     ${img ? `<a class="pic" href="${esc(img)}" target="_blank" rel="noopener"><img src="${esc(img)}" alt="" loading="lazy"></a>` : ""}
     <div class="pbody">
-      <div class="pmeta"><span class="left">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span></span><time datetime="${esc(p.created_at)}">${esc(ago(p.created_at))}</time></div>
-      <h3><button class="ptitle" type="button" data-act="open" aria-haspopup="dialog">${esc(p.title)}</button></h3>
-      <p class="desc ${long ? "clamp" : ""}">${descHtml(p)}</p>
+      <div class="pmeta"><span class="left">${feat ? `<span class="spon">★ Sponsored</span>` : ""}${state.sel.length > 1 ? `<span class="ctag">${flag(p.country_code)}${esc(state.byCode[p.country_code]?.name || p.country_code)}</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span></span><time datetime="${esc(p.created_at)}">${esc(ago(p.created_at))}</time></div>
+      <h3><button class="ptitle" type="button" data-act="open" aria-haspopup="dialog" data-ugc>${esc(v.title)}</button></h3>
+      <p class="desc ${long ? "clamp" : ""}" data-ugc>${descHtml(p, v.description)}</p>
       ${long ? `<button class="linkbtn" type="button" data-act="toggle">Read more</button>` : ""}
+      ${transBar(p, v)}
       ${srcLine(p)}
       ${contactHtml(p)}
       ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
       ${vid ? `<video controls preload="metadata" playsinline src="${esc(vid)}"></video>` : ""}
       ${stars(p.rating)}
       ${communityLine(p)}
-      <button class="linkbtn" type="button" data-act="open">👍 Vote on this post</button>
+      <div class="pactions"><button class="linkbtn" type="button" data-act="open">👍 Vote on this post</button>${shareLink(p, "linkbtn share")}</div>
     </div>
   </article>`;
 }
 
 /* ---------- Posting ---------- */
+function openIslands(){
+  const dlg = $("#islandDlg");
+  mountPicker("i", {root: dlg, initial: state.sel, initialQ: "", onApply: codes => { dlg.close(); location.hash = "#/c/" + codes.join(","); }});
+  dlg.showModal(); $("#iq").focus();
+}
 const postDlg = $("#postDlg");
 function openPost(){
   $("#pf-country").innerHTML = state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("");
-  $("#pf-country").value = state.country?.code || store.get("recent", [])[0] || "";
+  $("#pf-country").value = state.country?.code || String(store.get("recent", [])[0] || "").split(",")[0] || "";
   if (!$("#pf-country").value) $("#pf-country").selectedIndex = -1;
   const postCats = ALL_CATS.filter(c => !c.staff);
   $("#pf-cat").innerHTML = postCats.map(c => `<option value="${esc(c.id)}">${c.icon} ${esc(c.id)}</option>`).join("");
@@ -1560,10 +1976,83 @@ async function copyEmails(){
   catch { toast("Couldn't copy. Use Download CSV instead.", "error"); }
 }
 
+/* ---------- Admin: statistics for each post ---------- */
+const PS_ZERO = {views:0, opens:0, shares:0, contacts:0, sources:0, arrivals:0, sessions:0};
+const pctOf = (a, b) => Number(b) > 0 ? Math.round(Number(a) / Number(b) * 100) + "%" : "–";
+function pstatStrip(p){
+  const r = state.postStats[String(p.id)] || PS_ZERO;
+  return `<div class="pstat" role="group" aria-label="Statistics for the last 30 days"><span title="Times it was shown on screen in a list">👁 ${Number(r.views)} seen</span><span title="Times it was opened">📂 ${Number(r.opens)} opened</span><span title="Times Share on WhatsApp was pressed">📲 ${Number(r.shares)} shared</span><span title="Times its contact details were shown">📞 ${Number(r.contacts)} contact</span><button class="linkbtn" type="button" data-act="pstats">Full statistics</button><small>last 30 days</small></div>`;
+}
+async function loadPostCounts(){
+  try { const rows = await api.postTraffic(30, null, 1000); state.postStats = Object.fromEntries(rows.map(r => [String(r.post_id), r])); state.postStatsOk = true; }
+  catch (e) { console.error(e); state.postStatsOk = false; }
+  renderAdminList();
+}
+async function openPostStats(id){
+  const row = state.adminPosts.find(x => String(x.id) === String(id)) || state.postStats[String(id)] || (state.topPosts || []).find(x => String(x.post_id) === String(id));
+  if (!row) return;
+  state.psPost = {id:String(id), title:row.title, country_code:row.country_code, category:row.category};
+  $("#pstatsDlg").showModal(); await renderPostStats();
+}
+async function renderPostStats(){
+  const p = state.psPost, days = state.psDays || 30, body = $("#psBody"); if (!p || !body) return;
+  $("#psTitle").textContent = p.title;
+  body.innerHTML = '<div class="skeleton" style="height:140px"></div>';
+  let d; try { d = await api.postTrafficDays(p.id, days); }
+  catch (e) { console.error(e); body.innerHTML = `<div class="state"><h2>Couldn't load the statistics</h2><p>Make sure you ran supabase_post_stats.sql and that you are signed in as the administrator.</p></div>`; return; }
+  state.psData = d; const t = {...PS_ZERO, ...(d.totals || {})}, isl = state.byCode[p.country_code];
+  const map = Object.fromEntries((d.by_day || []).map(x => [String(x.day).slice(0, 10), x]));
+  const series = k => { const out = []; for (let i = days - 1; i >= 0; i--) { const dd = new Date(Date.now() - i * 864e5).toISOString().slice(0, 10); out.push([dd, Number((map[dd] || {})[k] || 0)]); } return out; };
+  const chart = (k, label) => { const sr = series(k), m = Math.max(1, ...sr.map(x => x[1])); return `<div class="panel"><h3>${label}</h3><div class="chart" role="img" aria-label="${label}">${sr.map(([dd, v]) => `<i style="height:${Math.max(2, v / m * 100)}%" title="${dd}: ${v}"></i>`).join("")}</div></div>`; };
+  body.innerHTML = `
+    <p class="result-info" style="margin:0">${isl ? flag(isl.code) + esc(isl.name) + " · " : ""}${esc(p.category || "")}</p>
+    <div class="regions" role="group" aria-label="Date range">${[7, 30, 90].map(n => `<button class="chip" type="button" data-sdays="${n}" aria-pressed="${days === n}">Last ${n} days</button>`).join("")}</div>
+    <div class="stats">
+      <div class="stat"><b>${Number(t.views)}</b><span>Seen in lists</span></div>
+      <div class="stat"><b>${Number(t.opens)}</b><span>Opened</span></div>
+      <div class="stat"><b>${Number(t.shares)}</b><span>Shared on WhatsApp</span></div>
+      <div class="stat"><b>${Number(t.contacts)}</b><span>Contact details shown</span></div>
+      <div class="stat"><b>${Number(t.sources)}</b><span>Source link followed</span></div>
+      <div class="stat"><b>${Number(t.arrivals)}</b><span>Opened from a shared link</span></div>
+      <div class="stat"><b>${Number(t.sessions)}</b><span>Browser sessions</span></div>
+    </div>
+    <p class="result-info" style="margin:0">Of the times it was seen, ${pctOf(t.opens, t.views)} led to it being opened. Of the times it was opened, ${pctOf(t.shares, t.opens)} led to a share and ${pctOf(t.contacts, t.opens)} to a request for the contact details.</p>
+    ${chart("views", "Seen per day")}${chart("opens", "Opened per day")}${chart("shares", "Shares per day")}
+    <div class="form-actions"><button class="btn ghost" type="button" data-act="pscopy">Copy a report to send</button><button class="btn" type="button" data-close>Close</button></div>
+    <p class="result-info" style="margin:0">Anonymous and cookie-free: a post counts as seen after half of it has been on screen for a moment, and each browser tab counts once per post. Your own visits are never counted.</p>`;
+}
+function postReport(){
+  const p = state.psPost, t = {...PS_ZERO, ...((state.psData || {}).totals || {})}, days = state.psDays || 30, isl = state.byCode[p.country_code];
+  return `Isle Connect report: "${p.title}"${isl ? ` (${isl.name})` : ""}\nLast ${days} days: shown in lists ${t.views} times, opened ${t.opens} times, shared on WhatsApp ${t.shares} times, contact details shown ${t.contacts} times, source link followed ${t.sources} times, and ${t.arrivals} visits from shared links.\nThese are anonymous counts: no cookies and no personal data.`;
+}
+const TOP_SORTS = [["opens", "Most opened"], ["views", "Most seen"], ["shares", "Most shared"], ["contacts", "Most contacts"]];
+async function loadTopPosts(){
+  try { state.topPosts = await api.postTraffic(state.trafficDays, null, 100); state.topOk = true; } catch (e) { console.error(e); state.topOk = false; }
+  renderTopPosts();
+}
+function renderTopPosts(){
+  const host = $("#admbody"); if (!host) return;
+  let panel = $("#topposts"); if (!panel) { host.insertAdjacentHTML("beforeend", '<div class="panel" id="topposts"></div>'); panel = $("#topposts"); }
+  if (state.topOk === false) { panel.innerHTML = `<h3>Posts</h3><p class="result-info">Statistics for each post are not set up yet. Run supabase_post_stats.sql in Supabase, then supabase_security_hardening.sql again.</p>`; return; }
+  const k = state.topSort || "opens", rows = [...(state.topPosts || [])].sort((a, b) => Number(b[k]) - Number(a[k]) || Number(b.opens) - Number(a.opens)).slice(0, 25);
+  panel.innerHTML = `<h3>Posts: what people did with each one (last ${state.trafficDays} days)</h3>
+    <div class="regions" role="group" aria-label="Sort posts">${TOP_SORTS.map(([key, l]) => `<button class="chip" type="button" data-psort="${key}" aria-pressed="${k === key}">${l}</button>`).join("")}</div>
+    ${rows.length ? `<div style="overflow-x:auto"><table class="ptable"><thead><tr><th>Post</th><th>Seen</th><th>Opened</th><th>Shared</th><th>Contact</th><th>Source</th><th>Via shared link</th></tr></thead><tbody>${rows.map(r => { const c = state.byCode[r.country_code];
+      return `<tr><td><button class="linkbtn" type="button" data-act="pstats" data-pid="${esc(r.post_id)}">${esc(r.title)}</button><small>${c ? esc(c.name) : ""}</small></td><td>${Number(r.views)}</td><td>${Number(r.opens)}</td><td>${Number(r.shares)}</td><td>${Number(r.contacts)}</td><td>${Number(r.sources)}</td><td>${Number(r.arrivals)}</td></tr>`; }).join("")}</tbody></table></div>
+      <div class="arow-actions" style="margin-top:.7rem"><button class="btn ghost small" type="button" data-act="topcsv">Download CSV</button></div>` : `<p class="result-info">No post activity in this period yet.</p>`}`;
+}
+function exportPostStats(){
+  const rows = [["Post", "Island", "Category", "Seen", "Opened", "Shared", "Contact shown", "Source link followed", "Opened from a shared link", "Browser sessions", "Last activity"],
+    ...(state.topPosts || []).map(r => [r.title, state.byCode[r.country_code]?.name || r.country_code, r.category, r.views, r.opens, r.shares, r.contacts, r.sources, r.arrivals, r.sessions, r.last_event])];
+  const blob = new Blob(["\ufeff" + rows.map(r => r.map(csvCell).join(",")).join("\r\n")], {type:"text/csv;charset=utf-8"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `isle-connect-post-statistics-${state.trafficDays}-days.csv`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
 /* ---------- Admin: traffic ---------- */
 async function showTraffic(){
   const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:160px;margin-top:1rem"></div>';
-  try { renderTraffic(await api.traffic(state.trafficDays)); }
+  try { renderTraffic(await api.traffic(state.trafficDays)); loadTopPosts(); }
   catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load traffic</h2><p>Make sure you ran supabase_subscribers_traffic.sql and that you are signed in as an administrator.</p></div>`; }
 }
 function renderTraffic(t){
@@ -1589,15 +2078,16 @@ function renderTraffic(t){
 async function loadAdmin(){
   const el = $("#alist"); if (!el) return;
   el.innerHTML = '<div class="skeleton" style="height:120px"></div>'.repeat(3);
-  try { state.adminPosts = await api.adminPosts(state.adminFilter); renderAdminList(); }
+  try { state.adminPosts = await api.adminPosts(state.adminFilter); renderAdminList(); loadPostCounts(); }
   catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load posts</h2><p>Check your connection and try again. If you just added featured posts, make sure you ran supabase_featured.sql.</p></div>`; }
 }
 function renderAdminList(){
   const el = $("#alist"); if (!el) return;
   const f = state.adminFilter, q = f.q.trim().toLowerCase();
   const list = state.adminPosts.filter(p => (f.cat === "All" || p.category === f.cat) && (!q || (p.title + " " + p.description).toLowerCase().includes(q)));
-  el.innerHTML = list.length ? list.map(adminRow).join("") :
-    `<div class="state"><div class="big">✅</div><h2>All caught up</h2><p>No ${f.status === "All" ? "" : f.status.toLowerCase() + " "}posts match these filters.</p></div>`;
+  const notice = state.postStatsOk === false ? `<p class="result-info">Statistics for each post are not set up yet. Run supabase_post_stats.sql in Supabase, then supabase_security_hardening.sql again.</p>` : "";
+  el.innerHTML = notice + (list.length ? list.map(adminRow).join("") :
+    `<div class="state"><div class="big">✅</div><h2>All caught up</h2><p>No ${f.status === "All" ? "" : f.status.toLowerCase() + " "}posts match these filters.</p></div>`);
 }
 function adminRow(p){
   const c = state.byCode[p.country_code], ci = catInfo(p.category), img = safeUrl(p.image_url), aud = safeUrl(p.audio_url), vid = mediaUrl(p.video_url), feat = isFeatured(p);
@@ -1609,6 +2099,7 @@ function adminRow(p){
     ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener">View photo</a>` : ""} ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
     ${vid ? `<video controls preload="none" playsinline src="${esc(vid)}"></video>` : (p.video_url ? `<a href="${esc(safeUrl(p.video_url))}" target="_blank" rel="noopener noreferrer">External video link</a>` : "")}
+    ${p.status === "Approved" && state.postStatsOk ? pstatStrip(p) : ""}
     <div class="arow-actions">
       ${p.status !== "Approved" ? `<button class="btn small" type="button" data-act="approve">Approve</button>` : ""}
       ${p.status === "Approved" ? `<button class="btn accent small" type="button" data-act="boost">${feat ? "Extend boost" : "★ Boost visibility"}</button>` : ""}
@@ -1741,8 +2232,9 @@ function legalSections(kind, op, mail){
       <li><b>Questions and advertising requests you send</b> with the chat button or the Advertise form: your message, your business name if you give one, and optionally your email and country. We use them to reply to you and to arrange payment.</li>
       <li><b>Votes and feedback on posts</b>: a thumbs up or down, and an optional comment that only the administrator can see. Everyone else sees only the totals.</li>
       <li><b>Visit counts</b>: to see which pages are used, we record which page you opened (the home page or a country page), a random code that lasts only while that browser tab is open, and the name of the website you came from. We do not record your IP address and we do not use cookies. We do not count visits when your browser sends Do Not Track or Global Privacy Control, or when the administrator is signed in.</li>
+      <li><b>Post counts</b>: in the same anonymous way we count how often each post is shown on screen, opened or shared on WhatsApp, how often its contact details or source link are used, and how many people open a post from a shared link. This lets the people who post, and the administrator, see how a post is doing. These counts hold only the post, the island, the kind of action, the same random tab code and the time. They are switched off in the same situations as visit counts.</li>
       <li><b>Spam protection</b>: to stop abuse we keep a scrambled (hashed) form of your network address for a short time, about a day, to count how many requests come from one place. It cannot be turned back into your address.</li></ul>`},
-    {h:"Cookies and what your browser stores", html:`<p>We do not use cookies. Your browser keeps a few small items on your device: the islands you visited recently, a random code and a list showing which posts you have voted on (so a vote cannot be repeated), and, for the administrator only, a note that this device belongs to the administrator. A short-lived code in your browser tab is used for the visit count. You can clear all of these in your browser settings at any time.</p>`},
+    {h:"Cookies and what your browser stores", html:`<p>We do not use cookies. Your browser keeps a few small items on your device: the islands you visited recently, the language you choose (saved only if you pick one), a random code and a list showing which posts you have voted on (so a vote cannot be repeated), and, for the administrator only, a note that this device belongs to the administrator. A short-lived code in your browser tab is used for the visit count, and a short list in the same tab remembers which posts have already been counted as seen or opened, so that reloading a page does not count them again. You can clear all of these in your browser settings at any time.</p>`},
     {h:"Other organisations that handle data for us", html:`<ul class="know">
       <li><b>Supabase</b> stores our database and the files people upload.</li>
       <li><b>jsDelivr</b> delivers a software library the site needs, and <b>flagcdn.com</b> delivers the country flag images. Both can see your IP address and browser type when your browser asks for those files.</li>
@@ -1784,7 +2276,7 @@ function showLegal(kind){
       <h1>${kind === "privacy" ? "Privacy notice" : "Terms of use"}</h1><div class="sub">Last updated ${esc(LEGAL_UPDATED)}</div>
     </div></section>
     <section class="wrap about">${warn}${legalSections(kind, op, mail).map(x => `<article class="panel"><h2>${x.h}</h2>${x.html}</article>`).join("")}</section>`,
-    kind === "privacy" ? "Privacy notice" : "Terms of use", true);
+    kind === "privacy" ? "Privacy notice" : "Terms of use", true, true);
 }
 function showAbout(){
   state.country = null;
@@ -1811,7 +2303,7 @@ function showAbout(){
         <li>In an emergency, contact your local emergency services and check official sources.</li>
         <li>Isle Connect is a general community board and is not designed specifically for children. Young people should use it with a parent or guardian.</li>
         <li>Have a question? Tap <b>Ask a question</b> at the bottom right of any page.</li></ul></article>
-    </section>`, "About", true);
+    </section>`, "About", true, true);
 }
 /* ---------- Advertise ---------- */
 const adPayUrl = id => safeUrl(PAYMENT_LINKS[id] || "");
@@ -1856,7 +2348,7 @@ function showAdvertise(query){
         <li>Every ad is labelled <b>Sponsored</b> and must follow the <a href="#/terms">Terms</a>. We may decline an ad that does not.</li>
         <li>If we decline an ad, or cannot run it, you get a full refund. Once a boost is live it is not refundable, and we cannot promise a number of views or replies.</li>
         <li>Prices are in US dollars and may change. The price you pay is the one shown when you pay.</li></ul></article>
-    </section>`, "Advertise", true);
+    </section>`, "Advertise", true, true);
 }
 let lastAd = 0;
 document.addEventListener("click", e => {
@@ -1958,20 +2450,23 @@ function showSuggest(){
   if (!list.length) { el.innerHTML = `<div class="sug-none">No posts match “${esc(q)}”.</div>`; el.hidden = false; return; }
   const ql = q.toLowerCase();
   const hl = t => { const i = t.toLowerCase().indexOf(ql); return i < 0 ? esc(t) : esc(t.slice(0, i)) + "<mark>" + esc(t.slice(i, i + q.length)) + "</mark>" + esc(t.slice(i + q.length)); };
-  el.innerHTML = list.slice(0, 6).map(p => { const ci = catInfo(p.category); return `<button type="button" class="sug" role="option" data-sid="${esc(p.id)}"><span>${hl(p.title)}</span><span class="sug-c">${ci.icon} ${esc(p.category)}</span></button>`; }).join("")
+  el.innerHTML = list.slice(0, 6).map(p => { const ci = catInfo(p.category); return `<button type="button" class="sug" role="option" data-sid="${esc(p.id)}"><span data-ugc>${hl(p.title)}</span><span class="sug-c">${ci.icon} ${esc(p.category)}</span></button>`; }).join("")
     + (list.length > 6 ? `<button type="button" class="sug sug-all" data-act="seeall">See all ${list.length} results</button>` : "");
   el.hidden = false;
 }
 function openView(id){
   const p = state.posts.find(x => String(x.id) === String(id)); if (!p) return;
-  if (!$("#viewDlg").open) state.pr = {vote:0, child:0};
+  if (!$("#viewDlg").open) { state.pr = {vote:0, child:0}; postEvent(p, "open"); }
   $("#vd-body").dataset.pid = p.id;
   const ci = catInfo(p.category), img = mediaUrl(p.image_url), aud = mediaUrl(p.audio_url), vid = mediaUrl(p.video_url), feat = isFeatured(p);
-  $("#vd-title").textContent = p.title;
+  const v = postView(p);
+  $("#vd-title").textContent = v.title; $("#vd-title").setAttribute("data-ugc", "");
   $("#vd-body").innerHTML = `
     <div class="vmeta">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><time datetime="${esc(p.created_at)}">Posted ${esc(ago(p.created_at))}</time></div>
+    <div class="vshare">${shareLink(p, "btn small")}</div>
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener"><img class="vimg" src="${esc(img)}" alt=""></a>` : ""}
-    <p class="desc">${descHtml(p)}</p>
+    <p class="desc" data-ugc>${descHtml(p, v.description)}</p>
+    ${transBar(p, v)}
     ${srcLine(p)}
     ${contactHtml(p)}
     ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
@@ -1989,9 +2484,12 @@ function resetSearch(){
 }
 document.addEventListener("click", e => {
   if (!e.target.closest(".search.small")) hideSuggest();
+  { const a = e.target.closest("a.share, .srcline a");                       // Share on WhatsApp, or following a post's source link
+    if (a) { const pid = a.closest(".post[data-pid]")?.dataset.pid || (a.closest("#vd-body") ? $("#vd-body").dataset.pid : null);
+      const sp = pid && state.posts.find(x => String(x.id) === String(pid)); if (sp) postEvent(sp, a.matches("a.share") ? "share" : "source"); } }
   const sug = e.target.closest("[data-sid]");
   if (sug) { hideSuggest(); return openView(sug.dataset.sid); }
-  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close],[data-tab],[data-days],[data-rkey]");
+  const t = e.target.closest("[data-act],[data-region],[data-cat],[data-close],[data-tab],[data-days],[data-rkey],[data-sdays],[data-psort]");
   if (!t) {
     const card = e.target.closest(".post[data-pid]");
     if (card && !e.target.closest("a,button,audio,input,select,textarea,summary")) openView(card.dataset.pid);
@@ -2006,7 +2504,8 @@ document.addEventListener("click", e => {
   }
   if (t.dataset.tab) { state.adminTab = t.dataset.tab; return renderAdminTab(); }
   if (t.dataset.days) { state.trafficDays = Number(t.dataset.days); return showTraffic(); }
-  if (t.dataset.region) { state.region = t.dataset.region; renderRegions(); return renderGrid(); }
+  if (t.dataset.sdays) { state.psDays = Number(t.dataset.sdays); return renderPostStats(); }
+  if (t.dataset.psort) { state.topSort = t.dataset.psort; return renderTopPosts(); }
   if (t.dataset.cat) { state.cat = t.dataset.cat; state.shown = 24; renderCats(); return renderPosts(); }
   switch (t.dataset.act) {
     case "post": return openPost();
@@ -2020,7 +2519,7 @@ document.addEventListener("click", e => {
       const pid = t.closest("[data-pid]")?.dataset.pid; if (!pid) return;
       t.disabled = true; t.textContent = "Loading…";
       return api.revealContact(pid).then(text => {
-        state.contacts[pid] = text || ""; renderPosts();
+        state.contacts[pid] = text || ""; if (text) { const rp = state.posts.find(x => String(x.id) === String(pid)); if (rp) postEvent(rp, "contact"); } renderPosts();
         if ($("#viewDlg").open && $("#vd-body").dataset.pid === pid) openView(pid);
       }).catch(ex => { t.disabled = false; t.textContent = "Show contact details"; console.error(ex);
         toast(isLimited(ex) ? "You have looked up a lot of contacts. Please try again later." : "Couldn't load the contact details.", "error"); });
@@ -2035,6 +2534,10 @@ document.addEventListener("click", e => {
       return api.setQuestion(q.id, next).then(() => { q.status = next; renderQuestionList(); refreshOpenQ(); }).catch(() => toast("Couldn't update that question.", "error")); }
     case "qdel": { const row = t.closest(".qrow"); if (!row || !confirm("Delete this question permanently?")) return;
       return api.removeQuestion(row.dataset.id).then(() => { state.questions = state.questions.filter(x => String(x.id) !== row.dataset.id); renderQuestionList(); refreshOpenQ(); toast("Question deleted."); }).catch(() => toast("Couldn't delete that question.", "error")); }
+    case "pstats": return openPostStats(t.dataset.pid || t.closest("[data-id]")?.dataset.id);
+    case "pscopy": return navigator.clipboard.writeText(postReport()).then(() => toast("Report copied. Paste it into WhatsApp or an email.", "ok")).catch(() => toast("Couldn't copy the report.", "error"));
+    case "topcsv": return exportPostStats();
+    case "islands": return openIslands();
     case "subscribe": return openSub(state.country?.code);
     case "exportsubs": return exportSubs();
     case "copyemails": return copyEmails();
@@ -2081,7 +2584,7 @@ async function updateNav(){
   catch { state.countries = LOCAL_COUNTRIES; }
   state.byCode = Object.fromEntries(state.countries.map(c => [c.code, c]));
   if (!DEMO) sb.auth.onAuthStateChange(() => { setTimeout(updateNav, 0); });
-  updateNav(); route();
+  i18nStart(); updateNav(); route();
 })();
 </script>
 </body>
