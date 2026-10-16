@@ -340,6 +340,14 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 @media(max-width:520px){.chat-fab-t{display:none}.chat-fab{padding:.9rem}}
 
 .pkgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:.8rem}
+.adtabs{display:flex;flex-wrap:wrap;gap:.7rem;margin:1rem 0 .4rem}
+.adtab{flex:1 1 230px;display:flex;align-items:center;justify-content:space-between;gap:.8rem;text-align:left;padding:.85rem 1rem;border-radius:14px;border:1.5px solid var(--line-2);background:#fff;color:var(--ink);font:700 1rem var(--body);cursor:pointer}
+.adtab small{display:block;font:500 .86rem var(--body);color:var(--muted);margin-top:.15rem}
+.adtab::after{content:"+";flex:none;font:700 1.5rem/1 var(--body);color:var(--link)}
+.adtab:hover{border-color:var(--palm)}
+.adtab[aria-expanded="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.adtab[aria-expanded="true"] small{color:var(--on-ink)}
+.adtab[aria-expanded="true"]::after{content:"\2212";color:var(--sun)}
 .pkg{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem}
 .pkg.pop{border-color:var(--sun);box-shadow:0 10px 26px -14px rgba(var(--accd-rgb),.8)}
 .pop-tag{position:absolute;top:-.7rem;right:1rem;background:var(--sun);color:var(--ink);font-weight:800;font-size:.78rem;padding:.2rem .65rem;border-radius:99px}
@@ -2305,33 +2313,48 @@ function showAbout(){
     </section>`, "About", true, true);
 }
 const adPayUrl = id => safeUrl(PAYMENT_LINKS[id] || "");
+const AD_PANELS = {packages:"adp-packages", how:"adp-how", request:"request"};
+function setAdPanel(key, open){
+  const panel = document.getElementById(AD_PANELS[key]), btn = document.querySelector('[data-adtab="' + key + '"]');
+  if (!panel) return;
+  panel.hidden = !open;
+  if (btn) btn.setAttribute("aria-expanded", String(!!open));
+}
 function showAdvertise(query){
   state.country = null;
   const q = new URLSearchParams(query), focus = ["lc", "bb", "gd"];
   const island = state.byCode[q.get("c")] ? q.get("c") : "";
   const pkg = AD_PACKAGES.some(p => p.id === q.get("pkg")) ? q.get("pkg") : "boost30";
   const ordered = [...focus.map(c => state.byCode[c]).filter(Boolean), ...state.countries.filter(c => !focus.includes(c.code))];
+  const validPkg = AD_PACKAGES.some(p => p.id === q.get("pkg"));
+  const openAd = new Set([...(island || validPkg ? ["packages"] : []), ...(validPkg ? ["request"] : [])]);
+  const hid = k => openAd.has(k) ? "" : "hidden";
+  const tab = (k, title, hint) => `<button class="adtab" type="button" id="adt-${k}" data-adtab="${k}" aria-expanded="${openAd.has(k)}" aria-controls="${AD_PANELS[k]}"><span>${title}<small>${hint}</small></span></button>`;
   setView(`
     <section class="band"><div class="wrap">
       <a class="back" href="#/">&lsaquo; All Caribbean</a>
-      <h1>Advertise on Isle Connect</h1><div class="sub">Reach people on your island, from US$${Math.min(...AD_PACKAGES.map(p => p.price))}</div>
+      <h1>Advertise on Isle Connect</h1><div class="sub">Reach people on your island</div>
     </div></section>
     <section class="wrap about">
       <article class="panel"><h2>Be the first thing people see</h2>
         <p>Posting is free. A boost pins your post to the top of your island page with a gold border and a <b>Sponsored</b> tag, so people looking for jobs, food, rides and events see you first. Boosts are for businesses, events and employers.</p></article>
-      <article class="panel"><h2>Packages</h2><div class="pkgs">${AD_PACKAGES.map(p => { const pay = adPayUrl(p.id); return `
+      <div class="adtabs" role="group" aria-label="More about advertising">
+        ${tab("packages", "Boosts are for businesses, events and employers", "See the packages and prices")}
+        ${tab("how", "How it works", "Four simple steps")}
+        ${tab("request", "Request a package", "Send us a short form")}</div>
+      <article class="panel" id="adp-packages" ${hid("packages")}><h2>Packages</h2><div class="pkgs">${AD_PACKAGES.map(p => { const pay = adPayUrl(p.id); return `
         <div class="pkg ${p.popular ? "pop" : ""}">${p.popular ? '<span class="pop-tag">Most popular</span>' : ""}
           <h3>${esc(p.name)}</h3><div class="price">US$${esc(p.price)}<small> for ${esc(p.per)}</small></div>
           <p>${esc(p.blurb)}</p><p class="fit"><b>Good for:</b> ${esc(p.fit)}</p>
           <div class="pkg-actions">${pay ? `<a class="btn accent" href="${esc(pay)}" target="_blank" rel="noopener noreferrer">Pay by card <span class="sr-only">(opens a secure payment page in a new tab)</span></a>` : ""}
             <button class="btn ${pay ? "ghost" : ""}" type="button" data-act="adreq" data-pkg="${esc(p.id)}">Request this package</button></div></div>`; }).join("")}</div>
         <p class="counter" style="margin:.8rem 0 0">Card payments are handled by a secure payment provider. We never see or store your card details.</p></article>
-      <article class="panel"><h2>How it works</h2><div class="steps">
+      <article class="panel" id="adp-how" ${hid("how")}><h2>How it works</h2><div class="steps">
         <div class="step"><span class="num">1</span><b>Post for free</b><p>Add your business, job or event on your island page. An administrator reviews it first.</p></div>
         <div class="step"><span class="num">2</span><b>Choose a package</b><p>Pay by card, or send the request form below and we'll reply with other ways to pay.</p></div>
         <div class="step"><span class="num">3</span><b>We boost your post</b><p>After payment is confirmed, your post is pinned (${esc(AD_TURNAROUND)}).</p></div>
         <div class="step"><span class="num">4</span><b>See how it did</b><p>Ask any time for a simple report of page views for your island.</p></div></div></article>
-      <article class="panel" id="request"><h2>Request a package</h2>
+      <article class="panel" id="request" ${hid("request")}><h2>Request a package</h2>
         <form class="f" id="adForm" novalidate>
           <div class="row2"><div class="field"><label for="ad-biz">Business or your name</label><input id="ad-biz" maxlength="120" autocomplete="organization" required></div>
             <div class="field"><label for="ad-email">Email</label><input id="ad-email" type="email" maxlength="254" autocomplete="email" required></div></div>
@@ -2350,7 +2373,15 @@ function showAdvertise(query){
 }
 let lastAd = 0;
 document.addEventListener("click", e => {
+  const tab = e.target.closest("[data-adtab]");
+  if (tab) {
+    const panel = document.getElementById(AD_PANELS[tab.dataset.adtab]); if (!panel) return;
+    const opening = panel.hidden; setAdPanel(tab.dataset.adtab, opening);
+    if (opening) panel.scrollIntoView({behavior:"smooth", block:"nearest"});
+    return;
+  }
   const b = e.target.closest('[data-act="adreq"]'); if (!b) return;
+  setAdPanel("request", true);
   const sel = $("#ad-pkg"); if (sel) sel.value = b.dataset.pkg;
   $("#request")?.scrollIntoView({behavior:"smooth", block:"start"}); setTimeout(() => $("#ad-biz")?.focus(), 350);
 });
