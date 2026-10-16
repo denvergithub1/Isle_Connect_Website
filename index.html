@@ -554,12 +554,12 @@ catch { document.documentElement.style.display = "none"; }
 const AUTOMATED = BLOCK_AUTOMATION && navigator.webdriver === true;
 
 /* Legal pages (Privacy and Terms). FILL THESE IN before you launch: they are shown on those pages. */
-const SITE_OPERATOR = "[name or organisation pending]";
-const CONTACT_EMAIL = "jsurvey758@gmail.com";
+const SITE_OPERATOR = "[Your name or organisation]";
+const CONTACT_EMAIL = "[your contact email address]";
 const LEGAL_UPDATED = "15 October 2026";
 
 /* ---------- Advertising: edit these, then upload the file again ----------
-   PAYMENT_LINKS: paste one payment link per package (paypal ot Stripe here).
+   PAYMENT_LINKS: paste one payment link per package (Stripe Payment Links, PayPal checkout links or PayPal.me).
    Leave a link as "" and that package shows "Request this package" instead of "Pay by card".
    AD_PACKAGES: the prices and wording shown on the Advertise page. Prices are in US dollars. */
 const PAYMENT_LINKS = {boost7:"", boost30:"", boost90:"", job:"", event:"", broadcast:""};
@@ -594,11 +594,12 @@ const isLimited = ex => /rate_limited/.test(String((ex && (ex.message || ex.hint
 
 /* ---------- Static data ---------- */
 const CATEGORIES = [
+  {id:"Major news",icon:"📰",h:225,staff:true},   /* staff:true = only an administrator can publish it; hidden from the public "New post" form */
   {id:"Jobs",icon:"💼",h:215},{id:"Food",icon:"🍲",h:25},{id:"Education",icon:"🎓",h:265},
   {id:"Transport",icon:"🚌",h:190},{id:"Emergency",icon:"🚨",h:5},{id:"Holiday",icon:"🌴",h:150},
   {id:"Advertisement",icon:"📣",h:320},{id:"Sports",icon:"⚽",h:100},{id:"Other",icon:"✨",h:45}
 ];
-const CAT_BLURB = {Jobs:"Vacancies and work opportunities",Food:"Meals, markets and places to eat",Education:"Schools, lessons and scholarships",
+const CAT_BLURB = {"Major news":"Big stories that affect most of the Caribbean, with links to the sources",Jobs:"Vacancies and work opportunities",Food:"Meals, markets and places to eat",Education:"Schools, lessons and scholarships",
   Transport:"Rides, routes and travel updates",Emergency:"Urgent notices and where to find help",Holiday:"Public holidays and local events",
   Advertisement:"Offers from local businesses",Sports:"Leagues, fixtures and local sport",Other:"Anything else the community needs"};
 const VIDEO_BUCKET = "post-videos";
@@ -641,6 +642,9 @@ function ago(iso){
    Web addresses (with or without https://) and emails open in a new window/tab. */
 const CONTACT_RE = /(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)|([A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,})|((?:[A-Za-z0-9-]+\.)+(?:com|net|org|gov|edu|info|io|co|bb|jm|tt|gd|lc|bz|gy|bs|ky|vc|kn|ag|dm|ai|vg|tc|sr|cw|aw|pr|do|ht|cu|vi|ms|gp|mq|sx|uk|us|ca)\b(?:\/[^\s<>"]*)?)|(\+?\(?\d[\d\s().-]{5,}\d)/gi;
 const NEWWIN = 'target="_blank" rel="noopener noreferrer"';
+/* Links are made clickable ONLY in administrator-written "Major news" posts. Visitor posts always stay plain text. */
+const linkNews = escaped => escaped.replace(/https:\/\/[^\s<"]+[^\s<".,;:!?)\]]/g, u => `<a href="${u}" ${NEWWIN}>${u}</a>`);
+const descHtml = p => p.category === "Major news" ? linkNews(esc(p.description || "")) : esc(p.description || "");
 function linkify(text){
   const src = String(text ?? ""); let out = "", last = 0, m;
   CONTACT_RE.lastIndex = 0;
@@ -664,7 +668,7 @@ function linkify(text){
 }
 function srcLine(p){
   const u = safeUrl(p.source_url); if (!u) return "";
-  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}>${esc(p.source_name || "Official notice")} ↗</a>${p.expires_at ? ` · Closes ${esc(fmtDate(p.expires_at))}` : ""}</div>`;
+  return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}>${esc(p.source_name || "Official notice")} ↗</a>${p.expires_at ? ` · ${p.category === "Major news" ? "Shown until" : "Closes"} ${esc(fmtDate(p.expires_at))}` : ""}</div>`;
 }
 /* Contact details are not part of the public post list. A visitor clicks to reveal one at a time. */
 function contactHtml(p){
@@ -699,6 +703,7 @@ const demoDb = {
     {id:"d9",country_code:"bb",title:"Surf lessons for beginners",category:"Sports",description:"Bathsheba, Saturdays and Sundays. Boards provided.",contact:"surf@example.com",rating:4.5,status:"Approved",created_at:daysAgo(7)},
     {id:"d10",country_code:"gd",title:"Spice farm tours",category:"Holiday",description:"Half-day tours with tastings. Transport from St. George's can be arranged.",contact:"473 555 0188",rating:5,status:"Approved",created_at:daysAgo(9)},
     {id:"d12",country_code:"bb",title:"National Development Scholarships 2026",category:"Education",description:"Scholarship or education notice listed by Barbados Ministry of Education. Closing date: 25 October 2026. Open the source link for the full details and how to apply. Imported automatically, so please check the official notice before applying.",contact:null,rating:null,status:"Approved",created_at:daysAgo(1),source_name:"Barbados Ministry of Education",source_url:"https://mes.gov.bb/",expires_at:daysAgo(-14)},
+    {id:"d13",country_code:"jm",title:"Sample major news story: what it means for you",category:"Major news",description:"This is a sample. Real stories explain what happened, what it means for people across the Caribbean and what to do, and link to their sources.\n\nSources: https://www.nhc.noaa.gov/",contact:null,rating:null,status:"Approved",created_at:daysAgo(0.5),source_name:"US National Hurricane Center",source_url:"https://www.nhc.noaa.gov/",expires_at:daysAgo(-30)},
     {id:"d11",country_code:"lc",title:"Fresh fish at Gros Islet market",category:"Food",description:"Daily catch, from 6am. Order ahead for large amounts.",contact:"758 555 0166",rating:null,status:"Approved",created_at:daysAgo(2)}
   ]
 };
@@ -980,7 +985,7 @@ function route(){
   if ((m = h.match(/^#\/advertise(?:\?(.*))?$/))) return showAdvertise(m[1] || "");
   if (h === "#/privacy") return showLegal("privacy");
   if (h === "#/terms") return showLegal("terms");
-  if (h === "#/" + ADMIN_PATH) return showAdmin();
+  if (h === "#/" + ADMIN_PATH) { store.set("ic_admin", true); return showAdmin(); }   /* your own device is never counted, even before you sign in */
   location.hash = "#/";
 }
 window.addEventListener("hashchange", route);
@@ -1147,8 +1152,9 @@ function sortPosts(list){
   const cmp = s === "old" ? (a,b) => a.created_at.localeCompare(b.created_at)
             : s === "rating" ? (a,b) => (score(b) - score(a)) || byDate(a,b)
             : byDate;
-  /* Featured (sponsored) posts always stay pinned at the top */
-  return [...list].sort((a,b) => (isFeatured(b) - isFeatured(a)) || cmp(a,b));
+  /* Featured (sponsored) posts stay pinned at the top, then Major news, then everything else */
+  const isNews = p => p.category === "Major news";
+  return [...list].sort((a,b) => (isFeatured(b) - isFeatured(a)) || (isNews(b) - isNews(a)) || cmp(a,b));
 }
 function syncFilterUI(){
   const f = state.filters;
@@ -1189,7 +1195,7 @@ function postCard(p){
     <div class="pbody">
       <div class="pmeta"><span class="left">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span></span><time datetime="${esc(p.created_at)}">${esc(ago(p.created_at))}</time></div>
       <h3><button class="ptitle" type="button" data-act="open" aria-haspopup="dialog">${esc(p.title)}</button></h3>
-      <p class="desc ${long ? "clamp" : ""}">${esc(p.description)}</p>
+      <p class="desc ${long ? "clamp" : ""}">${descHtml(p)}</p>
       ${long ? `<button class="linkbtn" type="button" data-act="toggle">Read more</button>` : ""}
       ${srcLine(p)}
       ${contactHtml(p)}
@@ -1208,8 +1214,9 @@ function openPost(){
   $("#pf-country").innerHTML = state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("");
   $("#pf-country").value = state.country?.code || store.get("recent", [])[0] || "";
   if (!$("#pf-country").value) $("#pf-country").selectedIndex = -1;
-  $("#pf-cat").innerHTML = ALL_CATS.map(c => `<option value="${esc(c.id)}">${c.icon} ${esc(c.id)}</option>`).join("");
-  $("#pf-cat").value = state.cat !== "All" ? state.cat : "Jobs";
+  const postCats = ALL_CATS.filter(c => !c.staff);
+  $("#pf-cat").innerHTML = postCats.map(c => `<option value="${esc(c.id)}">${c.icon} ${esc(c.id)}</option>`).join("");
+  $("#pf-cat").value = postCats.some(c => c.id === state.cat) ? state.cat : "Jobs";
   $("#pf-err").textContent = "";
   postDlg.showModal();
   (state.country ? $("#pf-title") : $("#pf-country")).focus();
@@ -1576,7 +1583,7 @@ function renderTraffic(t){
     <div class="panel"><h3>Page views per day</h3><div class="chart" role="img" aria-label="Bar chart of page views per day">${series.map(([d,v]) => `<i style="height:${Math.max(2, v/max*100)}%" title="${d}: ${v} views"></i>`).join("")}</div><div class="chart-axis"><span>${series[0][0]}</span><span>${series[series.length-1][0]}</span></div></div>
     <div class="panel"><h3>Most visited countries</h3>${rank(t.by_country || [], r => { const c = state.byCode[r.code]; return (c ? flag(c.code) : "") + esc(c ? c.name : r.code); })}</div>
     <div class="panel"><h3>Where visitors came from</h3>${rank(t.by_referrer || [], r => esc(r.ref))}</div>
-    <p class="result-info">Cookie-free: visits are counted per browser tab session and no IP addresses are stored. Your own visits are skipped while you are signed in as admin on this browser.</p>`;
+    <p class="result-info">Cookie-free: visits are counted per browser tab session and no IP addresses are stored. Your own visits are never counted: not while you are signed in, not on a device where you have signed in or opened the admin address (until you press Sign out), and the database refuses them as well.</p>`;
 }
 
 async function loadAdmin(){
@@ -1964,7 +1971,7 @@ function openView(id){
   $("#vd-body").innerHTML = `
     <div class="vmeta">${feat ? `<span class="spon">★ Sponsored</span>` : ""}<span class="tag" style="--h:${ci.h}">${ci.icon} ${esc(p.category)}</span><time datetime="${esc(p.created_at)}">Posted ${esc(ago(p.created_at))}</time></div>
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener"><img class="vimg" src="${esc(img)}" alt=""></a>` : ""}
-    <p class="desc">${esc(p.description)}</p>
+    <p class="desc">${descHtml(p)}</p>
     ${srcLine(p)}
     ${contactHtml(p)}
     ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
