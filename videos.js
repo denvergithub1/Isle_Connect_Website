@@ -4,12 +4,12 @@
 
   var MB = 1048576;
   var cfg = {
-    maxBytes: 25 * MB,          // set by index.html from its own file rules
-    maxShrinkSeconds: 180,      // the longest video we will re-encode in the browser
-    slowMs: 20000,              // how long a video may take to start before we say so
-    t: function (s) { return s; },          // translator, set by index.html
-    allowUrl: function () { return true; }, // address check, set by index.html
-    readMeta: null              // test hook only
+    maxBytes: 25 * MB,
+    maxShrinkSeconds: 180,
+    slowMs: 20000,
+    t: function (s) { return s; },
+    allowUrl: function () { return true; },
+    readMeta: null
   };
   var T = function (s, vars) {
     var r; try { r = cfg.t(s); } catch (e) { r = null; }
@@ -21,15 +21,14 @@
   var fmtTime = function (s) { s = Math.max(0, Math.round(s)); var m = Math.floor(s / 60), r = s % 60; return m + ":" + (r < 10 ? "0" : "") + r; };
   var codeErr = function (code, extra) { var e = new Error(code); e.code = code; if (extra) e.extra = extra; return e; };
 
-  /* ---------- styles (inline, no files needed) ---------- */
   var css = [
-    ".vplayer{position:relative;width:100%;aspect-ratio:16/9;max-height:360px;border-radius:12px;background:linear-gradient(135deg,#0b2f3d,#145c4a);overflow:hidden;display:flex;align-items:center;justify-content:center}",
+    ".vplayer{position:relative;width:100%;aspect-ratio:16/9;max-height:360px;border-radius:12px;background:linear-gradient(135deg,var(--ink,#0b2f3d),var(--ink-2,#145c4a));overflow:hidden;display:flex;align-items:center;justify-content:center}",
     ".vplayer.live,.vplayer.failed{aspect-ratio:auto}",
     ".vplayer.live{background:#000}",
     ".vplayer.failed{background:none;overflow:visible}",
     ".vplay{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;width:100%;height:100%;min-height:150px;border:0;background:transparent;color:#fff;font:700 1rem var(--body,system-ui,sans-serif);cursor:pointer}",
-    ".vplay:focus-visible{outline:3px solid #f8b933;outline-offset:-4px}",
-    ".vicon{display:grid;place-items:center;width:3.6rem;height:3.6rem;border-radius:50%;background:rgba(255,255,255,.92);color:#0b2f3d;font-size:1.5rem;padding-left:.2rem;transition:transform .15s}",
+    ".vplay:focus-visible{outline:3px solid var(--sun,#f8b933);outline-offset:-4px}",
+    ".vicon{display:grid;place-items:center;width:3.6rem;height:3.6rem;border-radius:50%;background:var(--sun,#f8b933);color:var(--ink,#0b2f3d);font-size:1.5rem;padding-left:.2rem;transition:transform .15s}",
     ".vplay:hover .vicon{transform:scale(1.08)}",
     ".vplayer video{width:100%;max-height:360px;display:block;background:#000}",
     ".vplayer.loading::after{content:\"\";position:absolute;width:2.4rem;height:2.4rem;border:4px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:vspin .9s linear infinite;pointer-events:none}",
@@ -37,8 +36,8 @@
     "@media (prefers-reduced-motion:reduce){.vplayer.loading::after{animation-duration:3s}.vicon{transition:none}}",
     ".verr{width:100%;padding:.9rem 1rem;background:#fff3f0;color:#5a1d12;border:1px solid #f0c4ba;border-radius:12px;font-size:.93rem}",
     ".verr p{margin:.25rem 0}",
-    ".verr button,.vnote button{background:none;border:0;padding:0;font:700 .92rem var(--body,system-ui,sans-serif);color:#14603f;text-decoration:underline;cursor:pointer}",
-    ".verr a{color:#14603f;font-weight:700}",
+    ".verr button,.vnote button{background:none;border:0;padding:0;font:700 .92rem var(--body,system-ui,sans-serif);color:var(--link,#14603f);text-decoration:underline;cursor:pointer}",
+    ".verr a{color:var(--link,#14603f);font-weight:700}",
     ".vnote{margin:.4rem 0 0;font-size:.9rem;line-height:1.4;color:var(--muted,#51636b)}",
     ".vnote.ok{color:#14603f}",
     ".vnote.err{color:#8a1c0e}",
@@ -47,11 +46,9 @@
   var styleEl = document.createElement("style"); styleEl.id = "isle-videos-css"; styleEl.textContent = css;
   (document.head || document.documentElement).appendChild(styleEl);
 
-  /* ---------- file types ---------- */
   var OK_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
   var EXT_TYPES = { mp4: "video/mp4", m4v: "video/mp4", webm: "video/webm", mov: "video/quicktime", qt: "video/quicktime" };
   var ALIASES = { "video/x-m4v": "video/mp4", "video/mov": "video/quicktime", "video/x-quicktime": "video/quicktime" };
-  /* The type to use for a file. Some phones and computers give a video no type at all; then the file ending decides. */
   function typeOf(f) {
     var t = String((f && f.type) || "").toLowerCase().split(";")[0];
     if (ALIASES[t]) return ALIASES[t];
@@ -59,14 +56,12 @@
     if (!t || t === "application/octet-stream") { var m = /\.([a-z0-9]+)$/i.exec((f && f.name) || ""); if (m && EXT_TYPES[m[1].toLowerCase()]) return EXT_TYPES[m[1].toLowerCase()]; }
     return t;
   }
-  /* The same file, labelled with the right type, so it uploads correctly. */
   function normalize(f) {
     var t = typeOf(f);
     if (!f || OK_TYPES.indexOf(t) < 0 || t === f.type) return f;
     try { return new File([f], f.name, { type: t, lastModified: f.lastModified }); } catch (e) { return f; }
   }
 
-  /* ---------- reading a video file: can this browser play it, and how long is it? ---------- */
   function readMeta(file, timeout) {
     if (cfg.readMeta) return Promise.resolve(cfg.readMeta(file));
     return new Promise(function (resolve) {
@@ -78,18 +73,17 @@
         try { v.removeAttribute("src"); v.load(); } catch (e) {}
         URL.revokeObjectURL(url); resolve(r);
       };
-      tm = setTimeout(function () { fin("unknown"); }, timeout || 10000);       // some phones will not preview off-screen: not a reason to refuse
+      tm = setTimeout(function () { fin("unknown"); }, timeout || 10000);
       v.onerror = function () { fin(null); };
       v.onloadedmetadata = function () {
-        if (!(v.videoWidth > 0)) return fin(null);                               // no picture the browser can decode (for example a newer phone format)
+        if (!(v.videoWidth > 0)) return fin(null);
         if (isFinite(v.duration)) return fin({ duration: v.duration, width: v.videoWidth, height: v.videoHeight });
         v.ontimeupdate = function () { if (isFinite(v.duration)) fin({ duration: v.duration, width: v.videoWidth, height: v.videoHeight }); };
-        try { v.currentTime = 1e101; } catch (e) { fin("unknown"); }             // videos recorded in a browser report their length only at the end
+        try { v.currentTime = 1e101; } catch (e) { fin("unknown"); }
       };
       v.src = url;
     });
   }
-  /* Everything we can say about a chosen file before it is uploaded. */
   function inspect(file) {
     var type = typeOf(file), out = { ok: false, name: file.name, size: file.size, type: type, tooBig: file.size > cfg.maxBytes };
     if (OK_TYPES.indexOf(type) < 0) { out.problem = "type"; return Promise.resolve(out); }
@@ -101,7 +95,6 @@
     });
   }
 
-  /* ---------- making a video smaller, in the browser (no upload, no outside tools) ---------- */
   function recorderMime() {
     if (typeof MediaRecorder === "undefined" || !MediaRecorder.isTypeSupported) return "";
     var list = ["video/webm;codecs=vp9,opus", "video/webm;codecs=vp8,opus", "video/webm", "video/mp4"];
@@ -118,7 +111,7 @@
       var g = canvas.getContext("2d", { alpha: false }), fps = 30, chunks = [], aborted = false, finished = false, timer = null, lastTick = Date.now(), watchdog = null;
       v.playsInline = true; v.preload = "auto";
       var src = p.ac.createMediaElementSource(v), dest = p.ac.createMediaStreamDestination();
-      src.connect(dest);                                                         // the sound goes into the recording, not to the speakers
+      src.connect(dest);
       var stream = new MediaStream(canvas.captureStream(fps).getVideoTracks().concat(dest.stream.getAudioTracks()));
       var rec = new MediaRecorder(stream, { mimeType: p.mime, videoBitsPerSecond: p.vBps, audioBitsPerSecond: p.aBps });
       var cleanup = function () { clearInterval(timer); clearInterval(watchdog); v.ontimeupdate = v.onended = v.onerror = v.onloadeddata = null; try { v.pause(); v.removeAttribute("src"); v.load(); } catch (e) {} try { src.disconnect(); } catch (e) {} URL.revokeObjectURL(url); };
@@ -131,7 +124,7 @@
       v.ontimeupdate = function () { lastTick = Date.now(); if (p.onProgress) p.onProgress(Math.min(1, v.currentTime / p.dur)); };
       v.onended = function () { draw(); stop(); };
       if (p.signal) p.signal.addEventListener("abort", function () { aborted = true; stop(); });
-      watchdog = setInterval(function () { if (Date.now() - lastTick > 25000) { aborted = false; stop(); } }, 5000);   // stuck: stop rather than wait for ever
+      watchdog = setInterval(function () { if (Date.now() - lastTick > 25000) { aborted = false; stop(); } }, 5000);
       v.onloadeddata = function () {
         rec.start(1000);
         timer = setInterval(draw, Math.round(1000 / fps));
@@ -140,11 +133,10 @@
       v.src = url;
     });
   }
-  /* Re-encode a video at a lower size so it fits the limit. Takes about as long as the video lasts. */
   async function shrink(file, o) {
     o = o || {};
     if (!canShrink()) throw codeErr("unsupported");
-    var AC = window.AudioContext || window.webkitAudioContext, ac = new AC();     // created straight away, inside the tap that asked for it
+    var AC = window.AudioContext || window.webkitAudioContext, ac = new AC();
     try { await ac.resume(); } catch (e) {}
     try {
       var meta = await readMeta(file);
@@ -168,8 +160,6 @@
     } finally { try { ac.close(); } catch (e) {} }
   }
 
-  /* ---------- playing a video on the page ---------- */
-  /* Markup for one video. index.html puts this where a plain <video> used to be. */
   function html(url, o) {
     o = o || {};
     if (!url || !cfg.allowUrl(url)) return "";
@@ -198,7 +188,7 @@
     v.addEventListener("loadeddata", ready); v.addEventListener("playing", ready);
     v.addEventListener("error", function () { if (settled && !box.classList.contains("live")) return; settled = true; clearTimeout(slow); fail(box, url, v.error ? v.error.code : 0); });
     v.src = url;
-    var pr = v.play(); if (pr && pr.catch) pr.catch(function () { ready(); });  // if the browser wants another tap, the controls are there
+    var pr = v.play(); if (pr && pr.catch) pr.catch(function () { ready(); });
   }
   document.addEventListener("click", function (e) {
     var t = e.target; if (!t || !t.closest) return;
@@ -207,19 +197,16 @@
     var sh = t.closest(".vshrink"); if (sh && sh.parentNode && sh.parentNode._input) { e.preventDefault(); doShrink(sh.parentNode._input); return; }
     var cn = t.closest(".vcancel"); if (cn && cn.parentNode && cn.parentNode._input) { e.preventDefault(); var st = stateOf(cn.parentNode._input); if (st.abort) st.abort.abort(); }
   });
-  /* One video at a time */
   document.addEventListener("play", function (e) {
     var cur = e.target; if (!cur || cur.tagName !== "VIDEO") return;
     var all = document.querySelectorAll("video");
     for (var i = 0; i < all.length; i++) if (all[i] !== cur && !all[i].paused) all[i].pause();
   }, true);
-  /* A video stops when its post window is closed (otherwise the sound carries on behind the page) */
   document.addEventListener("close", function (e) {
     var d = e.target; if (!d || !d.querySelectorAll) return;
     var vs = d.querySelectorAll("video"); for (var i = 0; i < vs.length; i++) vs[i].pause();
   }, true);
 
-  /* ---------- choosing a video to upload ---------- */
   var states = new WeakMap();
   function stateOf(input) {
     var st = states.get(input);
@@ -247,7 +234,7 @@
     if (!f) { st.busy = false; say(input, "", ""); return; }
     st.busy = true; say(input, "", T("Checking your video\u2026"));
     var info; try { info = await inspect(f); } catch (e) { info = { ok: true, unknown: true, name: f.name, size: f.size, type: typeOf(f) }; }
-    if (token !== st.token) return;                                              // a newer choice replaced this one
+    if (token !== st.token) return;
     st.busy = false;
     if (info.problem === "type") { input.value = ""; return say(input, "err", T("That file type isn't supported. Please choose an MP4, WebM or MOV video.")); }
     if (info.problem === "unplayable") { input.value = ""; return say(input, "err", T("This video can't be played in most browsers. It may use a newer phone format. On an iPhone choose Settings, Camera, Formats, Most Compatible and record again, or choose an MP4 video.")); }
@@ -286,10 +273,8 @@
   }
   document.addEventListener("change", function (e) { if (isVideoInput(e.target)) check(e.target); });
 
-  
   var FORMATS = [["MP4 (H.264, works almost everywhere)", 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'], ["WebM (VP8)", 'video/webm; codecs="vp8, vorbis"'],
                  ["WebM (VP9)", 'video/webm; codecs="vp9, opus"'], ["MOV (QuickTime)", "video/quicktime"], ["MP4 (HEVC, newer iPhones)", 'video/mp4; codecs="hvc1.1.6.L93.B0"']];
-  /* Does the page's own security policy allow this address to be played? (null = no policy found) */
   function allowedByPolicy(url) {
     var m = document.querySelector('meta[http-equiv="Content-Security-Policy"]'); if (!m) return null;
     var d = /(?:^|;)\s*media-src\s+([^;]*)/i.exec(m.getAttribute("content") || ""); if (!d) return null;
