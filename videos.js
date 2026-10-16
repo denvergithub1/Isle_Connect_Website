@@ -1,16 +1,3 @@
-/* Isle Connect: videos.js
-   Upload this file to the SAME folder as index.html. If it is missing, the site still works with plain video players.
-
-   What it does
-   1. PLAYBACK. A video downloads only when someone presses Play, so a page of posts does not pull videos nobody watches
-      (this saves your Supabase bandwidth). Only one video plays at a time, videos stop when a post window is closed, and
-      a video that cannot play shows a clear message with "Try again" and a link to open the file, not a black box.
-   2. UPLOAD. When someone chooses a video, the file is checked in their browser first: supported type, playable,
-      size. Phone videos that arrive without a file type are fixed. A video over the size limit can be made smaller
-      right in the browser. Nothing leaves the device until the post is submitted, and nothing here contacts any server.
-
-   Safe by design: it never loads anything from another website, never reads anything but the video the visitor chose,
-   and only plays video addresses that index.html has already approved (your own Supabase storage). */
 (function () {
   "use strict";
   if (window.IsleVideos) return;
@@ -299,10 +286,7 @@
   }
   document.addEventListener("change", function (e) { if (isVideoInput(e.target)) check(e.target); });
 
-  /* ---------- For you, not for visitors: "why won't my video play?" ----------
-     Open your site, press F12, choose Console, and type:   IsleVideos.diagnose("the video's address")
-     (Leave the address out to just see which video formats this browser can play.)
-     It runs only when you call it, and the only address it contacts is the one you give it. */
+  
   var FORMATS = [["MP4 (H.264, works almost everywhere)", 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"'], ["WebM (VP8)", 'video/webm; codecs="vp8, vorbis"'],
                  ["WebM (VP9)", 'video/webm; codecs="vp9, opus"'], ["MOV (QuickTime)", "video/quicktime"], ["MP4 (HEVC, newer iPhones)", 'video/mp4; codecs="hvc1.1.6.L93.B0"']];
   /* Does the page's own security policy allow this address to be played? (null = no policy found) */
