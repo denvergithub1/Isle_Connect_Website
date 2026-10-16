@@ -3,14 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Isle Connect – community resources across the Caribbean</title>
+<meta name="theme-color" content="#1b1464">
+<title>Isle Connect: community resources across the Caribbean</title>
 <meta name="description" content="Find jobs, food, transport, education and emergency help posted by people across the Caribbean.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Isle Connect: jobs, rides, school notices and help across the Caribbean">
 <meta property="og:description" content="A free community board for Saint Lucia, Barbados, Grenada and the rest of the Caribbean. Choose your island and see what people are sharing.">
 <meta name="twitter:card" content="summary">
-<!-- Security & privacy: only your own page, the pinned Supabase library (checked with an integrity hash) and your own Supabase project may load.
-     If you use a custom Supabase domain, add it to connect-src and img-src/media-src below. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co https://flagcdn.com; media-src 'self' blob: https://*.supabase.co; font-src 'self'; connect-src 'self' https://*.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝</text></svg>">
@@ -18,13 +17,54 @@
 
 <style>
 :root{
-  --ink:#0a2f3c; --ink-2:#14485a; --palm:#1f7a4d; --palm-d:#165a39;
-  --sun:#f5b82e; --sun-d:#e0a114; --bg:#f0f6f4; --card:#ffffff; --line:#d7e3e0;
-  --muted:#53707c; --danger:#b4332b; --ok:#1f7a4d;
+  --ink:#1b1464; --ink-2:#2f1f93; --palm:#c0179a; --palm-d:#94107a; --sun:#ffc72c; --sun-d:#f0b000;
+  --second:#14b8a6; --second-d:#0a7f73; --bg:#f6f3ff; --card:#ffffff; --line:#ded7f7; --line-2:#c4bbec;
+  --muted:#5a5690; --text-2:#322d62; --tint:#efeaff; --tint-2:#e3dcfa; --hover:#e8e1fd;
+  --on-ink:#e6e1fc; --on-ink-2:#c3bbf0; --link:#94107a; --focus:#2b6fe0;
+  --hero-a:#1b1464; --hero-b:#33209c; --hero-c:#6a1fa6;
+  --sh:27,20,100; --pri-rgb:192,23,154; --acc-rgb:255,199,44; --sec-rgb:20,184,166;
+  --hero-bg:radial-gradient(62rem 28rem at 88% -8%, rgba(var(--pri-rgb),0.42), transparent 62%), radial-gradient(50rem 24rem at -6% 108%, rgba(var(--sec-rgb),0.3), transparent 62%), linear-gradient(135deg, #1b1464 0%, #33209c 58%, #6a1fa6 100%);
+  --band-bg:linear-gradient(135deg, #1b1464 0%, #33209c 100%);
+  --stripe:linear-gradient(90deg, #c0179a 0%, #ffc72c 50%, #14b8a6 100%); --stripe-h:5px;
+  --danger:#b4332b; --ok:#1f7a4d; --star:#c98a00; --promo-bg:#fff6c9; --promo-line:#f0d54a;
   --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
   --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   color-scheme:light;
 }
+html[data-theme="lagoon"]{
+  --ink:#062d5e; --ink-2:#0b4f8a; --palm:#0877a0; --palm-d:#065a7a; --sun:#ffd23f; --sun-d:#f2bd00;
+  --second:#22c7b8; --second-d:#0a8a80; --bg:#eefafc; --card:#ffffff; --line:#cde5ed; --line-2:#aecfdc;
+  --muted:#476a7c; --text-2:#1f4256; --tint:#e2f4f8; --tint-2:#d3ebf2; --hover:#d9eff4;
+  --on-ink:#eaf7fc; --on-ink-2:#bbdceb; --link:#065a7a; --focus:#1366d6;
+  --hero-a:#062d5e; --hero-b:#0a5a9a; --hero-c:#096c86;
+  --sh:6,45,94; --pri-rgb:8,119,160; --acc-rgb:255,210,63; --sec-rgb:34,199,184;
+  --hero-bg:radial-gradient(62rem 28rem at 88% -8%, rgba(var(--acc-rgb),0.12), transparent 62%), radial-gradient(50rem 24rem at -6% 108%, rgba(var(--sec-rgb),0.1), transparent 62%), linear-gradient(135deg, #062d5e 0%, #0a5a9a 58%, #096c86 100%);
+  --band-bg:linear-gradient(135deg, #062d5e 0%, #0a5a9a 100%);
+  --stripe:linear-gradient(90deg, #0877a0 0%, #ffd23f 50%, #22c7b8 100%); --stripe-h:5px;
+}
+html[data-theme="sunset"]{
+  --ink:#2a0f5e; --ink-2:#4a1a8c; --palm:#d6246f; --palm-d:#a8145a; --sun:#ffd36b; --sun-d:#f2b83a;
+  --second:#8b5cf6; --second-d:#6535d8; --bg:#fbf4fb; --card:#ffffff; --line:#ecd8ee; --line-2:#d6bedb;
+  --muted:#715083; --text-2:#41225a; --tint:#f6e9f6; --tint-2:#eedcf0; --hover:#f2e1f3;
+  --on-ink:#f1e4fb; --on-ink-2:#d3bdea; --link:#a8145a; --focus:#6b3fd8;
+  --hero-a:#2a0f5e; --hero-b:#5a1a95; --hero-c:#a3206f;
+  --sh:42,15,94; --pri-rgb:214,36,111; --acc-rgb:255,211,107; --sec-rgb:139,92,246;
+  --hero-bg:radial-gradient(62rem 28rem at 88% -8%, rgba(var(--acc-rgb),0.12), transparent 62%), radial-gradient(50rem 24rem at -6% 108%, rgba(var(--pri-rgb),0.3), transparent 62%), linear-gradient(135deg, #2a0f5e 0%, #5a1a95 58%, #a3206f 100%);
+  --band-bg:linear-gradient(135deg, #2a0f5e 0%, #5a1a95 100%);
+  --stripe:linear-gradient(90deg, #d6246f 0%, #ffd36b 50%, #8b5cf6 100%); --stripe-h:5px;
+}
+html[data-theme="classic"]{
+  --ink:#0a2f3c; --ink-2:#14485a; --palm:#1f7a4d; --palm-d:#165a39; --sun:#f5b82e; --sun-d:#e0a114;
+  --second:#2aa6b8; --second-d:#177a89; --bg:#f0f6f4; --card:#ffffff; --line:#d7e3e0; --line-2:#bfd0cd;
+  --muted:#53707c; --text-2:#2c4852; --tint:#eef6f2; --tint-2:#e3ecea; --hover:#e6efec;
+  --on-ink:#cfe3e6; --on-ink-2:#9fc0c6; --link:#165a39; --focus:#1366d6;
+  --hero-a:#0a2f3c; --hero-b:#0a2f3c; --hero-c:#0a2f3c;
+  --sh:10,47,60; --pri-rgb:31,122,77; --acc-rgb:245,184,46; --sec-rgb:42,166,184;
+  --hero-bg:#0a2f3c;
+  --band-bg:#0a2f3c;
+  --stripe:none; --stripe-h:0px;
+}
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:var(--body);font-size:1rem;line-height:1.55;color:var(--ink);background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
@@ -32,68 +72,73 @@ main{flex:1}
 img{max-width:100%}
 a{color:inherit}
 h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
-:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-/* The page moves focus to its main heading for screen readers. No visible box is needed there. */
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.site-header :focus-visible,.hero :focus-visible,.band :focus-visible,footer :focus-visible,.chat-panel header :focus-visible,dialog header :focus-visible{outline-color:var(--sun)}
 h1{width:fit-content;max-width:100%}
 h1:focus,h1:focus-visible{outline:none}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .wrap{width:min(1120px,100% - 2.5rem);margin-inline:auto}
 [hidden]{display:none!important}
 
-/* Header */
 .site-header{position:absolute;inset:0 0 auto 0;z-index:20}
-.site-header.solid{position:static;background:var(--ink)}
+.site-header.solid{position:static;background:var(--band-bg)}
 .site-header .wrap{display:flex;align-items:center;gap:.75rem;padding:1rem 0}
 .logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:#fff;font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.01em}
 .logo svg{width:34px;height:34px}
 .nav{margin-left:auto;display:flex;align-items:center;gap:.5rem}
-.nav .link{color:#cfe3e6;text-decoration:none;font-weight:600;font-size:.92rem;padding:.5rem .7rem;border-radius:10px;background:none;border:0;cursor:pointer;font-family:inherit}
+.nav .link{color:var(--on-ink);text-decoration:none;font-weight:600;font-size:.92rem;padding:.5rem .7rem;border-radius:10px;background:none;border:0;cursor:pointer;font-family:inherit}
 .nav .link:hover{color:#fff;background:rgba(255,255,255,.1)}
 .nav .link,.nav .btn,.logo{white-space:nowrap}
 .langsel{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:10px;padding:.42rem .4rem;font:600 .8rem var(--body);cursor:pointer}
-.langsel option{color:#0b2c36}
+.langsel option{color:var(--ink)}
 .langs{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.55rem}
+.langs.duo{gap:0;width:max-content;max-width:100%;padding:.18rem;border:1px solid rgba(255,255,255,.35);border-radius:99px;background:rgba(255,255,255,.08)}
+.langs.duo .lang{border:0;background:transparent;padding:.42rem 1.15rem;font-size:.92rem}
+.langs.duo .lang[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.ptoggle{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem}
+.ptoggle .seg{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:.22rem .8rem;font:600 .82rem var(--body);cursor:pointer}
+.ptoggle .seg[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ptoggle .seg:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .lang{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:.28rem .75rem;font:600 .82rem var(--body);cursor:pointer}
 .lang[aria-pressed="true"]{background:var(--sun);color:var(--ink);border-color:var(--sun)}
 .tbar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin:.15rem 0 .35rem;font-size:.85rem}
-.tbadge{background:#e8f1ff;color:#16418a;border-radius:99px;padding:.1rem .6rem;font-weight:700;font-size:.78rem}
+.tbadge{background:var(--tint-2);color:var(--ink-2);border-radius:99px;padding:.1rem .6rem;font-weight:700;font-size:.78rem}
 .footlang{margin-bottom:.4rem}.footlang select{background:transparent;color:inherit;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:.2rem .4rem;font:inherit}
-.footlang select option{color:#0b2c36}
-.en-only{background:#fff8e1;border:1px solid #f1d98a;border-radius:12px;padding:.6rem .9rem;margin:1rem 0 0;font-size:.92rem}
+.footlang select option{color:var(--ink)}
+.en-only{background:var(--promo-bg);border:1px solid var(--promo-line);border-radius:12px;padding:.6rem .9rem;margin:1rem 0 0;font-size:.92rem}
 html[lang="en"] .en-only{display:none}
 @media(max-width:420px){#navAdvertise{display:none}}
 
-/* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;font:600 .98rem/1 var(--body);padding:.8rem 1.15rem;border-radius:12px;border:2px solid transparent;cursor:pointer;background:var(--palm);color:#fff;text-decoration:none;transition:background .15s,transform .1s}
+.btn{box-shadow:0 8px 18px -10px rgba(var(--pri-rgb),.85)}
 .btn:hover{background:var(--palm-d)}
 .btn:active{transform:translateY(1px)}
 .btn.accent{background:var(--sun);color:var(--ink)}
+.btn.accent{box-shadow:0 8px 18px -10px rgba(var(--acc-rgb),.95)}
 .btn.accent:hover{background:var(--sun-d)}
-.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
-.btn.ghost:hover{background:#e6efec}
-.btn.danger{background:transparent;color:var(--danger);border-color:#e7c3c0}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2);box-shadow:none}
+.btn.ghost:hover{background:var(--hover)}
+.btn.danger{background:transparent;color:var(--danger);border-color:#e7c3c0;box-shadow:none}
 .btn.danger:hover{background:#fbeceb}
 .btn.small{padding:.55rem .8rem;font-size:.87rem;border-radius:10px}
 .btn[disabled]{opacity:.6;cursor:progress}
 
-/* Hero */
-.hero{background:var(--ink);color:#fff;position:relative;padding:7.5rem 0 0}
+.hero{background:var(--hero-bg);color:#fff;position:relative;padding:7.5rem 0 0}
 .hero h1{font-size:clamp(1.2rem,5.2vw,3.4rem);font-weight:800;letter-spacing:-.025em;white-space:nowrap}
-.hero p{font-size:1.12rem;color:#c3dadd;max-width:52ch;margin:1.1rem 0 1.8rem}
+.hero p{font-size:1.12rem;color:var(--on-ink);max-width:52ch;margin:1.1rem 0 1.8rem}
 .search{position:relative;max-width:560px}
 .search svg{position:absolute;left:1rem;top:50%;translate:0 -50%;width:20px;height:20px;color:var(--muted);pointer-events:none}
 .search input{width:100%;font:500 1.05rem var(--body);padding:1rem 1rem 1rem 2.9rem;border-radius:14px;border:2px solid transparent;background:#fff;color:var(--ink)}
-.search input::placeholder{color:#7b929b}
+.search input::placeholder{color:var(--muted)}
 .search.small input{font-size:.97rem;padding:.75rem .9rem .75rem 2.5rem;border-color:var(--line);border-radius:12px}
 .search.small svg{left:.8rem;width:18px;height:18px}
-.recent{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:1rem;color:#9fc0c6;font-size:.9rem}
+.recent{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:1rem;color:var(--on-ink-2);font-size:.9rem}
 .recent a{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.1);color:#fff;text-decoration:none;padding:.3rem .7rem .3rem .4rem;border-radius:99px;font-weight:600}
 .recent a:hover{background:rgba(255,255,255,.2)}
 .wave{display:block;width:100%;height:56px;margin-top:2.5rem;color:var(--bg)}
 .demo-note{background:var(--sun);color:var(--ink);font-size:.88rem;font-weight:600;text-align:center;padding:.5rem 1rem}
 .demo-note code{background:rgba(0,0,0,.08);padding:.05rem .35rem;border-radius:5px}
 
-/* Country picker */
 .picker{padding:1.5rem 0 3rem}
 .regions{display:flex;gap:.5rem;overflow-x:auto;padding:.25rem 0 .75rem;scrollbar-width:thin}
 .chip{flex:none;font:600 .92rem var(--body);padding:.5rem .95rem;border-radius:99px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
@@ -104,20 +149,19 @@ html[lang="en"] .en-only{display:none}
 .region-title{font-size:1.15rem;margin:1.8rem 0 .8rem;color:var(--ink-2)}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:.7rem}
 .ccard{display:flex;align-items:center;gap:.8rem;padding:.8rem .95rem;background:#fff;border:1.5px solid var(--line);border-radius:14px;text-decoration:none;font-weight:600;transition:border-color .15s,box-shadow .15s}
-.ccard:hover{border-color:var(--palm);box-shadow:0 4px 14px rgba(10,47,60,.1)}
-.flag{width:40px;height:30px;object-fit:cover;border-radius:5px;background:#dfe9e6;box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:none}
+.ccard:hover{border-color:var(--palm);box-shadow:0 4px 14px rgba(var(--sh),.1)}
+.flag{width:40px;height:30px;object-fit:cover;border-radius:5px;background:var(--tint-2);box-shadow:0 0 0 1px rgba(0,0,0,.08);flex:none}
 .flag.lg{width:72px;height:54px;border-radius:8px}
 .flag.badge{display:inline-grid;place-items:center;font:800 .78rem var(--body);color:var(--ink-2);letter-spacing:.04em}
 .flag.badge.lg{font-size:1.2rem}
 .empty-grid{padding:2rem 0;color:var(--muted)}
 
-/* Country page */
-.band{background:var(--ink);color:#fff;padding:1rem 0 2rem}
-.band .back{display:inline-block;color:#b6d2d6;text-decoration:none;font-weight:600;font-size:.92rem;margin-bottom:1rem}
+.band{background:var(--band-bg);color:#fff;padding:1rem 0 2rem}
+.band .back{display:inline-block;color:var(--on-ink-2);text-decoration:none;font-weight:600;font-size:.92rem;margin-bottom:1rem}
 .band .back:hover{color:#fff}
 .band-row{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
 .band h1{font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:800;letter-spacing:-.02em}
-.band .sub{color:#b6d2d6;font-size:.95rem}
+.band .sub{color:var(--on-ink-2);font-size:.95rem}
 .band .grow{flex:1;min-width:200px}
 .band .actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
 .switch{font:600 .92rem var(--body);padding:.7rem .8rem;border-radius:12px;border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;max-width:200px}
@@ -127,20 +171,19 @@ html[lang="en"] .en-only{display:none}
 .toolbar-row .search{flex:1;min-width:220px;max-width:none}
 .cats{display:flex;gap:.5rem;overflow-x:auto;padding:.1rem 0 .4rem;scrollbar-width:thin}
 .result-info{margin:0;font-size:.88rem;color:var(--muted)}
-.suggest{position:absolute;left:0;right:0;top:calc(100% + .35rem);z-index:30;background:#fff;border:1.5px solid var(--line);border-radius:14px;box-shadow:0 12px 30px rgba(10,47,60,.18);overflow:hidden;max-height:min(70vh,420px);overflow-y:auto}
+.suggest{position:absolute;left:0;right:0;top:calc(100% + .35rem);z-index:30;background:#fff;border:1.5px solid var(--line);border-radius:14px;box-shadow:0 12px 30px rgba(var(--sh),.18);overflow:hidden;max-height:min(70vh,420px);overflow-y:auto}
 .sug{display:flex;width:100%;justify-content:space-between;align-items:center;gap:.8rem;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:.75rem .95rem;font:600 .95rem var(--body);color:var(--ink);cursor:pointer}
 .sug:last-child{border-bottom:0}
-.sug:hover,.sug.active{background:#eef6f2}
-.sug mark{background:rgba(245,184,46,.5);color:inherit;border-radius:3px;padding:0 .1rem}
+.sug:hover,.sug.active{background:var(--tint)}
+.sug mark{background:rgba(var(--acc-rgb),.5);color:inherit;border-radius:3px;padding:0 .1rem}
 .sug-c{flex:none;font-size:.78rem;font-weight:700;color:var(--muted)}
 .sug-all{justify-content:center;color:var(--palm-d)}
 .sug-none{padding:.85rem .95rem;color:var(--muted);font-size:.93rem}
 
-/* Filters */
 .fcount{display:inline-grid;place-items:center;min-width:1.35rem;height:1.35rem;padding:0 .35rem;border-radius:99px;background:var(--palm);color:#fff;font-size:.78rem;font-weight:700}
 .fpanel{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:1rem 1.1rem;display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));align-items:end}
 .fpanel .field{margin:0}
-.fpanel select{width:100%;font:500 .95rem var(--body);padding:.6rem .7rem;border-radius:10px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.fpanel select{width:100%;font:500 .95rem var(--body);padding:.6rem .7rem;border-radius:10px;border:1.5px solid var(--line-2);background:#fff;color:var(--ink)}
 .fpanel label.lbl{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem}
 .checks{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.5rem}
 .check{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:.9rem;padding:.5rem .8rem;border:1.5px solid var(--line);border-radius:99px;cursor:pointer;background:#fff}
@@ -148,18 +191,17 @@ html[lang="en"] .en-only{display:none}
 .check input{accent-color:var(--sun);width:1rem;height:1rem;margin:0}
 .fpanel .reset{grid-column:1/-1;justify-self:start}
 
-/* Posts */
 .posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.1rem;padding:1rem 0 1.5rem;align-items:start}
 .post{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:box-shadow .15s,border-color .15s}
-.post:hover{border-color:var(--palm);box-shadow:0 6px 20px rgba(10,47,60,.12)}
+.post:hover{border-color:var(--palm);box-shadow:0 6px 20px rgba(var(--sh),.12)}
 .ptitle{all:unset;cursor:pointer;display:block;font:inherit;color:inherit;letter-spacing:inherit}
 .ptitle:hover{text-decoration:underline;text-underline-offset:3px}
 .ptitle:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:4px}
 .vbody{padding:.4rem 1.4rem 1.4rem;display:flex;flex-direction:column;gap:.85rem}
 .vbody img.vimg{width:100%;border-radius:14px;display:block;max-height:340px;object-fit:cover}
 .vbody .vmeta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
-.post.featured{border:2px solid var(--sun);box-shadow:0 6px 22px rgba(245,184,46,.25)}
-.post .pic{display:block;aspect-ratio:16/9;background:#e3ecea}
+.post.featured{border:2px solid var(--sun);box-shadow:0 6px 22px rgba(var(--acc-rgb),.25)}
+.post .pic{display:block;aspect-ratio:16/9;background:var(--tint-2)}
 .post .pic img{width:100%;height:100%;object-fit:cover;display:block}
 .pbody{padding:1.1rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:.65rem}
 .pmeta{display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-size:.82rem;color:var(--muted)}
@@ -167,67 +209,65 @@ html[lang="en"] .en-only{display:none}
 .tag{display:inline-flex;align-items:center;gap:.3rem;font-weight:700;font-size:.8rem;padding:.25rem .65rem;border-radius:99px;background:hsl(var(--h) 55% 92%);color:hsl(var(--h) 60% 22%)}
 .spon{display:inline-flex;align-items:center;gap:.25rem;font-weight:700;font-size:.78rem;padding:.25rem .6rem;border-radius:99px;background:var(--sun);color:var(--ink)}
 .post h3{font-size:1.25rem;font-weight:700;letter-spacing:-.01em}
-.desc{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#2c4852}
+.desc{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--text-2)}
 .desc.clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .vshare{margin:.2rem 0 .7rem}
 .pactions{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.1rem}
 a.linkbtn.share{align-self:auto}
-.linkbtn{align-self:flex-start;background:none;border:0;padding:0;font:600 .9rem var(--body);color:var(--palm);cursor:pointer;text-decoration:underline}
-.contact{background:#eef6f2;border-radius:12px;padding:.6rem .8rem;font-size:.93rem;overflow-wrap:anywhere}
+.linkbtn{align-self:flex-start;background:none;border:0;padding:0;font:600 .9rem var(--body);color:var(--link);cursor:pointer;text-decoration:underline}
+.contact{background:var(--tint);border-radius:12px;padding:.6rem .8rem;font-size:.93rem;overflow-wrap:anywhere}
 .contact b{color:var(--palm-d)}
 .contact a{color:var(--palm-d);font-weight:600;text-decoration:underline;text-underline-offset:2px}
 .contact a:hover{color:var(--ink)}
 .post audio{width:100%;height:40px}
-.stars{color:#c98a00;letter-spacing:.05em;font-size:.95rem}
+.stars{color:var(--star);letter-spacing:.05em;font-size:.95rem}
 .stars small{color:var(--muted);letter-spacing:0;margin-left:.3rem}
 .more{text-align:center;padding:.5rem 0 2.5rem}
 
-.skeleton{height:200px;border-radius:18px;background:linear-gradient(100deg,#e3ecea 30%,#f2f8f6 50%,#e3ecea 70%);background-size:200% 100%;animation:sh 1.3s infinite linear}
+.skeleton{height:200px;border-radius:18px;background:linear-gradient(100deg,var(--tint-2) 30%,var(--tint) 50%,var(--tint-2) 70%);background-size:200% 100%;animation:sh 1.3s infinite linear}
 @keyframes sh{to{background-position:-200% 0}}
 .state{text-align:center;max-width:460px;margin:2.5rem auto 3.5rem;padding:0 1rem}
 .state .big{font-size:3rem;line-height:1}
 .state h2{font-size:1.5rem;margin:.8rem 0 .4rem}
 .state p{color:var(--muted);margin:0 0 1.2rem}
 
-/* Dialogs & forms */
-dialog{border:0;border-radius:20px;padding:0;width:min(580px,100% - 1.5rem);max-height:calc(100vh - 2rem);color:var(--ink);background:#fff;box-shadow:0 24px 60px rgba(5,25,32,.4)}
-dialog::backdrop{background:rgba(5,25,32,.6)}
+dialog{border:0;border-radius:20px;padding:0;width:min(580px,100% - 1.5rem);max-height:calc(100vh - 2rem);color:var(--ink);background:#fff;box-shadow:0 24px 60px rgba(var(--sh),.4)}
+dialog::backdrop{background:rgba(var(--sh),.6)}
 .dlg-head{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.4rem .2rem}
 .dlg-head h2{font-size:1.45rem}
 .x{background:none;border:0;font-size:1.7rem;line-height:1;cursor:pointer;color:var(--muted);padding:.2rem .5rem;border-radius:8px}
-.x:hover{background:#eef3f2}
+.x:hover{background:var(--tint)}
 form.f{padding:.6rem 1.4rem 1.4rem;display:grid;gap:1rem}
 .field label,.field .lbl{display:block;font-weight:600;font-size:.93rem;margin-bottom:.35rem}
 .field .hint{font-weight:400;color:var(--muted)}
-.field input,.field select,.field textarea{width:100%;font:500 1rem var(--body);padding:.75rem .85rem;border-radius:12px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.field input,.field select,.field textarea{width:100%;font:500 1rem var(--body);padding:.75rem .85rem;border-radius:12px;border:1.5px solid var(--line-2);background:#fff;color:var(--ink)}
 .field textarea{min-height:110px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--palm);outline:3px solid rgba(31,122,77,.2)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--palm);outline:3px solid rgba(var(--pri-rgb),.2)}
 .field input[type=file]{padding:.55rem}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 @media(max-width:520px){.row2{grid-template-columns:1fr}}
-details.media{border:1.5px dashed #bfd0cd;border-radius:14px;padding:.75rem .9rem}
+details.media{border:1.5px dashed var(--line-2);border-radius:14px;padding:.75rem .9rem}
 details.media summary{cursor:pointer;font-weight:600}
 details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .form-actions{display:flex;gap:.6rem;justify-content:flex-end;flex-wrap:wrap}
 .counter{font-size:.8rem;color:var(--muted);text-align:right;margin-top:.2rem}
 .err{color:var(--danger);font-size:.9rem;font-weight:600;min-height:1.2em;margin:0}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
-.boost-info{margin:0;color:#2c4852;font-size:.95rem}
+.boost-info{margin:0;color:var(--text-2);font-size:.95rem}
 
-/* Admin */
 .admin{padding:2rem 0 3rem}
 .admin h1{font-size:2rem;margin-bottom:.4rem}
 .pw{position:relative}
 .pw input{padding-right:4.6rem}
 .pwbtn{position:absolute;right:.4rem;top:50%;translate:0 -50%;background:none;border:0;font:600 .85rem var(--body);color:var(--palm-d);cursor:pointer;padding:.45rem .65rem;border-radius:8px}
-.pwbtn:hover{background:#eef6f2}
+.pwbtn:hover{background:var(--tint)}
 .login-card{max-width:420px;margin:1.5rem 0;background:#fff;border:1px solid var(--line);border-radius:18px;padding:1.4rem}
 .afilters{display:flex;gap:.7rem;flex-wrap:wrap;margin:1.2rem 0}
-.afilters select,.afilters input{font:600 .93rem var(--body);padding:.65rem .8rem;border-radius:12px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.afilters select,.afilters input{font:600 .93rem var(--body);padding:.65rem .8rem;border-radius:12px;border:1.5px solid var(--line-2);background:#fff;color:var(--ink)}
 .afilters input{flex:1;min-width:180px;font-weight:500}
 .alist{display:grid;gap:.8rem}
 .arow{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1rem 1.15rem;display:grid;gap:.5rem}
-.arow.is-featured{border-color:var(--sun);box-shadow:0 0 0 2px rgba(245,184,46,.35)}
+.arow.is-featured{border-color:var(--sun);box-shadow:0 0 0 2px rgba(var(--acc-rgb),.35)}
 .arow-top{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;font-size:.86rem;color:var(--muted)}
 .arow h3{font-size:1.1rem}
 .status{font-weight:700;font-size:.78rem;padding:.2rem .6rem;border-radius:99px}
@@ -237,11 +277,10 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .status.Featured{background:var(--sun);color:var(--ink)}
 .arow-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.3rem}
 
-/* Subscribe banner, stats, charts, subscribers */
 .subbar{display:flex;gap:1rem 2rem;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:1.2rem 1.4rem;margin:0 0 2rem}
 .subbar h2{font-size:1.3rem}
 .subbar p{margin:.3rem 0 0;color:var(--muted);max-width:56ch}
-.consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.9rem;color:#2c4852;cursor:pointer}
+.consent{display:flex;gap:.6rem;align-items:flex-start;font-size:.9rem;color:var(--text-2);cursor:pointer}
 .consent input{margin-top:.2rem;accent-color:var(--palm);width:1.05rem;height:1.05rem;flex:none}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;margin:1rem 0}
 .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem}
@@ -257,7 +296,7 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .rank-row{display:grid;grid-template-columns:minmax(120px,1.2fr) 3fr auto;gap:.7rem;align-items:center;font-size:.92rem}
 .rank-row .lab{display:flex;align-items:center;gap:.5rem;overflow-wrap:anywhere}
 .rank-row .flag{width:24px;height:18px}
-.rank-bar{height:10px;border-radius:99px;background:#e3ecea;overflow:hidden}
+.rank-bar{height:10px;border-radius:99px;background:var(--tint-2);overflow:hidden}
 .rank-bar i{display:block;height:100%;background:var(--palm)}
 .srow{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.8rem 1rem;display:flex;gap:.6rem 1rem;align-items:center;flex-wrap:wrap}
 .srow .em{font-weight:700;flex:1;min-width:210px;overflow-wrap:anywhere}
@@ -266,49 +305,46 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .srow .meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
 .sbar{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin:.2rem 0 1rem}
 
-/* Source line on imported posts */
 .srcline{font-size:.88rem;color:var(--muted)}
 .srcline a{color:var(--palm-d);font-weight:600}
 
-/* Ask a question (chat) */
-.chat-fab{position:fixed;right:1rem;bottom:1rem;z-index:90;display:inline-flex;align-items:center;gap:.5rem;background:var(--palm);color:#fff;border:0;border-radius:99px;padding:.85rem 1.15rem;font:700 .98rem var(--body);cursor:pointer;box-shadow:0 10px 28px rgba(10,47,60,.35)}
+.chat-fab{position:fixed;right:1rem;bottom:1rem;z-index:90;display:inline-flex;align-items:center;gap:.5rem;background:var(--palm);color:#fff;border:0;border-radius:99px;padding:.85rem 1.15rem;font:700 .98rem var(--body);cursor:pointer;box-shadow:0 10px 28px rgba(var(--sh),.35)}
 .chat-fab:hover{background:var(--palm-d)}
 .chat-fab span[aria-hidden]{font-size:1.2rem;line-height:1}
-.chat-panel{position:fixed;right:1rem;bottom:1rem;z-index:95;width:min(360px,100% - 2rem);max-height:min(560px,100vh - 2rem);display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 60px rgba(5,25,32,.4);overflow:hidden}
+.chat-panel{position:fixed;right:1rem;bottom:1rem;z-index:95;width:min(360px,100% - 2rem);max-height:min(560px,100vh - 2rem);display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 60px rgba(var(--sh),.4);overflow:hidden}
 .chat-panel header{display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:var(--ink);color:#fff;padding:.8rem 1rem}
-.chat-panel header small{display:block;color:#b6d2d6;font-size:.8rem}
-.chat-panel header .x{color:#cfe3e6}
+.chat-panel header small{display:block;color:var(--on-ink-2);font-size:.8rem}
+.chat-panel header .x{color:var(--on-ink)}
 .chat-panel header .x:hover{background:rgba(255,255,255,.12)}
 .chat-log{flex:1;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.55rem;background:var(--bg);min-height:120px}
 .bubble{max-width:88%;padding:.6rem .85rem;border-radius:16px;font-size:.94rem;overflow-wrap:anywhere;white-space:pre-wrap}
 .bubble.bot{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
 .bubble.me{background:var(--palm);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
 .chat-form{display:grid;gap:.5rem;padding:.8rem .9rem .9rem;border-top:1px solid var(--line)}
-.chat-form textarea,.chat-form input,.chat-form select{width:100%;font:500 .95rem var(--body);padding:.6rem .7rem;border-radius:10px;border:1.5px solid #bfd0cd;background:#fff;color:var(--ink)}
+.chat-form textarea,.chat-form input,.chat-form select{width:100%;font:500 .95rem var(--body);padding:.6rem .7rem;border-radius:10px;border:1.5px solid var(--line-2);background:#fff;color:var(--ink)}
 .chat-form textarea{resize:none}
 .chat-extra{display:grid;gap:.5rem}
 .chat-form .err{min-height:0}
 .qrow .em{white-space:pre-wrap}
 @media(max-width:520px){.chat-fab-t{display:none}.chat-fab{padding:.9rem}}
 
-/* About + feedback */
 .pkgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:.8rem}
 .pkg{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem}
-.pkg.pop{border-color:var(--sun);box-shadow:0 10px 26px -14px rgba(224,161,20,.8)}
+.pkg.pop{border-color:var(--sun);box-shadow:0 10px 26px -14px rgba(var(--acc-rgb),.8)}
 .pop-tag{position:absolute;top:-.7rem;right:1rem;background:var(--sun);color:var(--ink);font-weight:800;font-size:.78rem;padding:.2rem .65rem;border-radius:99px}
 .pkg h3{font-size:1.15rem}
 .pkg .price{font:800 2rem/1.1 var(--display);color:var(--ink)}
 .pkg .price small{font:600 .85rem var(--body);color:var(--muted)}
-.pkg p{margin:.2rem 0;color:#2c4852}
+.pkg p{margin:.2rem 0;color:var(--text-2)}
 .pkg .fit{font-size:.92rem;color:var(--muted)}
 .pkg-actions{margin-top:auto;padding-top:.8rem;display:flex;flex-wrap:wrap;gap:.5rem}
-.subbar.promo{background:#fff8e1;border-color:#f1d98a}
+.subbar.promo{background:var(--promo-bg);border-color:var(--promo-line)}
 .status.Featured{background:#fff3c4;color:#6a4b00}
 .about{padding:1.5rem 0 3rem;display:grid;gap:1rem}
 .about h2{font-size:1.35rem;margin-bottom:.5rem}
-.about p{margin:.3rem 0;color:#2c4852}
+.about p{margin:.3rem 0;color:var(--text-2)}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin-top:.8rem}
-.step{background:#eef6f2;border-radius:14px;padding:.9rem 1rem}
+.step{background:var(--tint);border-radius:14px;padding:.9rem 1rem}
 .step b{display:block;font-family:var(--display);font-size:1.05rem;margin-bottom:.2rem}
 .step .num{display:inline-grid;place-items:center;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--palm);color:#fff;font-weight:700;margin-bottom:.4rem}
 .step p{margin:0;font-size:.93rem}
@@ -316,7 +352,7 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .cat-about{display:flex;gap:.6rem;align-items:flex-start;padding:.7rem .85rem;border:1px solid var(--line);border-radius:12px;background:#fff}
 .cat-about span{font-size:1.3rem;line-height:1.2}
 .cat-about small{color:var(--muted)}
-.know{margin:.4rem 0 0;padding-left:1.2rem;color:#2c4852}
+.know{margin:.4rem 0 0;padding-left:1.2rem;color:var(--text-2)}
 .know li{margin:.35rem 0}
 .ratebox summary{cursor:pointer;font:700 1.1rem var(--display)}
 .ratebox[open] summary{margin-bottom:.5rem}
@@ -346,16 +382,15 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .fbrow .lab{font-weight:600}
 .fbrow .lab small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
 .stars-in{display:inline-flex;gap:.05rem}
-.st{background:none;border:0;font-size:1.65rem;line-height:1;color:#c3d1ce;cursor:pointer;padding:.1rem .22rem;border-radius:6px}
-.st.on{color:#e0a114}
-.st:hover{color:#f5b82e}
+.st{background:none;border:0;font-size:1.65rem;line-height:1;color:var(--line-2);cursor:pointer;padding:.1rem .22rem;border-radius:6px}
+.st.on{color:var(--sun-d)}
+.st:hover{color:var(--sun)}
 .fchips{display:flex;gap:.35rem;flex-wrap:wrap}
-footer a{color:#cfe3e6}
+footer a{color:var(--on-ink)}
 footer a:hover{color:#fff}
 @media(max-width:700px){#navAbout,#navCountries{display:none}}
 @media(max-width:560px){#navCountries,.nav [data-act="subscribe"]{display:none}.logo{font-size:1.15rem;white-space:nowrap}.nav .link{padding:.5rem .55rem}.nav{gap:.2rem}}
 
-/* Admin: post to many countries */
 .bcform{display:grid;gap:1rem}
 .bc-region{border:1.5px solid var(--line);border-radius:14px;padding:.6rem .8rem .8rem;margin:0}
 .bc-region legend{font-weight:700;padding:0 .4rem}
@@ -363,7 +398,6 @@ footer a:hover{color:#fff}
 .bc-grid .check .flag{width:24px;height:18px}
 .bc-tools{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
 
-/* Choosing islands: search first, pick one or several */
 .picker2{padding:1.2rem 0 1rem}
 .tray{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.2rem 0 .7rem}
 .tray .lbl{font-weight:700;color:var(--ink)}
@@ -384,7 +418,6 @@ footer a:hover{color:#fff}
 .ctag{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--muted);font-weight:600}
 .ctag .flag{width:20px;height:15px;border-radius:3px}
 #islandDlg .f{display:grid;gap:.8rem;padding:.2rem 1.4rem 1.4rem}
-/* Per-post statistics (admin) */
 .pstat{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem 1rem;margin:.55rem 0;color:var(--ink);font-weight:600;font-size:.92rem}
 .pstat span{white-space:nowrap}
 .pstat small{color:var(--muted);font-weight:500}
@@ -394,8 +427,7 @@ footer a:hover{color:#fff}
 .ptable td small{display:block;color:var(--muted)}
 #pstatsDlg{width:min(760px,100% - 1.5rem)}
 #pstatsDlg .f{display:grid;gap:.9rem;padding:.2rem 1.4rem 1.4rem}
-/* Footer & toast */
-footer{background:var(--ink);color:#9fc0c6;padding:1.6rem 0;font-size:.9rem;margin-top:auto}
+footer{background:var(--ink);border-top:var(--stripe-h) solid transparent;border-image:var(--stripe) 1;color:var(--on-ink-2);padding:1.6rem 0;font-size:.9rem;margin-top:auto}
 footer .wrap{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:space-between}
 footer b{color:#fff}
 #toasts{position:fixed;bottom:1rem;left:50%;translate:-50% 0;z-index:100;display:grid;gap:.5rem;width:min(460px,100% - 2rem)}
@@ -403,6 +435,8 @@ footer b{color:#fff}
 .toast.error{border-left-color:#ff7a70}
 .toast.ok{border-left-color:#5fd18d}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+.lg-sun{fill:var(--sun)}.lg-sea{fill:var(--second)}.lg-trunk{stroke:var(--ink);fill:none}.lg-leaf{fill:var(--ink)}
 </style>
 </head>
 <body>
@@ -414,14 +448,13 @@ footer b{color:#fff}
 <header class="site-header" id="siteHeader">
   <div class="wrap">
     <a class="logo" href="#/" aria-label="Isle Connect home">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#f5b82e"/><path d="M5 27c4 0 5-3 7.5-3s3.500 3 7.500 3 5-3 7.500-3 3.500 3 7.500 3v8H5z" fill="#1f7a4d"/><path d="M20 24V12" stroke="#0a2f3c" stroke-width="2.200" stroke-linecap="round"/><path d="M20 12c-5-.500-8 1.500-9 4 3-1.500 6-1.500 9-.500zM20 12c5-.500 8 1.500 9 4-3-1.500-6-1.500-9-.500z" fill="#0a2f3c"/></svg>
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle class="lg-sun" cx="20" cy="20" r="20"/><path class="lg-sea" d="M5 27c4 0 5-3 7.5-3s3.500 3 7.500 3 5-3 7.500-3 3.500 3 7.500 3v8H5z"/><path class="lg-trunk" d="M20 24V12" stroke-width="2.2" stroke-linecap="round"/><path class="lg-leaf" d="M20 12c-5-.500-8 1.500-9 4 3-1.500 6-1.500 9-.500zM20 12c5-.500 8 1.500 9 4-3-1.500-6-1.500-9-.500z"/></svg>
       Isle Connect
     </a>
     <nav class="nav" aria-label="Main">
       <a class="link" href="#/" id="navCountries">Countries</a>
       <a class="link" href="#/about" id="navAbout">About</a>
       <a class="link" href="#/advertise" id="navAdvertise">Advertise</a>
-      <!-- Only shown after an administrator signs in (see updateNav) -->
       <a class="link" href="#/" id="navAdmin" hidden>Review posts</a>
       <button class="link" data-act="subscribe" type="button">Get updates</button>
       <select class="langsel" id="langSel" aria-label="Language" title="Language"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="nl">NL</option></select>
@@ -436,11 +469,10 @@ footer b{color:#fff}
   <div class="wrap">
     <div><b>JSur</b> copyright &copy;2023 &nbsp;|&nbsp; <a href="#/about">About</a> &nbsp;|&nbsp; <a href="#/advertise">Advertise</a> &nbsp;|&nbsp; <a href="#/privacy">Privacy</a> &nbsp;|&nbsp; <a href="#/terms">Terms</a></div>
     <div class="footlang"><label for="langSelF">Language:</label> <select id="langSelF"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="nl">Nederlands</option></select></div>
-    <div>Silver sponsor: ThermoDen &nbsp;|&nbsp; Gold sponsor: AGM Network Solution – Advancing Caribbean Businesses</div>
+    <div>Silver sponsor: ThermoDen &nbsp;|&nbsp; Gold sponsor: AGM Network Solution, Advancing Caribbean Businesses</div>
   </div>
 </footer>
 
-<!-- New post dialog -->
 <dialog id="postDlg" aria-labelledby="postDlgTitle">
   <div class="dlg-head"><h2 id="postDlgTitle">Share a post</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <form class="f" id="postForm" novalidate>
@@ -463,9 +495,9 @@ footer b{color:#fff}
     <details class="media">
       <summary>Add a photo, audio or video (optional)</summary>
       <div class="inner">
-        <div class="field"><label for="pf-imgfile">Photo <span class="hint">(JPG, PNG, WebP – up to 5 MB)</span></label><input id="pf-imgfile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
-        <div class="field"><label for="pf-audfile">Audio <span class="hint">(MP3, WAV, M4A, OGG – up to 10 MB)</span></label><input id="pf-audfile" type="file" accept="audio/mpeg,audio/wav,audio/mp4,audio/x-m4a,audio/ogg"></div>
-        <div class="field"><label for="pf-vidfile">Video <span class="hint">(MP4, WebM or MOV – up to 25 MB)</span></label><input id="pf-vidfile" type="file" accept="video/mp4,video/webm,video/quicktime"></div>
+        <div class="field"><label for="pf-imgfile">Photo <span class="hint">(JPG, PNG, WebP, up to 5 MB)</span></label><input id="pf-imgfile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
+        <div class="field"><label for="pf-audfile">Audio <span class="hint">(MP3, WAV, M4A, OGG, up to 10 MB)</span></label><input id="pf-audfile" type="file" accept="audio/mpeg,audio/wav,audio/mp4,audio/x-m4a,audio/ogg"></div>
+        <div class="field"><label for="pf-vidfile">Video <span class="hint">(MP4, WebM or MOV, up to 25 MB)</span></label><input id="pf-vidfile" type="file" accept="video/mp4,video/webm,video/quicktime"></div>
       </div>
     </details>
     <input class="hp" id="pf-website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -478,7 +510,6 @@ footer b{color:#fff}
   </form>
 </dialog>
 
-<!-- Choose islands dialog -->
 <dialog id="islandDlg" aria-labelledby="islandDlgTitle">
   <div class="dlg-head"><h2 id="islandDlgTitle">Choose islands</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <div class="f">
@@ -492,13 +523,11 @@ footer b{color:#fff}
   </div>
 </dialog>
 
-<!-- Post statistics dialog (admin) -->
 <dialog id="pstatsDlg" data-noi18n aria-labelledby="psTitle">
   <div class="dlg-head"><h2 id="psTitle">Post statistics</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <div class="f" id="psBody"></div>
 </dialog>
 
-<!-- Edit dialog (admin) -->
 <dialog id="editDlg" data-noi18n aria-labelledby="editDlgTitle">
   <div class="dlg-head"><h2 id="editDlgTitle">Edit post</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <form class="f" id="editForm" novalidate>
@@ -517,7 +546,6 @@ footer b{color:#fff}
   </form>
 </dialog>
 
-<!-- Boost visibility dialog (admin) -->
 <dialog id="boostDlg" data-noi18n aria-labelledby="boostDlgTitle">
   <div class="dlg-head"><h2 id="boostDlgTitle">Boost visibility</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <form class="f" id="boostForm" novalidate>
@@ -540,7 +568,6 @@ footer b{color:#fff}
   </form>
 </dialog>
 
-<!-- Subscribe dialog -->
 <dialog id="subDlg" aria-labelledby="subDlgTitle">
   <div class="dlg-head"><h2 id="subDlgTitle">Get updates by email</h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <form class="f" id="subForm" novalidate>
@@ -558,13 +585,11 @@ footer b{color:#fff}
   </form>
 </dialog>
 
-<!-- Post detail dialog -->
 <dialog id="viewDlg" aria-labelledby="vd-title">
   <div class="dlg-head"><h2 id="vd-title"></h2><button class="x" type="button" data-close aria-label="Close">&times;</button></div>
   <div class="vbody" id="vd-body"></div>
 </dialog>
 
-<!-- Ask a question (chat) -->
 <button class="chat-fab" id="chatFab" type="button" aria-expanded="false" aria-controls="chatPanel"><span aria-hidden="true">💬</span><span class="chat-fab-t">Ask a question</span></button>
 <section class="chat-panel" id="chatPanel" role="dialog" aria-label="Ask a question" hidden>
   <header><div><strong>Ask a question</strong><small>We read every message</small></div><button class="x" type="button" id="chatClose" aria-label="Close chat">&times;</button></header>
@@ -586,50 +611,37 @@ footer b{color:#fff}
 
 <div id="toasts" aria-live="polite"></div>
 
+<script src="videos.js"></script>
 <script>
-/* =====================================================================
-   CONFIG – paste your Supabase project values here
-   Supabase dashboard → Project Settings → API
-   (The anon key is safe in the browser; your Row Level Security rules
-   in supabase_setup.sql are what protect the data.)
-   ===================================================================== */
 const CONFIG = {
   SUPABASE_URL: "https://gbsxezbqvtsdljiehfpw.supabase.co", 
   SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdic3hlemJxdnRzZGxqaWVoZnB3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1ODk0ODYsImV4cCI6MjEwNzE2NTQ4Nn0.xea-XyckCRIfbbcfR4xExQ__AnDc0TJusv6WtoGqooc",
   MEDIA_BUCKET: "post-media"
 };
 
+const THEME = "carnival";
 
-
-/* Private address of the admin sign-in page, e.g. https://yoursite.com/#/owner-7k3q
-   Change this to any secret word and keep it to yourself. "#/admin" no longer works. */
 const ADMIN_PATH = "owner-7k3q";
+const THEME_BAR = {carnival:"#1b1464", lagoon:"#062d5e", sunset:"#2a0f5e", classic:"#0a2f3c"};
+(() => {
+  const pick = (() => { try { return new URLSearchParams(location.search).get("theme"); } catch { return null; } })();
+  const t = [pick, THEME].find(x => x && Object.prototype.hasOwnProperty.call(THEME_BAR, x)) || "carnival";
+  document.documentElement.dataset.theme = t;
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = THEME_BAR[t];
+})();
 
-/* The visitor thumbs tally on a post is shown once it has at least this many votes.
-   1 = shown from the very first vote, just like the admin rating. Raise it (for example to 3) if you want
-   a post to need a few votes before its tally appears. */
 const MIN_RATINGS_TO_SHOW = 1;
 
-/* Security & privacy switches
-   USE_FLAG_IMAGES: country flags are loaded from flagcdn.com (that site can see a visitor's IP address).
-                    Set to false to show plain country-code badges and make NO request to any third party.
-   BLOCK_AUTOMATION: browsers driven by automation tools (Selenium, Playwright...) are not shown posts.
-                     This stops casual scrapers only; it is not a complete defence. */
 const USE_FLAG_IMAGES = true;
 const BLOCK_AUTOMATION = true;
-try { if (window.top !== window.self) document.documentElement.style.display = "none"; }       // never show inside someone else's frame
+try { if (window.top !== window.self) document.documentElement.style.display = "none"; }
 catch { document.documentElement.style.display = "none"; }
 const AUTOMATED = BLOCK_AUTOMATION && navigator.webdriver === true;
 
-/* Legal pages (Privacy and Terms). FILL THESE IN before you launch: they are shown on those pages. */
 const SITE_OPERATOR = "[Your name or organisation]";
 const CONTACT_EMAIL = "[your contact email address]";
 const LEGAL_UPDATED = "16 October 2026";
 
-/* ---------- Advertising: edit these, then upload the file again ----------
-   PAYMENT_LINKS: paste one payment link per package (Stripe Payment Links, PayPal checkout links or PayPal.me).
-   Leave a link as "" and that package shows "Request this package" instead of "Pay by card".
-   AD_PACKAGES: the prices and wording shown on the Advertise page. Prices are in US dollars. */
 const PAYMENT_LINKS = {boost7:"", boost30:"", boost90:"", job:"", event:"", broadcast:""};
 const AD_TURNAROUND = "usually within one working day";
 const AD_PACKAGES = [
@@ -649,10 +661,8 @@ try {
   }
 } catch (err) { console.error("Supabase setup failed:", err); sb = null; }
 const DEMO = !sb;
-const LIB_BLOCKED = !window.supabase && validUrl(CONFIG.SUPABASE_URL);              // real settings, but the database library did not load
+const LIB_BLOCKED = !window.supabase && validUrl(CONFIG.SUPABASE_URL);
 const MEDIA_HOST = (() => { try { return new URL(CONFIG.SUPABASE_URL).hostname; } catch { return ""; } })();
-/* Photos and audio are only ever loaded from YOUR Supabase storage (or a local preview in demo mode),
-   so a post can never contain a link that tracks the people who view it. */
 const mediaUrl = u => {
   if (DEMO && /^blob:/.test(u || "")) return u;
   const x = safeUrl(u); if (!x) return "";
@@ -660,9 +670,8 @@ const mediaUrl = u => {
 };
 const isLimited = ex => /rate_limited/.test(String((ex && (ex.message || ex.hint)) || ""));
 
-/* ---------- Static data ---------- */
 const CATEGORIES = [
-  {id:"Major news",icon:"📰",h:225,staff:true},   /* staff:true = only an administrator can publish it; hidden from the public "New post" form */
+  {id:"Major news",icon:"📰",h:225,staff:true},
   {id:"Jobs",icon:"💼",h:215},{id:"Food",icon:"🍲",h:25},{id:"Education",icon:"🎓",h:265},
   {id:"Transport",icon:"🚌",h:190},{id:"Emergency",icon:"🚨",h:5},{id:"Holiday",icon:"🌴",h:150},
   {id:"Advertisement",icon:"📣",h:320},{id:"Sports",icon:"⚽",h:100},{id:"Other",icon:"✨",h:45}
@@ -675,7 +684,6 @@ const REPORT = {id:"Report a problem",icon:"🚩",h:0};
 const ALL_CATS = [...CATEGORIES, REPORT];
 const catInfo = id => ALL_CATS.find(c => c.id === id) || CATEGORIES[CATEGORIES.length-1];
 
-/* Fallback list of Caribbean countries and territories (used if the `countries` table can't be read). Format: code:Name|… */
 const COUNTRY_DATA = {
   "Greater Antilles":"ky:Cayman Islands|cu:Cuba|do:Dominican Republic|ht:Haiti|jm:Jamaica|pr:Puerto Rico",
   "Lesser Antilles":"ai:Anguilla|ag:Antigua and Barbuda|aw:Aruba|bb:Barbados|vg:British Virgin Islands|cw:Curaçao|dm:Dominica|gd:Grenada|gp:Guadeloupe|mq:Martinique|ms:Montserrat|kn:Saint Kitts and Nevis|lc:Saint Lucia|vc:Saint Vincent and the Grenadines|sx:Sint Maarten|tt:Trinidad and Tobago|vi:U.S. Virgin Islands",
@@ -686,7 +694,6 @@ const LOCAL_COUNTRIES = Object.entries(COUNTRY_DATA).flatMap(([region, s]) =>
   s.split("|").map(x => { const i = x.indexOf(":"); return {code:x.slice(0,i), name:x.slice(i+1), region}; }));
 const REGION_ORDER = Object.keys(COUNTRY_DATA);
 
-/* ---------- Helpers ---------- */
 const $ = (s, r=document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const safeUrl = u => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : ""; } catch { return ""; } };
@@ -699,16 +706,11 @@ const store = {
 };
 let rtf = new Intl.RelativeTimeFormat(undefined, {numeric:"auto"});
 
-/* ---------- Languages: each country has its own language(s); everyone can switch ----------
-   The page text is written in English. When another language is chosen, the visible interface text is swapped in place
-   from the dictionary below (visitor posts are never touched), and official posts can carry their own translations. */
 const LANGS = {en:{name:"English",locale:"en"}, es:{name:"Español",locale:"es"}, fr:{name:"Français",locale:"fr"}, nl:{name:"Nederlands",locale:"nl"}};
-/* The language people in each country most likely read and write. The first one is the default for that country's page. */
 const COUNTRY_LANGS = {cu:["es","en"], do:["es","en"], pr:["es","en"], ht:["fr","en"], gp:["fr","en"], mq:["fr","en"], aw:["nl","en"], cw:["nl","en"], sr:["nl","en"], sx:["en","nl"], bz:["en","es"]};
 let UILANG = "en";
 const countryLangs = code => COUNTRY_LANGS[code] || ["en"];
 const dateLocale = () => UILANG === "en" ? undefined : LANGS[UILANG].locale;
-/* Which language to show: your own choice for that country, else the country's own language, else your general choice. */
 function chooseLang(code){
   const per = store.get("ic_lang_c", {}), g = store.get("ic_lang", null);
   if (code) {
@@ -720,7 +722,7 @@ function chooseLang(code){
   const b = String(navigator.language || "en").slice(0, 2).toLowerCase(); return LANGS[b] ? b : "en";
 }
 const I18N = (() => {
-  const raw = {"es":{"m":{"Isle Connect – community resources across the Caribbean":"Isle Connect: recursos comunitarios del Caribe","Countries":"Países","About":"Acerca de","Advertise":"Anunciar","Get updates":"Recibir novedades","+ Post":"+ Publicar","Privacy":"Privacidad","Terms":"Términos","Main":"Principal","Isle Connect home":"Inicio de Isle Connect","Close":"Cerrar","Language":"Idioma","Language:":"Idioma:","This page is available in English only for now.":"Esta página solo está disponible en inglés por ahora.","Loading…":"Cargando…","Sending…":"Enviando…","just now":"justo ahora","The Latest Community Posts":"Lo más reciente de la comunidad","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Empleos, comidas, transporte, avisos escolares y ayuda en emergencias, compartidos por personas de todo el Caribe. Empieza eligiendo tu isla.","Search countries":"Buscar países","Search your island, e.g. Barbados":"Busca tu isla, p. ej., Barbados","Recently visited:":"Visitados recientemente:","All Caribbean":"Todo el Caribe","Greater Antilles":"Antillas Mayores","Lesser Antilles":"Antillas Menores","Bahamas and Turks & Caicos":"Bahamas y Turcas y Caicos","Mainland Caribbean":"Caribe continental","Choose an island":"Elige una isla","Filter by region":"Filtrar por región","Get updates from your island":"Recibe novedades de tu isla","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Empleos, becas, feriados y noticias de la comunidad por correo. Puedes darte de baja cuando quieras.","Subscribe":"Suscribirme","Switch country":"Cambiar de país","Share on WhatsApp":"Compartir en WhatsApp","Search posts":"Buscar publicaciones","Filters":"Filtros","Refresh":"Actualizar","Sort by":"Ordenar por","Newest first":"Más recientes primero","Oldest first":"Más antiguas primero","Highest rated":"Mejor valoradas","Posted":"Publicado","Any time":"Cualquier fecha","Last 24 hours":"Últimas 24 horas","Last 7 days":"Últimos 7 días","Last 30 days":"Últimos 30 días","Clear all filters":"Quitar todos los filtros","Filter by category":"Filtrar por categoría","All":"Todo","Major news":"Noticias importantes","Jobs":"Empleos","Food":"Comida","Education":"Educación","Transport":"Transporte","Emergency":"Emergencias","Holiday":"Feriados","Advertisement":"Anuncios","Sports":"Deportes","Other":"Otros","Report a problem":"Reportar un problema","Nothing here yet":"Todavía no hay nada","No matching posts":"Sin publicaciones coincidentes","Try another category, relax a filter, or clear your search.":"Prueba otra categoría, relaja un filtro o borra tu búsqueda.","Clear search and filters":"Borrar búsqueda y filtros","We couldn't load the posts":"No pudimos cargar las publicaciones","Check your connection and try again.":"Revisa tu conexión e inténtalo de nuevo.","Try again":"Intentar de nuevo","Show more posts":"Mostrar más publicaciones","Automated access is not allowed":"No se permite el acceso automatizado","This page is for people. If you are one, please open it in a regular browser.":"Esta página es para personas. Si eres una, ábrela en un navegador normal.","See packages":"Ver paquetes","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Empleos nuevos, becas, feriados y avisos de la comunidad, directo a tu correo.","Sponsored":"Patrocinado","Read more":"Leer más","Source:":"Fuente:","Contact:":"Contacto:","Show contact details":"Mostrar datos de contacto","Vote on this post":"Votar esta publicación","Official notice":"Aviso oficial","Translate":"Traducir","Translate (opens Google Translate)":"Traducir (abre Google Traductor)","Translating…":"Traduciendo…","Translated":"Traducido","Machine translation":"Traducción automática","Show original":"Ver original","Show translation":"Ver traducción","This post is already in your language.":"Esta publicación ya está en tu idioma.","Couldn't translate here. Opening Google Translate instead.":"No se pudo traducir aquí. Abriendo Google Traductor.","What do you think of this post?":"¿Qué opinas de esta publicación?","Was this post helpful?":"¿Fue útil esta publicación?","🧒 Is it child-friendly?":"🧒 ¿Es apta para niños?","Brief feedback":"Comentario breve","(optional, only the admin sees it)":"(opcional, solo lo ve el administrador)","Send my vote":"Enviar mi voto","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Todos ven el recuento de pulgares arriba y abajo. Es independiente de la calificación del administrador.","✓ You have voted on this post. Thank you!":"✓ Ya votaste en esta publicación. ¡Gracias!","✓ Thank you! Your vote has been recorded.":"✓ ¡Gracias! Tu voto quedó registrado.","Please tap a thumbs up or thumbs down.":"Toca un pulgar arriba o abajo.","You have already voted on this post.":"Ya votaste en esta publicación.","Please wait a few seconds before voting on another post.":"Espera unos segundos antes de votar en otra publicación.","You have voted on a lot of posts. Please try again later.":"Has votado en muchas publicaciones. Inténtalo más tarde.","We couldn't send your vote. Check your connection and try again.":"No pudimos enviar tu voto. Revisa tu conexión e inténtalo de nuevo.","Couldn't load the contact details.":"No se pudieron cargar los datos de contacto.","You have looked up a lot of contacts. Please try again later.":"Has consultado muchos contactos. Inténtalo más tarde.","Share a post":"Comparte una publicación","Country":"País","Category":"Categoría","What do you need or offer?":"¿Qué necesitas u ofreces?","Details":"Detalles","How should people reach you?":"¿Cómo pueden contactarte?","(phone, email or WhatsApp)":"(teléfono, correo o WhatsApp)","Add a photo, audio or video (optional)":"Añade una foto, audio o video (opcional)","Photo":"Foto","(JPG, PNG, WebP – up to 5 MB)":"(JPG, PNG, WebP – hasta 5 MB)","Audio":"Audio","(MP3, WAV, M4A, OGG – up to 10 MB)":"(MP3, WAV, M4A, OGG – hasta 10 MB)","Video":"Video","(MP4, WebM or MOV – up to 25 MB)":"(MP4, WebM o MOV – hasta 25 MB)","Cancel":"Cancelar","Share post":"Publicar","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Un administrador revisa las publicaciones antes de que aparezcan en el tablón. Al publicar aceptas los","e.g. Looking for a part-time job":"p. ej., Busco un trabajo de medio tiempo","Tell people what's happening, when and where.":"Cuéntale a la gente qué pasa, cuándo y dónde.","e.g. +1 555 123 4567":"p. ej., +1 555 123 4567","Choose the country this post is for.":"Elige el país al que va dirigida esta publicación.","Add a short title (at least 3 characters).":"Añade un título corto (mínimo 3 caracteres).","Add some details so people know how to help.":"Añade algunos detalles para que la gente sepa cómo ayudar.","Please wait a few seconds before posting again.":"Espera unos segundos antes de publicar de nuevo.","Thanks! Your post will appear once an administrator has reviewed it.":"¡Gracias! Tu publicación aparecerá cuando un administrador la revise.","Get updates by email":"Recibe novedades por correo","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Empleos, becas, feriados y noticias de la comunidad de tu isla, directo a tu correo.","Email address":"Correo electrónico","(optional)":"(opcional)","What would you like to hear about?":"¿Sobre qué te gustaría recibir información?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"Acepto recibir correos de Isle Connect. Puedo pedir que me eliminen en cualquier momento. (","Enter a valid email address.":"Escribe un correo electrónico válido.","Please tick the box to agree to receive emails.":"Marca la casilla para aceptar recibir correos.","Please wait a few seconds and try again.":"Espera unos segundos e inténtalo de nuevo.","Subscribing…":"Suscribiendo…","Thanks! You're on the list.":"¡Gracias! Ya estás en la lista.","Any country":"Cualquier país","Country (optional)":"País (opcional)","Ask a question":"Haz una pregunta","We read every message":"Leemos cada mensaje","Your question":"Tu pregunta","Your email":"Tu correo","Send":"Enviar","Topics":"Temas","Close chat":"Cerrar chat","Type your question…":"Escribe tu pregunta…","Your email, so we can reply (optional)":"Tu correo, para poder responderte (opcional)","Please type your question first.":"Escribe primero tu pregunta.","That email address doesn't look right.":"Ese correo no parece correcto.","Please wait a few seconds before sending another question.":"Espera unos segundos antes de enviar otra pregunta.","Show less":"Mostrar menos","found this helpful":"lo encontró útil","say child-friendly":"dicen que es apta para niños","Cayman Islands":"Islas Caimán","Cuba":"Cuba","Dominican Republic":"República Dominicana","Haiti":"Haití","Jamaica":"Jamaica","Puerto Rico":"Puerto Rico","Anguilla":"Anguila","Antigua and Barbuda":"Antigua y Barbuda","Aruba":"Aruba","Barbados":"Barbados","British Virgin Islands":"Islas Vírgenes Británicas","Curaçao":"Curazao","Dominica":"Dominica","Grenada":"Granada","Guadeloupe":"Guadalupe","Martinique":"Martinica","Montserrat":"Montserrat","Saint Kitts and Nevis":"San Cristóbal y Nieves","Saint Lucia":"Santa Lucía","Saint Vincent and the Grenadines":"San Vicente y las Granadinas","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinidad y Tobago","U.S. Virgin Islands":"Islas Vírgenes de EE. UU.","Bahamas":"Bahamas","Turks and Caicos Islands":"Islas Turcas y Caicos","Belize":"Belice","Guyana":"Guyana","Suriname":"Surinam","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Empleos, comidas, transporte, avisos escolares y ayuda en emergencias, compartidos por personas de todo el Caribe. Busca tu isla y añade más de una si quieres.","Your islands:":"Tus islas:","Open":"Abrir","+ Add":"+ Añadir","Added":"Añadida","Browse all islands":"Ver todas las islas","Hide the list":"Ocultar la lista","Choose islands":"Elegir islas","Search for an island, then press + Add. You can choose several.":"Busca una isla y pulsa + Añadir. Puedes elegir varias.","Change islands":"Cambiar islas","Search posts in these islands":"Buscar publicaciones en estas islas","Promote your business here":"Promociona tu negocio aquí","Get updates for these islands by email":"Recibe novedades de estas islas por correo","You can choose up to 8 islands.":"Puedes elegir hasta 8 islas.","Matching posts":"Publicaciones coincidentes","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"¡Hola! 👋 Pregúntanos lo que quieras sobre empleos, becas, feriados o el uso del sitio. Deja tu correo si quieres una respuesta.","That post is no longer available.":"Esa publicación ya no está disponible."},"p":[["^\\+ Post in (.+)$","+ Publicar en $1"],["^Search posts in (.+)$","Buscar publicaciones en $1"],["^Get (.+) updates by email$","Recibe novedades de $1 por correo"],["^Promote your business in (.+)$","Promociona tu negocio en $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Fija tu publicación en la parte superior de esta página. Los impulsos empiezan en US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Nadie ha publicado en $1 todavía. Sé el primero en compartir una necesidad o una oferta."],["^1 post match your search and filters$","1 publicación coincide con tu búsqueda y filtros"],["^(\\d+) posts match your search and filters$","$1 publicaciones coinciden con tu búsqueda y filtros"],["^1 post$","1 publicación"],["^(\\d+) posts$","$1 publicaciones"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Nada coincide con “$1”. Revisa la ortografía o borra la búsqueda para ver todas las islas y países del Caribe."],["^Shown until (.+)$","Se muestra hasta el $1"],["^Closes (.+)$","Cierra el $1"],["^Posted (.+)$","Publicado $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Compartir $1 en WhatsApp (se abre en una pestaña nueva)"],["^(.+) – Isle Connect$","$1 – Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 pulgares arriba y $2 pulgares abajo"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 pulgares arriba y $2 pulgares abajo, $3 por ciento $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1 % $2 (1 voto)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1 % $2 ($3 votos)"],["^1 visitor vote so far$","1 voto de visitantes hasta ahora"],["^(\\d+) visitor votes so far$","$1 votos de visitantes hasta ahora"],["^Rated ([\\d.]+) out of 5$","Calificación $1 de 5"],["^([\\d.]+) · admin rating$","$1 · calificación del administrador"],["^Open (.+)$","Abrir $1"],["^See posts from (\\d+) islands$","Ver publicaciones de $1 islas"],["^Remove (.+)$","Quitar $1"],["^(\\d+) islands$","$1 islas"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Nada coincide con “$1”. Revisa la ortografía o elige Ver todas las islas."]]},"fr":{"m":{"Isle Connect – community resources across the Caribbean":"Isle Connect : ressources communautaires des Caraïbes","Countries":"Pays","About":"À propos","Advertise":"Annoncer","Get updates":"Recevoir les nouveautés","+ Post":"+ Publier","Privacy":"Confidentialité","Terms":"Conditions","Main":"Principal","Isle Connect home":"Accueil d'Isle Connect","Close":"Fermer","Language":"Langue","Language:":"Langue :","This page is available in English only for now.":"Cette page n'est disponible qu'en anglais pour le moment.","Loading…":"Chargement…","Sending…":"Envoi…","just now":"à l'instant","The Latest Community Posts":"Les dernières publications de la communauté","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Emplois, repas, trajets, avis scolaires et aide d'urgence, partagés par des habitants de toutes les Caraïbes. Commencez par choisir votre île.","Search countries":"Rechercher un pays","Search your island, e.g. Barbados":"Recherchez votre île, p. ex. la Barbade","Recently visited:":"Visités récemment :","All Caribbean":"Toutes les Caraïbes","Greater Antilles":"Grandes Antilles","Lesser Antilles":"Petites Antilles","Bahamas and Turks & Caicos":"Bahamas et Turks-et-Caïcos","Mainland Caribbean":"Caraïbes continentales","Choose an island":"Choisissez une île","Filter by region":"Filtrer par région","Get updates from your island":"Recevez les nouveautés de votre île","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Emplois, bourses, jours fériés et nouvelles de la communauté par e-mail. Désabonnez-vous à tout moment.","Subscribe":"S'abonner","Switch country":"Changer de pays","Share on WhatsApp":"Partager sur WhatsApp","Search posts":"Rechercher des publications","Filters":"Filtres","Refresh":"Actualiser","Sort by":"Trier par","Newest first":"Plus récentes d'abord","Oldest first":"Plus anciennes d'abord","Highest rated":"Mieux notées","Posted":"Publié","Any time":"N'importe quand","Last 24 hours":"Dernières 24 heures","Last 7 days":"7 derniers jours","Last 30 days":"30 derniers jours","Clear all filters":"Effacer tous les filtres","Filter by category":"Filtrer par catégorie","All":"Tout","Major news":"Actualités majeures","Jobs":"Emplois","Food":"Alimentation","Education":"Éducation","Transport":"Transport","Emergency":"Urgences","Holiday":"Jours fériés","Advertisement":"Annonces","Sports":"Sports","Other":"Autres","Report a problem":"Signaler un problème","Nothing here yet":"Rien pour l'instant","No matching posts":"Aucune publication correspondante","Try another category, relax a filter, or clear your search.":"Essayez une autre catégorie, assouplissez un filtre ou effacez votre recherche.","Clear search and filters":"Effacer la recherche et les filtres","We couldn't load the posts":"Impossible de charger les publications","Check your connection and try again.":"Vérifiez votre connexion et réessayez.","Try again":"Réessayer","Show more posts":"Afficher plus de publications","Automated access is not allowed":"L'accès automatisé n'est pas autorisé","This page is for people. If you are one, please open it in a regular browser.":"Cette page est destinée aux personnes. Si vous en êtes une, ouvrez-la dans un navigateur ordinaire.","See packages":"Voir les formules","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Nouveaux emplois, bourses, jours fériés et avis de la communauté, directement dans votre boîte de réception.","Sponsored":"Sponsorisé","Read more":"Lire la suite","Source:":"Source :","Contact:":"Contact :","Show contact details":"Afficher les coordonnées","Vote on this post":"Voter pour cette publication","Official notice":"Avis officiel","Translate":"Traduire","Translate (opens Google Translate)":"Traduire (ouvre Google Traduction)","Translating…":"Traduction en cours…","Translated":"Traduit","Machine translation":"Traduction automatique","Show original":"Voir l'original","Show translation":"Voir la traduction","This post is already in your language.":"Cette publication est déjà dans votre langue.","Couldn't translate here. Opening Google Translate instead.":"Traduction impossible ici. Ouverture de Google Traduction.","What do you think of this post?":"Que pensez-vous de cette publication ?","Was this post helpful?":"Cette publication vous a-t-elle été utile ?","🧒 Is it child-friendly?":"🧒 Convient-elle aux enfants ?","Brief feedback":"Commentaire bref","(optional, only the admin sees it)":"(facultatif, seul l'administrateur le voit)","Send my vote":"Envoyer mon vote","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Tout le monde voit le nombre de pouces levés et baissés. C'est distinct de la note de l'administrateur.","✓ You have voted on this post. Thank you!":"✓ Vous avez déjà voté pour cette publication. Merci !","✓ Thank you! Your vote has been recorded.":"✓ Merci ! Votre vote a été enregistré.","Please tap a thumbs up or thumbs down.":"Touchez un pouce levé ou baissé.","You have already voted on this post.":"Vous avez déjà voté pour cette publication.","Please wait a few seconds before voting on another post.":"Patientez quelques secondes avant de voter pour une autre publication.","You have voted on a lot of posts. Please try again later.":"Vous avez voté pour beaucoup de publications. Réessayez plus tard.","We couldn't send your vote. Check your connection and try again.":"Impossible d'envoyer votre vote. Vérifiez votre connexion et réessayez.","Couldn't load the contact details.":"Impossible de charger les coordonnées.","You have looked up a lot of contacts. Please try again later.":"Vous avez consulté beaucoup de contacts. Réessayez plus tard.","Share a post":"Partagez une publication","Country":"Pays","Category":"Catégorie","What do you need or offer?":"De quoi avez-vous besoin ou que proposez-vous ?","Details":"Détails","How should people reach you?":"Comment peut-on vous joindre ?","(phone, email or WhatsApp)":"(téléphone, e-mail ou WhatsApp)","Add a photo, audio or video (optional)":"Ajoutez une photo, un audio ou une vidéo (facultatif)","Photo":"Photo","(JPG, PNG, WebP – up to 5 MB)":"(JPG, PNG, WebP – jusqu'à 5 Mo)","Audio":"Audio","(MP3, WAV, M4A, OGG – up to 10 MB)":"(MP3, WAV, M4A, OGG – jusqu'à 10 Mo)","Video":"Vidéo","(MP4, WebM or MOV – up to 25 MB)":"(MP4, WebM ou MOV – jusqu'à 25 Mo)","Cancel":"Annuler","Share post":"Publier","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Un administrateur vérifie les publications avant qu'elles n'apparaissent sur le tableau. En publiant, vous acceptez les","e.g. Looking for a part-time job":"p. ex. Je cherche un emploi à temps partiel","Tell people what's happening, when and where.":"Dites aux gens ce qui se passe, quand et où.","e.g. +1 555 123 4567":"p. ex. +1 555 123 4567","Choose the country this post is for.":"Choisissez le pays concerné par cette publication.","Add a short title (at least 3 characters).":"Ajoutez un titre court (3 caractères minimum).","Add some details so people know how to help.":"Ajoutez quelques détails pour que les gens sachent comment aider.","Please wait a few seconds before posting again.":"Patientez quelques secondes avant de publier à nouveau.","Thanks! Your post will appear once an administrator has reviewed it.":"Merci ! Votre publication apparaîtra dès qu'un administrateur l'aura vérifiée.","Get updates by email":"Recevez les nouveautés par e-mail","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Emplois, bourses, jours fériés et nouvelles de la communauté de votre île, directement dans votre boîte de réception.","Email address":"Adresse e-mail","(optional)":"(facultatif)","What would you like to hear about?":"Sur quels sujets souhaitez-vous être informé(e) ?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"J'accepte de recevoir des e-mails d'Isle Connect. Je peux demander à être retiré(e) à tout moment. (","Enter a valid email address.":"Saisissez une adresse e-mail valide.","Please tick the box to agree to receive emails.":"Cochez la case pour accepter de recevoir des e-mails.","Please wait a few seconds and try again.":"Patientez quelques secondes et réessayez.","Subscribing…":"Inscription…","Thanks! You're on the list.":"Merci ! Vous êtes inscrit(e).","Any country":"Tous les pays","Country (optional)":"Pays (facultatif)","Ask a question":"Poser une question","We read every message":"Nous lisons chaque message","Your question":"Votre question","Your email":"Votre e-mail","Send":"Envoyer","Topics":"Sujets","Close chat":"Fermer le chat","Type your question…":"Saisissez votre question…","Your email, so we can reply (optional)":"Votre e-mail, pour que nous puissions répondre (facultatif)","Please type your question first.":"Saisissez d'abord votre question.","That email address doesn't look right.":"Cette adresse e-mail ne semble pas correcte.","Please wait a few seconds before sending another question.":"Patientez quelques secondes avant d'envoyer une autre question.","Show less":"Voir moins","found this helpful":"l'ont trouvée utile","say child-friendly":"estiment qu'elle convient aux enfants","Cayman Islands":"Îles Caïmans","Cuba":"Cuba","Dominican Republic":"République dominicaine","Haiti":"Haïti","Jamaica":"Jamaïque","Puerto Rico":"Porto Rico","Anguilla":"Anguilla","Antigua and Barbuda":"Antigua-et-Barbuda","Aruba":"Aruba","Barbados":"Barbade","British Virgin Islands":"Îles Vierges britanniques","Curaçao":"Curaçao","Dominica":"Dominique","Grenada":"Grenade","Guadeloupe":"Guadeloupe","Martinique":"Martinique","Montserrat":"Montserrat","Saint Kitts and Nevis":"Saint-Christophe-et-Niévès","Saint Lucia":"Sainte-Lucie","Saint Vincent and the Grenadines":"Saint-Vincent-et-les-Grenadines","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinité-et-Tobago","U.S. Virgin Islands":"Îles Vierges des États-Unis","Bahamas":"Bahamas","Turks and Caicos Islands":"Îles Turques-et-Caïques","Belize":"Belize","Guyana":"Guyana","Suriname":"Suriname","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Emplois, repas, trajets, avis scolaires et aide d'urgence, partagés par des habitants de toute la Caraïbe. Cherchez votre île et ajoutez-en plusieurs si vous le souhaitez.","Your islands:":"Vos îles :","Open":"Ouvrir","+ Add":"+ Ajouter","Added":"Ajoutée","Browse all islands":"Voir toutes les îles","Hide the list":"Masquer la liste","Choose islands":"Choisir des îles","Search for an island, then press + Add. You can choose several.":"Cherchez une île, puis appuyez sur + Ajouter. Vous pouvez en choisir plusieurs.","Change islands":"Changer d'îles","Search posts in these islands":"Rechercher dans les publications de ces îles","Promote your business here":"Promouvez votre entreprise ici","Get updates for these islands by email":"Recevez par e-mail les nouveautés de ces îles","You can choose up to 8 islands.":"Vous pouvez choisir jusqu'à 8 îles.","Matching posts":"Publications correspondantes","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"Bonjour ! 👋 Posez-nous vos questions sur les emplois, les bourses, les jours fériés ou l'utilisation du site. Laissez votre e-mail si vous souhaitez une réponse.","That post is no longer available.":"Cette publication n'est plus disponible."},"p":[["^\\+ Post in (.+)$","+ Publier — $1"],["^Search posts in (.+)$","Rechercher des publications : $1"],["^Get (.+) updates by email$","Recevez les nouveautés de $1 par e-mail"],["^Promote your business in (.+)$","Promouvez votre entreprise : $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Épinglez votre publication en haut de cette page. Les mises en avant commencent à US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Personne n'a encore publié pour $1. Soyez le premier à partager un besoin ou une offre."],["^1 post match your search and filters$","1 publication correspond à votre recherche et à vos filtres"],["^(\\d+) posts match your search and filters$","$1 publications correspondent à votre recherche et à vos filtres"],["^1 post$","1 publication"],["^(\\d+) posts$","$1 publications"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Aucun résultat pour « $1 ». Vérifiez l'orthographe ou effacez la recherche pour voir toutes les îles et tous les pays des Caraïbes."],["^Shown until (.+)$","Affiché jusqu'au $1"],["^Closes (.+)$","Se termine le $1"],["^Posted (.+)$","Publié $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Partager $1 sur WhatsApp (s'ouvre dans un nouvel onglet)"],["^(.+) – Isle Connect$","$1 – Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 pouces levés et $2 pouces baissés"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 pouces levés et $2 pouces baissés, $3 pour cent $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1 % $2 (1 vote)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1 % $2 ($3 votes)"],["^1 visitor vote so far$","1 vote de visiteur pour l'instant"],["^(\\d+) visitor votes so far$","$1 votes de visiteurs pour l'instant"],["^Rated ([\\d.]+) out of 5$","Noté $1 sur 5"],["^([\\d.]+) · admin rating$","$1 · note de l'administrateur"],["^Open (.+)$","Ouvrir $1"],["^See posts from (\\d+) islands$","Voir les publications de $1 îles"],["^Remove (.+)$","Retirer $1"],["^(\\d+) islands$","$1 îles"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Aucun résultat pour « $1 ». Vérifiez l'orthographe ou choisissez Voir toutes les îles."]]},"nl":{"m":{"Isle Connect – community resources across the Caribbean":"Isle Connect: lokale hulp en nieuws in het Caribisch gebied","Countries":"Landen","About":"Over ons","Advertise":"Adverteren","Get updates":"Updates ontvangen","+ Post":"+ Plaatsen","Privacy":"Privacy","Terms":"Voorwaarden","Main":"Hoofdmenu","Isle Connect home":"Startpagina van Isle Connect","Close":"Sluiten","Language":"Taal","Language:":"Taal:","This page is available in English only for now.":"Deze pagina is voorlopig alleen in het Engels beschikbaar.","Loading…":"Laden…","Sending…":"Versturen…","just now":"zojuist","The Latest Community Posts":"Het laatste nieuws uit de gemeenschap","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Banen, maaltijden, ritten, schoolberichten en noodhulp, gedeeld door mensen uit het hele Caribisch gebied. Begin met het kiezen van je eiland.","Search countries":"Landen zoeken","Search your island, e.g. Barbados":"Zoek je eiland, bijv. Barbados","Recently visited:":"Onlangs bezocht:","All Caribbean":"Heel het Caribisch gebied","Greater Antilles":"Grote Antillen","Lesser Antilles":"Kleine Antillen","Bahamas and Turks & Caicos":"Bahama's en Turks- en Caicoseilanden","Mainland Caribbean":"Caribisch vasteland","Choose an island":"Kies een eiland","Filter by region":"Filteren op regio","Get updates from your island":"Ontvang updates uit je eiland","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Banen, beurzen, feestdagen en nieuws uit de gemeenschap per e-mail. Je kunt je op elk moment afmelden.","Subscribe":"Aanmelden","Switch country":"Ander land kiezen","Share on WhatsApp":"Delen via WhatsApp","Search posts":"Berichten zoeken","Filters":"Filters","Refresh":"Vernieuwen","Sort by":"Sorteren op","Newest first":"Nieuwste eerst","Oldest first":"Oudste eerst","Highest rated":"Hoogst beoordeeld","Posted":"Geplaatst","Any time":"Op elk moment","Last 24 hours":"Laatste 24 uur","Last 7 days":"Laatste 7 dagen","Last 30 days":"Laatste 30 dagen","Clear all filters":"Alle filters wissen","Filter by category":"Filteren op categorie","All":"Alles","Major news":"Groot nieuws","Jobs":"Vacatures","Food":"Eten","Education":"Onderwijs","Transport":"Vervoer","Emergency":"Noodgevallen","Holiday":"Feestdagen","Advertisement":"Advertenties","Sports":"Sport","Other":"Overig","Report a problem":"Een probleem melden","Nothing here yet":"Nog niets hier","No matching posts":"Geen overeenkomende berichten","Try another category, relax a filter, or clear your search.":"Probeer een andere categorie, versoepel een filter of wis je zoekopdracht.","Clear search and filters":"Zoekopdracht en filters wissen","We couldn't load the posts":"We konden de berichten niet laden","Check your connection and try again.":"Controleer je verbinding en probeer het opnieuw.","Try again":"Opnieuw proberen","Show more posts":"Meer berichten tonen","Automated access is not allowed":"Geautomatiseerde toegang is niet toegestaan","This page is for people. If you are one, please open it in a regular browser.":"Deze pagina is voor mensen. Ben je er een, open haar dan in een gewone browser.","See packages":"Pakketten bekijken","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Nieuwe banen, beurzen, feestdagen en mededelingen uit de gemeenschap, rechtstreeks in je inbox.","Sponsored":"Gesponsord","Read more":"Lees meer","Source:":"Bron:","Contact:":"Contact:","Show contact details":"Contactgegevens tonen","Vote on this post":"Stem op dit bericht","Official notice":"Officiële mededeling","Translate":"Vertalen","Translate (opens Google Translate)":"Vertalen (opent Google Translate)","Translating…":"Vertalen…","Translated":"Vertaald","Machine translation":"Automatische vertaling","Show original":"Origineel tonen","Show translation":"Vertaling tonen","This post is already in your language.":"Dit bericht staat al in jouw taal.","Couldn't translate here. Opening Google Translate instead.":"Vertalen lukt hier niet. Google Translate wordt geopend.","What do you think of this post?":"Wat vind je van dit bericht?","Was this post helpful?":"Was dit bericht nuttig?","🧒 Is it child-friendly?":"🧒 Is het kindvriendelijk?","Brief feedback":"Korte reactie","(optional, only the admin sees it)":"(optioneel, alleen de beheerder ziet het)","Send my vote":"Mijn stem versturen","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Iedereen ziet het aantal duimen omhoog en omlaag. Dit staat los van de beoordeling van de beheerder.","✓ You have voted on this post. Thank you!":"✓ Je hebt al gestemd op dit bericht. Bedankt!","✓ Thank you! Your vote has been recorded.":"✓ Bedankt! Je stem is opgeslagen.","Please tap a thumbs up or thumbs down.":"Tik op een duim omhoog of omlaag.","You have already voted on this post.":"Je hebt al op dit bericht gestemd.","Please wait a few seconds before voting on another post.":"Wacht een paar seconden voordat je op een ander bericht stemt.","You have voted on a lot of posts. Please try again later.":"Je hebt op veel berichten gestemd. Probeer het later opnieuw.","We couldn't send your vote. Check your connection and try again.":"We konden je stem niet versturen. Controleer je verbinding en probeer het opnieuw.","Couldn't load the contact details.":"De contactgegevens konden niet worden geladen.","You have looked up a lot of contacts. Please try again later.":"Je hebt veel contactgegevens opgevraagd. Probeer het later opnieuw.","Share a post":"Deel een bericht","Country":"Land","Category":"Categorie","What do you need or offer?":"Wat zoek of bied je aan?","Details":"Details","How should people reach you?":"Hoe kunnen mensen je bereiken?","(phone, email or WhatsApp)":"(telefoon, e-mail of WhatsApp)","Add a photo, audio or video (optional)":"Voeg een foto, audio of video toe (optioneel)","Photo":"Foto","(JPG, PNG, WebP – up to 5 MB)":"(JPG, PNG, WebP – tot 5 MB)","Audio":"Audio","(MP3, WAV, M4A, OGG – up to 10 MB)":"(MP3, WAV, M4A, OGG – tot 10 MB)","Video":"Video","(MP4, WebM or MOV – up to 25 MB)":"(MP4, WebM of MOV – tot 25 MB)","Cancel":"Annuleren","Share post":"Bericht plaatsen","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Een beheerder controleert berichten voordat ze op het prikbord verschijnen. Door te plaatsen ga je akkoord met de","e.g. Looking for a part-time job":"bijv. Ik zoek een bijbaan","Tell people what's happening, when and where.":"Vertel mensen wat er gebeurt, wanneer en waar.","e.g. +1 555 123 4567":"bijv. +1 555 123 4567","Choose the country this post is for.":"Kies het land waarvoor dit bericht bedoeld is.","Add a short title (at least 3 characters).":"Voeg een korte titel toe (minstens 3 tekens).","Add some details so people know how to help.":"Voeg wat details toe zodat mensen weten hoe ze kunnen helpen.","Please wait a few seconds before posting again.":"Wacht een paar seconden voordat je opnieuw plaatst.","Thanks! Your post will appear once an administrator has reviewed it.":"Bedankt! Je bericht verschijnt zodra een beheerder het heeft gecontroleerd.","Get updates by email":"Ontvang updates per e-mail","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Banen, beurzen, feestdagen en nieuws uit de gemeenschap van je eiland, rechtstreeks in je inbox.","Email address":"E-mailadres","(optional)":"(optioneel)","What would you like to hear about?":"Waarover wil je berichten ontvangen?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"Ik ga akkoord met het ontvangen van e-mails van Isle Connect. Ik kan me op elk moment laten verwijderen. (","Enter a valid email address.":"Voer een geldig e-mailadres in.","Please tick the box to agree to receive emails.":"Vink het vakje aan om te akkoord te gaan met het ontvangen van e-mails.","Please wait a few seconds and try again.":"Wacht een paar seconden en probeer het opnieuw.","Subscribing…":"Aanmelden…","Thanks! You're on the list.":"Bedankt! Je staat op de lijst.","Any country":"Elk land","Country (optional)":"Land (optioneel)","Ask a question":"Stel een vraag","We read every message":"We lezen elk bericht","Your question":"Je vraag","Your email":"Je e-mail","Send":"Versturen","Topics":"Onderwerpen","Close chat":"Chat sluiten","Type your question…":"Typ je vraag…","Your email, so we can reply (optional)":"Je e-mail, zodat we kunnen antwoorden (optioneel)","Please type your question first.":"Typ eerst je vraag.","That email address doesn't look right.":"Dat e-mailadres lijkt niet te kloppen.","Please wait a few seconds before sending another question.":"Wacht een paar seconden voordat je nog een vraag verstuurt.","Show less":"Minder tonen","found this helpful":"vonden dit nuttig","say child-friendly":"vinden het kindvriendelijk","Cayman Islands":"Kaaimaneilanden","Cuba":"Cuba","Dominican Republic":"Dominicaanse Republiek","Haiti":"Haïti","Jamaica":"Jamaica","Puerto Rico":"Puerto Rico","Anguilla":"Anguilla","Antigua and Barbuda":"Antigua en Barbuda","Aruba":"Aruba","Barbados":"Barbados","British Virgin Islands":"Britse Maagdeneilanden","Curaçao":"Curaçao","Dominica":"Dominica","Grenada":"Grenada","Guadeloupe":"Guadeloupe","Martinique":"Martinique","Montserrat":"Montserrat","Saint Kitts and Nevis":"Saint Kitts en Nevis","Saint Lucia":"Saint Lucia","Saint Vincent and the Grenadines":"Saint Vincent en de Grenadines","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinidad en Tobago","U.S. Virgin Islands":"Amerikaanse Maagdeneilanden","Bahamas":"Bahama's","Turks and Caicos Islands":"Turks- en Caicoseilanden","Belize":"Belize","Guyana":"Guyana","Suriname":"Suriname","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Banen, maaltijden, ritten, schoolberichten en noodhulp, gedeeld door mensen in het hele Caribisch gebied. Zoek je eiland en voeg er gerust meer dan één toe.","Your islands:":"Jouw eilanden:","Open":"Openen","+ Add":"+ Toevoegen","Added":"Toegevoegd","Browse all islands":"Alle eilanden bekijken","Hide the list":"Lijst verbergen","Choose islands":"Eilanden kiezen","Search for an island, then press + Add. You can choose several.":"Zoek een eiland en druk op + Toevoegen. Je kunt er meerdere kiezen.","Change islands":"Eilanden wijzigen","Search posts in these islands":"Zoek berichten op deze eilanden","Promote your business here":"Promoot je bedrijf hier","Get updates for these islands by email":"Ontvang nieuws over deze eilanden per e-mail","You can choose up to 8 islands.":"Je kunt maximaal 8 eilanden kiezen.","Matching posts":"Overeenkomende berichten","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"Hoi! 👋 Vraag ons alles over banen, beurzen, feestdagen of het gebruik van de site. Laat je e-mailadres achter als je antwoord wilt.","That post is no longer available.":"Dat bericht is niet meer beschikbaar."},"p":[["^\\+ Post in (.+)$","+ Plaatsen in $1"],["^Search posts in (.+)$","Berichten zoeken in $1"],["^Get (.+) updates by email$","Ontvang updates uit $1 per e-mail"],["^Promote your business in (.+)$","Promoot je bedrijf in $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Zet je bericht bovenaan deze pagina. Boosts beginnen bij US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Er heeft nog niemand iets geplaatst in $1. Wees de eerste die een vraag of aanbod deelt."],["^1 post match your search and filters$","1 bericht komt overeen met je zoekopdracht en filters"],["^(\\d+) posts match your search and filters$","$1 berichten komen overeen met je zoekopdracht en filters"],["^1 post$","1 bericht"],["^(\\d+) posts$","$1 berichten"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Niets komt overeen met “$1”. Controleer de spelling of wis de zoekopdracht om alle eilanden en landen van het Caribisch gebied te zien."],["^Shown until (.+)$","Zichtbaar tot $1"],["^Closes (.+)$","Sluit op $1"],["^Posted (.+)$","Geplaatst $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Deel $1 via WhatsApp (opent in een nieuw tabblad)"],["^(.+) – Isle Connect$","$1 – Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 duimen omhoog en $2 duimen omlaag"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 duimen omhoog en $2 duimen omlaag, $3 procent $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1% $2 (1 stem)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1% $2 ($3 stemmen)"],["^1 visitor vote so far$","1 stem van bezoekers tot nu toe"],["^(\\d+) visitor votes so far$","$1 stemmen van bezoekers tot nu toe"],["^Rated ([\\d.]+) out of 5$","Beoordeeld met $1 van 5"],["^([\\d.]+) · admin rating$","$1 · beoordeling beheerder"],["^Open (.+)$","$1 openen"],["^See posts from (\\d+) islands$","Berichten van $1 eilanden bekijken"],["^Remove (.+)$","$1 verwijderen"],["^(\\d+) islands$","$1 eilanden"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Niets gevonden voor “$1”. Controleer de spelling of kies Alle eilanden bekijken."]]}};
+  const raw = {"es":{"m":{"Isle Connect: community resources across the Caribbean":"Isle Connect: recursos comunitarios del Caribe","Countries":"Países","About":"Acerca de","Advertise":"Anunciar","Get updates":"Recibir novedades","+ Post":"+ Publicar","Privacy":"Privacidad","Terms":"Términos","Main":"Principal","Isle Connect home":"Inicio de Isle Connect","Close":"Cerrar","Language":"Idioma","Language:":"Idioma:","This page is available in English only for now.":"Esta página solo está disponible en inglés por ahora.","Loading…":"Cargando…","Sending…":"Enviando…","just now":"justo ahora","The Latest Community Posts":"Lo más reciente de la comunidad","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Empleos, comidas, transporte, avisos escolares y ayuda en emergencias, compartidos por personas de todo el Caribe. Empieza eligiendo tu isla.","Search countries":"Buscar países","Search your island, e.g. Barbados":"Busca tu isla, p. ej., Barbados","Recently visited:":"Visitados recientemente:","All Caribbean":"Todo el Caribe","Greater Antilles":"Antillas Mayores","Lesser Antilles":"Antillas Menores","Bahamas and Turks & Caicos":"Bahamas y Turcas y Caicos","Mainland Caribbean":"Caribe continental","Choose an island":"Elige una isla","Filter by region":"Filtrar por región","Get updates from your island":"Recibe novedades de tu isla","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Empleos, becas, feriados y noticias de la comunidad por correo. Puedes darte de baja cuando quieras.","Subscribe":"Suscribirme","Switch country":"Cambiar de país","Share on WhatsApp":"Compartir en WhatsApp","Search posts":"Buscar publicaciones","Filters":"Filtros","Refresh":"Actualizar","Sort by":"Ordenar por","Newest first":"Más recientes primero","Oldest first":"Más antiguas primero","Highest rated":"Mejor valoradas","Posted":"Publicado","Any time":"Cualquier fecha","Last 24 hours":"Últimas 24 horas","Last 7 days":"Últimos 7 días","Last 30 days":"Últimos 30 días","Clear all filters":"Quitar todos los filtros","Filter by category":"Filtrar por categoría","All":"Todo","Major news":"Noticias importantes","Jobs":"Empleos","Food":"Comida","Education":"Educación","Transport":"Transporte","Emergency":"Emergencias","Holiday":"Feriados","Advertisement":"Anuncios","Sports":"Deportes","Other":"Otros","Report a problem":"Reportar un problema","Nothing here yet":"Todavía no hay nada","No matching posts":"Sin publicaciones coincidentes","Try another category, relax a filter, or clear your search.":"Prueba otra categoría, relaja un filtro o borra tu búsqueda.","Clear search and filters":"Borrar búsqueda y filtros","We couldn't load the posts":"No pudimos cargar las publicaciones","Check your connection and try again.":"Revisa tu conexión e inténtalo de nuevo.","Try again":"Intentar de nuevo","Show more posts":"Mostrar más publicaciones","Automated access is not allowed":"No se permite el acceso automatizado","This page is for people. If you are one, please open it in a regular browser.":"Esta página es para personas. Si eres una, ábrela en un navegador normal.","See packages":"Ver paquetes","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Empleos nuevos, becas, feriados y avisos de la comunidad, directo a tu correo.","Sponsored":"Patrocinado","Read more":"Leer más","Source:":"Fuente:","Contact:":"Contacto:","Show contact details":"Mostrar datos de contacto","Vote on this post":"Votar esta publicación","Official notice":"Aviso oficial","Translate":"Traducir","Translate (opens Google Translate)":"Traducir (abre Google Traductor)","Translating…":"Traduciendo…","Translated":"Traducido","Machine translation":"Traducción automática","Show original":"Ver original","Show translation":"Ver traducción","This post is already in your language.":"Esta publicación ya está en tu idioma.","Couldn't translate here. Opening Google Translate instead.":"No se pudo traducir aquí. Abriendo Google Traductor.","What do you think of this post?":"¿Qué opinas de esta publicación?","Was this post helpful?":"¿Fue útil esta publicación?","🧒 Is it child-friendly?":"🧒 ¿Es apta para niños?","Brief feedback":"Comentario breve","(optional, only the admin sees it)":"(opcional, solo lo ve el administrador)","Send my vote":"Enviar mi voto","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Todos ven el recuento de pulgares arriba y abajo. Es independiente de la calificación del administrador.","✓ You have voted on this post. Thank you!":"✓ Ya votaste en esta publicación. ¡Gracias!","✓ Thank you! Your vote has been recorded.":"✓ ¡Gracias! Tu voto quedó registrado.","Please tap a thumbs up or thumbs down.":"Toca un pulgar arriba o abajo.","You have already voted on this post.":"Ya votaste en esta publicación.","Please wait a few seconds before voting on another post.":"Espera unos segundos antes de votar en otra publicación.","You have voted on a lot of posts. Please try again later.":"Has votado en muchas publicaciones. Inténtalo más tarde.","We couldn't send your vote. Check your connection and try again.":"No pudimos enviar tu voto. Revisa tu conexión e inténtalo de nuevo.","Couldn't load the contact details.":"No se pudieron cargar los datos de contacto.","You have looked up a lot of contacts. Please try again later.":"Has consultado muchos contactos. Inténtalo más tarde.","Share a post":"Comparte una publicación","Country":"País","Category":"Categoría","What do you need or offer?":"¿Qué necesitas u ofreces?","Details":"Detalles","How should people reach you?":"¿Cómo pueden contactarte?","(phone, email or WhatsApp)":"(teléfono, correo o WhatsApp)","Add a photo, audio or video (optional)":"Añade una foto, audio o video (opcional)","Photo":"Foto","(JPG, PNG, WebP, up to 5 MB)":"(JPG, PNG, WebP, hasta 5 MB)","Audio":"Audio","(MP3, WAV, M4A, OGG, up to 10 MB)":"(MP3, WAV, M4A, OGG, hasta 10 MB)","Video":"Video","(MP4, WebM or MOV, up to 25 MB)":"(MP4, WebM o MOV, hasta 25 MB)","Cancel":"Cancelar","Share post":"Publicar","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Un administrador revisa las publicaciones antes de que aparezcan en el tablón. Al publicar aceptas los","e.g. Looking for a part-time job":"p. ej., Busco un trabajo de medio tiempo","Tell people what's happening, when and where.":"Cuéntale a la gente qué pasa, cuándo y dónde.","e.g. +1 555 123 4567":"p. ej., +1 555 123 4567","Choose the country this post is for.":"Elige el país al que va dirigida esta publicación.","Add a short title (at least 3 characters).":"Añade un título corto (mínimo 3 caracteres).","Add some details so people know how to help.":"Añade algunos detalles para que la gente sepa cómo ayudar.","Please wait a few seconds before posting again.":"Espera unos segundos antes de publicar de nuevo.","Thanks! Your post will appear once an administrator has reviewed it.":"¡Gracias! Tu publicación aparecerá cuando un administrador la revise.","Get updates by email":"Recibe novedades por correo","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Empleos, becas, feriados y noticias de la comunidad de tu isla, directo a tu correo.","Email address":"Correo electrónico","(optional)":"(opcional)","What would you like to hear about?":"¿Sobre qué te gustaría recibir información?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"Acepto recibir correos de Isle Connect. Puedo pedir que me eliminen en cualquier momento. (","Enter a valid email address.":"Escribe un correo electrónico válido.","Please tick the box to agree to receive emails.":"Marca la casilla para aceptar recibir correos.","Please wait a few seconds and try again.":"Espera unos segundos e inténtalo de nuevo.","Subscribing…":"Suscribiendo…","Thanks! You're on the list.":"¡Gracias! Ya estás en la lista.","Any country":"Cualquier país","Country (optional)":"País (opcional)","Ask a question":"Haz una pregunta","We read every message":"Leemos cada mensaje","Your question":"Tu pregunta","Your email":"Tu correo","Send":"Enviar","Topics":"Temas","Close chat":"Cerrar chat","Type your question…":"Escribe tu pregunta…","Your email, so we can reply (optional)":"Tu correo, para poder responderte (opcional)","Please type your question first.":"Escribe primero tu pregunta.","That email address doesn't look right.":"Ese correo no parece correcto.","Please wait a few seconds before sending another question.":"Espera unos segundos antes de enviar otra pregunta.","Show less":"Mostrar menos","found this helpful":"lo encontró útil","say child-friendly":"dicen que es apta para niños","Cayman Islands":"Islas Caimán","Cuba":"Cuba","Dominican Republic":"República Dominicana","Haiti":"Haití","Jamaica":"Jamaica","Puerto Rico":"Puerto Rico","Anguilla":"Anguila","Antigua and Barbuda":"Antigua y Barbuda","Aruba":"Aruba","Barbados":"Barbados","British Virgin Islands":"Islas Vírgenes Británicas","Curaçao":"Curazao","Dominica":"Dominica","Grenada":"Granada","Guadeloupe":"Guadalupe","Martinique":"Martinica","Montserrat":"Montserrat","Saint Kitts and Nevis":"San Cristóbal y Nieves","Saint Lucia":"Santa Lucía","Saint Vincent and the Grenadines":"San Vicente y las Granadinas","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinidad y Tobago","U.S. Virgin Islands":"Islas Vírgenes de EE. UU.","Bahamas":"Bahamas","Turks and Caicos Islands":"Islas Turcas y Caicos","Belize":"Belice","Guyana":"Guyana","Suriname":"Surinam","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Empleos, comidas, transporte, avisos escolares y ayuda en emergencias, compartidos por personas de todo el Caribe. Busca tu isla y añade más de una si quieres.","Your islands:":"Tus islas:","Open":"Abrir","+ Add":"+ Añadir","Added":"Añadida","Browse all islands":"Ver todas las islas","Hide the list":"Ocultar la lista","Choose islands":"Elegir islas","Search for an island, then press + Add. You can choose several.":"Busca una isla y pulsa + Añadir. Puedes elegir varias.","Change islands":"Cambiar islas","Search posts in these islands":"Buscar publicaciones en estas islas","Promote your business here":"Promociona tu negocio aquí","Get updates for these islands by email":"Recibe novedades de estas islas por correo","You can choose up to 8 islands.":"Puedes elegir hasta 8 islas.","Matching posts":"Publicaciones coincidentes","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"¡Hola! 👋 Pregúntanos lo que quieras sobre empleos, becas, feriados o el uso del sitio. Deja tu correo si quieres una respuesta.","That post is no longer available.":"Esa publicación ya no está disponible.","Language of this post":"Idioma de esta publicación","Play video":"Reproducir vídeo","The video is taking too long to load.":"El vídeo tarda demasiado en cargar.","The video couldn't be loaded. Check your connection and try again.":"No se pudo cargar el vídeo. Compruebe su conexión e inténtelo de nuevo.","Open the video file":"Abrir el archivo de vídeo","Checking your video…":"Revisando su vídeo…","That file type isn't supported. Please choose an MP4, WebM or MOV video.":"Ese tipo de archivo no es compatible. Elija un vídeo MP4, WebM o MOV.","This video can't be played in most browsers. It may use a newer phone format. On an iPhone choose Settings, Camera, Formats, Most Compatible and record again, or choose an MP4 video.":"Este vídeo no se puede reproducir en la mayoría de los navegadores. Puede usar un formato nuevo de teléfono. En un iPhone elija Ajustes, Cámara, Formatos, Más compatible y grabe de nuevo, o elija un vídeo MP4.","This video is {size} but the limit is {max}.":"Este vídeo pesa {size} pero el límite es {max}.","Make it smaller":"Hacerlo más pequeño","Please choose a shorter or smaller video.":"Elija un vídeo más corto o más pequeño.","Making your video smaller. Keep this tab open until it finishes.":"Haciendo su vídeo más pequeño. Mantenga esta pestaña abierta hasta que termine.","Done. Your video is now {size} and ready to upload.":"Listo. Su vídeo ahora pesa {size} y está listo para subir.","Cancelled. You can choose a different video.":"Cancelado. Puede elegir otro vídeo.","Your browser couldn't swap in the smaller video automatically. Please choose a smaller video yourself.":"Su navegador no pudo cambiar el archivo por el vídeo más pequeño. Elija usted mismo un vídeo más pequeño.","Your browser can't make videos smaller. Please choose a shorter or smaller video.":"Su navegador no puede reducir vídeos. Elija un vídeo más corto o más pequeño.","This video is too long to fit in {max}. The longest that can fit is about {seconds} seconds.":"Este vídeo es demasiado largo para caber en {max}. Lo máximo que cabe son unos {seconds} segundos.","Couldn't make the video smaller. Please choose a shorter or smaller video.":"No se pudo hacer el vídeo más pequeño. Elija un vídeo más corto o más pequeño.","{name}: {details}. Ready to upload.":"{name}: {details}. Listo para subir.","We couldn't preview this video, but you can still upload it.":"No pudimos previsualizar este vídeo, pero aún puede subirlo.","Please wait for the video to finish getting ready.":"Espere a que el vídeo termine de prepararse.","This video couldn't be played. The file may be missing, or in a format your browser doesn't support, such as a newer phone format.":"No se pudo reproducir este vídeo. Puede que falte el archivo o que esté en un formato que su navegador no admite, por ejemplo un formato nuevo de teléfono."},"p":[["^\\+ Post in (.+)$","+ Publicar en $1"],["^Search posts in (.+)$","Buscar publicaciones en $1"],["^Get (.+) updates by email$","Recibe novedades de $1 por correo"],["^Promote your business in (.+)$","Promociona tu negocio en $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Fija tu publicación en la parte superior de esta página. Los impulsos empiezan en US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Nadie ha publicado en $1 todavía. Sé el primero en compartir una necesidad o una oferta."],["^1 post match your search and filters$","1 publicación coincide con tu búsqueda y filtros"],["^(\\d+) posts match your search and filters$","$1 publicaciones coinciden con tu búsqueda y filtros"],["^1 post$","1 publicación"],["^(\\d+) posts$","$1 publicaciones"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Nada coincide con “$1”. Revisa la ortografía o borra la búsqueda para ver todas las islas y países del Caribe."],["^Shown until (.+)$","Se muestra hasta el $1"],["^Closes (.+)$","Cierra el $1"],["^Posted (.+)$","Publicado $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Compartir $1 en WhatsApp (se abre en una pestaña nueva)"],["^(.+) - Isle Connect$","$1 - Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 pulgares arriba y $2 pulgares abajo"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 pulgares arriba y $2 pulgares abajo, $3 por ciento $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1 % $2 (1 voto)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1 % $2 ($3 votos)"],["^1 visitor vote so far$","1 voto de visitantes hasta ahora"],["^(\\d+) visitor votes so far$","$1 votos de visitantes hasta ahora"],["^Rated ([\\d.]+) out of 5$","Calificación $1 de 5"],["^([\\d.]+) · admin rating$","$1 · calificación del administrador"],["^Open (.+)$","Abrir $1"],["^See posts from (\\d+) islands$","Ver publicaciones de $1 islas"],["^Remove (.+)$","Quitar $1"],["^(\\d+) islands$","$1 islas"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Nada coincide con “$1”. Revisa la ortografía o elige Ver todas las islas."]]},"fr":{"m":{"Isle Connect: community resources across the Caribbean":"Isle Connect : ressources communautaires des Caraïbes","Countries":"Pays","About":"À propos","Advertise":"Annoncer","Get updates":"Recevoir les nouveautés","+ Post":"+ Publier","Privacy":"Confidentialité","Terms":"Conditions","Main":"Principal","Isle Connect home":"Accueil d'Isle Connect","Close":"Fermer","Language":"Langue","Language:":"Langue :","This page is available in English only for now.":"Cette page n'est disponible qu'en anglais pour le moment.","Loading…":"Chargement…","Sending…":"Envoi…","just now":"à l'instant","The Latest Community Posts":"Les dernières publications de la communauté","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Emplois, repas, trajets, avis scolaires et aide d'urgence, partagés par des habitants de toutes les Caraïbes. Commencez par choisir votre île.","Search countries":"Rechercher un pays","Search your island, e.g. Barbados":"Recherchez votre île, p. ex. la Barbade","Recently visited:":"Visités récemment :","All Caribbean":"Toutes les Caraïbes","Greater Antilles":"Grandes Antilles","Lesser Antilles":"Petites Antilles","Bahamas and Turks & Caicos":"Bahamas et Turks-et-Caïcos","Mainland Caribbean":"Caraïbes continentales","Choose an island":"Choisissez une île","Filter by region":"Filtrer par région","Get updates from your island":"Recevez les nouveautés de votre île","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Emplois, bourses, jours fériés et nouvelles de la communauté par e-mail. Désabonnez-vous à tout moment.","Subscribe":"S'abonner","Switch country":"Changer de pays","Share on WhatsApp":"Partager sur WhatsApp","Search posts":"Rechercher des publications","Filters":"Filtres","Refresh":"Actualiser","Sort by":"Trier par","Newest first":"Plus récentes d'abord","Oldest first":"Plus anciennes d'abord","Highest rated":"Mieux notées","Posted":"Publié","Any time":"N'importe quand","Last 24 hours":"Dernières 24 heures","Last 7 days":"7 derniers jours","Last 30 days":"30 derniers jours","Clear all filters":"Effacer tous les filtres","Filter by category":"Filtrer par catégorie","All":"Tout","Major news":"Actualités majeures","Jobs":"Emplois","Food":"Alimentation","Education":"Éducation","Transport":"Transport","Emergency":"Urgences","Holiday":"Jours fériés","Advertisement":"Annonces","Sports":"Sports","Other":"Autres","Report a problem":"Signaler un problème","Nothing here yet":"Rien pour l'instant","No matching posts":"Aucune publication correspondante","Try another category, relax a filter, or clear your search.":"Essayez une autre catégorie, assouplissez un filtre ou effacez votre recherche.","Clear search and filters":"Effacer la recherche et les filtres","We couldn't load the posts":"Impossible de charger les publications","Check your connection and try again.":"Vérifiez votre connexion et réessayez.","Try again":"Réessayer","Show more posts":"Afficher plus de publications","Automated access is not allowed":"L'accès automatisé n'est pas autorisé","This page is for people. If you are one, please open it in a regular browser.":"Cette page est destinée aux personnes. Si vous en êtes une, ouvrez-la dans un navigateur ordinaire.","See packages":"Voir les formules","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Nouveaux emplois, bourses, jours fériés et avis de la communauté, directement dans votre boîte de réception.","Sponsored":"Sponsorisé","Read more":"Lire la suite","Source:":"Source :","Contact:":"Contact :","Show contact details":"Afficher les coordonnées","Vote on this post":"Voter pour cette publication","Official notice":"Avis officiel","Translate":"Traduire","Translate (opens Google Translate)":"Traduire (ouvre Google Traduction)","Translating…":"Traduction en cours…","Translated":"Traduit","Machine translation":"Traduction automatique","Show original":"Voir l'original","Show translation":"Voir la traduction","This post is already in your language.":"Cette publication est déjà dans votre langue.","Couldn't translate here. Opening Google Translate instead.":"Traduction impossible ici. Ouverture de Google Traduction.","What do you think of this post?":"Que pensez-vous de cette publication ?","Was this post helpful?":"Cette publication vous a-t-elle été utile ?","🧒 Is it child-friendly?":"🧒 Convient-elle aux enfants ?","Brief feedback":"Commentaire bref","(optional, only the admin sees it)":"(facultatif, seul l'administrateur le voit)","Send my vote":"Envoyer mon vote","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Tout le monde voit le nombre de pouces levés et baissés. C'est distinct de la note de l'administrateur.","✓ You have voted on this post. Thank you!":"✓ Vous avez déjà voté pour cette publication. Merci !","✓ Thank you! Your vote has been recorded.":"✓ Merci ! Votre vote a été enregistré.","Please tap a thumbs up or thumbs down.":"Touchez un pouce levé ou baissé.","You have already voted on this post.":"Vous avez déjà voté pour cette publication.","Please wait a few seconds before voting on another post.":"Patientez quelques secondes avant de voter pour une autre publication.","You have voted on a lot of posts. Please try again later.":"Vous avez voté pour beaucoup de publications. Réessayez plus tard.","We couldn't send your vote. Check your connection and try again.":"Impossible d'envoyer votre vote. Vérifiez votre connexion et réessayez.","Couldn't load the contact details.":"Impossible de charger les coordonnées.","You have looked up a lot of contacts. Please try again later.":"Vous avez consulté beaucoup de contacts. Réessayez plus tard.","Share a post":"Partagez une publication","Country":"Pays","Category":"Catégorie","What do you need or offer?":"De quoi avez-vous besoin ou que proposez-vous ?","Details":"Détails","How should people reach you?":"Comment peut-on vous joindre ?","(phone, email or WhatsApp)":"(téléphone, e-mail ou WhatsApp)","Add a photo, audio or video (optional)":"Ajoutez une photo, un audio ou une vidéo (facultatif)","Photo":"Photo","(JPG, PNG, WebP, up to 5 MB)":"(JPG, PNG, WebP, jusqu'à 5 Mo)","Audio":"Audio","(MP3, WAV, M4A, OGG, up to 10 MB)":"(MP3, WAV, M4A, OGG, jusqu'à 10 Mo)","Video":"Vidéo","(MP4, WebM or MOV, up to 25 MB)":"(MP4, WebM ou MOV, jusqu'à 25 Mo)","Cancel":"Annuler","Share post":"Publier","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Un administrateur vérifie les publications avant qu'elles n'apparaissent sur le tableau. En publiant, vous acceptez les","e.g. Looking for a part-time job":"p. ex. Je cherche un emploi à temps partiel","Tell people what's happening, when and where.":"Dites aux gens ce qui se passe, quand et où.","e.g. +1 555 123 4567":"p. ex. +1 555 123 4567","Choose the country this post is for.":"Choisissez le pays concerné par cette publication.","Add a short title (at least 3 characters).":"Ajoutez un titre court (3 caractères minimum).","Add some details so people know how to help.":"Ajoutez quelques détails pour que les gens sachent comment aider.","Please wait a few seconds before posting again.":"Patientez quelques secondes avant de publier à nouveau.","Thanks! Your post will appear once an administrator has reviewed it.":"Merci ! Votre publication apparaîtra dès qu'un administrateur l'aura vérifiée.","Get updates by email":"Recevez les nouveautés par e-mail","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Emplois, bourses, jours fériés et nouvelles de la communauté de votre île, directement dans votre boîte de réception.","Email address":"Adresse e-mail","(optional)":"(facultatif)","What would you like to hear about?":"Sur quels sujets souhaitez-vous être informé(e) ?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"J'accepte de recevoir des e-mails d'Isle Connect. Je peux demander à être retiré(e) à tout moment. (","Enter a valid email address.":"Saisissez une adresse e-mail valide.","Please tick the box to agree to receive emails.":"Cochez la case pour accepter de recevoir des e-mails.","Please wait a few seconds and try again.":"Patientez quelques secondes et réessayez.","Subscribing…":"Inscription…","Thanks! You're on the list.":"Merci ! Vous êtes inscrit(e).","Any country":"Tous les pays","Country (optional)":"Pays (facultatif)","Ask a question":"Poser une question","We read every message":"Nous lisons chaque message","Your question":"Votre question","Your email":"Votre e-mail","Send":"Envoyer","Topics":"Sujets","Close chat":"Fermer le chat","Type your question…":"Saisissez votre question…","Your email, so we can reply (optional)":"Votre e-mail, pour que nous puissions répondre (facultatif)","Please type your question first.":"Saisissez d'abord votre question.","That email address doesn't look right.":"Cette adresse e-mail ne semble pas correcte.","Please wait a few seconds before sending another question.":"Patientez quelques secondes avant d'envoyer une autre question.","Show less":"Voir moins","found this helpful":"l'ont trouvée utile","say child-friendly":"estiment qu'elle convient aux enfants","Cayman Islands":"Îles Caïmans","Cuba":"Cuba","Dominican Republic":"République dominicaine","Haiti":"Haïti","Jamaica":"Jamaïque","Puerto Rico":"Porto Rico","Anguilla":"Anguilla","Antigua and Barbuda":"Antigua-et-Barbuda","Aruba":"Aruba","Barbados":"Barbade","British Virgin Islands":"Îles Vierges britanniques","Curaçao":"Curaçao","Dominica":"Dominique","Grenada":"Grenade","Guadeloupe":"Guadeloupe","Martinique":"Martinique","Montserrat":"Montserrat","Saint Kitts and Nevis":"Saint-Christophe-et-Niévès","Saint Lucia":"Sainte-Lucie","Saint Vincent and the Grenadines":"Saint-Vincent-et-les-Grenadines","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinité-et-Tobago","U.S. Virgin Islands":"Îles Vierges des États-Unis","Bahamas":"Bahamas","Turks and Caicos Islands":"Îles Turques-et-Caïques","Belize":"Belize","Guyana":"Guyana","Suriname":"Suriname","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Emplois, repas, trajets, avis scolaires et aide d'urgence, partagés par des habitants de toute la Caraïbe. Cherchez votre île et ajoutez-en plusieurs si vous le souhaitez.","Your islands:":"Vos îles :","Open":"Ouvrir","+ Add":"+ Ajouter","Added":"Ajoutée","Browse all islands":"Voir toutes les îles","Hide the list":"Masquer la liste","Choose islands":"Choisir des îles","Search for an island, then press + Add. You can choose several.":"Cherchez une île, puis appuyez sur + Ajouter. Vous pouvez en choisir plusieurs.","Change islands":"Changer d'îles","Search posts in these islands":"Rechercher dans les publications de ces îles","Promote your business here":"Promouvez votre entreprise ici","Get updates for these islands by email":"Recevez par e-mail les nouveautés de ces îles","You can choose up to 8 islands.":"Vous pouvez choisir jusqu'à 8 îles.","Matching posts":"Publications correspondantes","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"Bonjour ! 👋 Posez-nous vos questions sur les emplois, les bourses, les jours fériés ou l'utilisation du site. Laissez votre e-mail si vous souhaitez une réponse.","That post is no longer available.":"Cette publication n'est plus disponible.","Language of this post":"Langue de cette publication","Play video":"Lire la vidéo","The video is taking too long to load.":"La vidéo met trop de temps à se charger.","The video couldn't be loaded. Check your connection and try again.":"La vidéo n'a pas pu être chargée. Vérifiez votre connexion et réessayez.","Open the video file":"Ouvrir le fichier vidéo","Checking your video…":"Vérification de votre vidéo…","That file type isn't supported. Please choose an MP4, WebM or MOV video.":"Ce type de fichier n'est pas pris en charge. Choisissez une vidéo MP4, WebM ou MOV.","This video can't be played in most browsers. It may use a newer phone format. On an iPhone choose Settings, Camera, Formats, Most Compatible and record again, or choose an MP4 video.":"Cette vidéo ne peut pas être lue dans la plupart des navigateurs. Elle utilise peut-être un format récent de téléphone. Sur un iPhone, choisissez Réglages, Appareil photo, Formats, Le plus compatible et filmez à nouveau, ou choisissez une vidéo MP4.","This video is {size} but the limit is {max}.":"Cette vidéo pèse {size} mais la limite est de {max}.","Make it smaller":"La rendre plus petite","Please choose a shorter or smaller video.":"Choisissez une vidéo plus courte ou plus petite.","Making your video smaller. Keep this tab open until it finishes.":"Réduction de la taille de votre vidéo. Gardez cet onglet ouvert jusqu'à la fin.","Done. Your video is now {size} and ready to upload.":"Terminé. Votre vidéo pèse maintenant {size} et est prête à être envoyée.","Cancelled. You can choose a different video.":"Annulé. Vous pouvez choisir une autre vidéo.","Your browser couldn't swap in the smaller video automatically. Please choose a smaller video yourself.":"Votre navigateur n'a pas pu remplacer le fichier par la vidéo réduite. Choisissez vous-même une vidéo plus petite.","Your browser can't make videos smaller. Please choose a shorter or smaller video.":"Votre navigateur ne peut pas réduire les vidéos. Choisissez une vidéo plus courte ou plus petite.","This video is too long to fit in {max}. The longest that can fit is about {seconds} seconds.":"Cette vidéo est trop longue pour tenir dans {max}. La durée maximale est d'environ {seconds} secondes.","Couldn't make the video smaller. Please choose a shorter or smaller video.":"Impossible de réduire la vidéo. Choisissez une vidéo plus courte ou plus petite.","{name}: {details}. Ready to upload.":"{name} : {details}. Prêt à être envoyé.","We couldn't preview this video, but you can still upload it.":"Nous n'avons pas pu prévisualiser cette vidéo, mais vous pouvez quand même l'envoyer.","Please wait for the video to finish getting ready.":"Veuillez attendre que la vidéo soit prête.","This video couldn't be played. The file may be missing, or in a format your browser doesn't support, such as a newer phone format.":"Cette vidéo n'a pas pu être lue. Le fichier est peut-être introuvable ou dans un format que votre navigateur ne prend pas en charge, par exemple un format récent de téléphone."},"p":[["^\\+ Post in (.+)$","+ Publier : $1"],["^Search posts in (.+)$","Rechercher des publications : $1"],["^Get (.+) updates by email$","Recevez les nouveautés de $1 par e-mail"],["^Promote your business in (.+)$","Promouvez votre entreprise : $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Épinglez votre publication en haut de cette page. Les mises en avant commencent à US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Personne n'a encore publié pour $1. Soyez le premier à partager un besoin ou une offre."],["^1 post match your search and filters$","1 publication correspond à votre recherche et à vos filtres"],["^(\\d+) posts match your search and filters$","$1 publications correspondent à votre recherche et à vos filtres"],["^1 post$","1 publication"],["^(\\d+) posts$","$1 publications"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Aucun résultat pour « $1 ». Vérifiez l'orthographe ou effacez la recherche pour voir toutes les îles et tous les pays des Caraïbes."],["^Shown until (.+)$","Affiché jusqu'au $1"],["^Closes (.+)$","Se termine le $1"],["^Posted (.+)$","Publié $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Partager $1 sur WhatsApp (s'ouvre dans un nouvel onglet)"],["^(.+) - Isle Connect$","$1 - Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 pouces levés et $2 pouces baissés"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 pouces levés et $2 pouces baissés, $3 pour cent $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1 % $2 (1 vote)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1 % $2 ($3 votes)"],["^1 visitor vote so far$","1 vote de visiteur pour l'instant"],["^(\\d+) visitor votes so far$","$1 votes de visiteurs pour l'instant"],["^Rated ([\\d.]+) out of 5$","Noté $1 sur 5"],["^([\\d.]+) · admin rating$","$1 · note de l'administrateur"],["^Open (.+)$","Ouvrir $1"],["^See posts from (\\d+) islands$","Voir les publications de $1 îles"],["^Remove (.+)$","Retirer $1"],["^(\\d+) islands$","$1 îles"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Aucun résultat pour « $1 ». Vérifiez l'orthographe ou choisissez Voir toutes les îles."]]},"nl":{"m":{"Isle Connect: community resources across the Caribbean":"Isle Connect: lokale hulp en nieuws in het Caribisch gebied","Countries":"Landen","About":"Over ons","Advertise":"Adverteren","Get updates":"Updates ontvangen","+ Post":"+ Plaatsen","Privacy":"Privacy","Terms":"Voorwaarden","Main":"Hoofdmenu","Isle Connect home":"Startpagina van Isle Connect","Close":"Sluiten","Language":"Taal","Language:":"Taal:","This page is available in English only for now.":"Deze pagina is voorlopig alleen in het Engels beschikbaar.","Loading…":"Laden…","Sending…":"Versturen…","just now":"zojuist","The Latest Community Posts":"Het laatste nieuws uit de gemeenschap","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Start by choosing your island.":"Banen, maaltijden, ritten, schoolberichten en noodhulp, gedeeld door mensen uit het hele Caribisch gebied. Begin met het kiezen van je eiland.","Search countries":"Landen zoeken","Search your island, e.g. Barbados":"Zoek je eiland, bijv. Barbados","Recently visited:":"Onlangs bezocht:","All Caribbean":"Heel het Caribisch gebied","Greater Antilles":"Grote Antillen","Lesser Antilles":"Kleine Antillen","Bahamas and Turks & Caicos":"Bahama's en Turks- en Caicoseilanden","Mainland Caribbean":"Caribisch vasteland","Choose an island":"Kies een eiland","Filter by region":"Filteren op regio","Get updates from your island":"Ontvang updates uit je eiland","Jobs, scholarships, holidays and community news by email. Remove yourself any time.":"Banen, beurzen, feestdagen en nieuws uit de gemeenschap per e-mail. Je kunt je op elk moment afmelden.","Subscribe":"Aanmelden","Switch country":"Ander land kiezen","Share on WhatsApp":"Delen via WhatsApp","Search posts":"Berichten zoeken","Filters":"Filters","Refresh":"Vernieuwen","Sort by":"Sorteren op","Newest first":"Nieuwste eerst","Oldest first":"Oudste eerst","Highest rated":"Hoogst beoordeeld","Posted":"Geplaatst","Any time":"Op elk moment","Last 24 hours":"Laatste 24 uur","Last 7 days":"Laatste 7 dagen","Last 30 days":"Laatste 30 dagen","Clear all filters":"Alle filters wissen","Filter by category":"Filteren op categorie","All":"Alles","Major news":"Groot nieuws","Jobs":"Vacatures","Food":"Eten","Education":"Onderwijs","Transport":"Vervoer","Emergency":"Noodgevallen","Holiday":"Feestdagen","Advertisement":"Advertenties","Sports":"Sport","Other":"Overig","Report a problem":"Een probleem melden","Nothing here yet":"Nog niets hier","No matching posts":"Geen overeenkomende berichten","Try another category, relax a filter, or clear your search.":"Probeer een andere categorie, versoepel een filter of wis je zoekopdracht.","Clear search and filters":"Zoekopdracht en filters wissen","We couldn't load the posts":"We konden de berichten niet laden","Check your connection and try again.":"Controleer je verbinding en probeer het opnieuw.","Try again":"Opnieuw proberen","Show more posts":"Meer berichten tonen","Automated access is not allowed":"Geautomatiseerde toegang is niet toegestaan","This page is for people. If you are one, please open it in a regular browser.":"Deze pagina is voor mensen. Ben je er een, open haar dan in een gewone browser.","See packages":"Pakketten bekijken","New jobs, scholarships, holidays and community notices, straight to your inbox.":"Nieuwe banen, beurzen, feestdagen en mededelingen uit de gemeenschap, rechtstreeks in je inbox.","Sponsored":"Gesponsord","Read more":"Lees meer","Source:":"Bron:","Contact:":"Contact:","Show contact details":"Contactgegevens tonen","Vote on this post":"Stem op dit bericht","Official notice":"Officiële mededeling","Translate":"Vertalen","Translate (opens Google Translate)":"Vertalen (opent Google Translate)","Translating…":"Vertalen…","Translated":"Vertaald","Machine translation":"Automatische vertaling","Show original":"Origineel tonen","Show translation":"Vertaling tonen","This post is already in your language.":"Dit bericht staat al in jouw taal.","Couldn't translate here. Opening Google Translate instead.":"Vertalen lukt hier niet. Google Translate wordt geopend.","What do you think of this post?":"Wat vind je van dit bericht?","Was this post helpful?":"Was dit bericht nuttig?","🧒 Is it child-friendly?":"🧒 Is het kindvriendelijk?","Brief feedback":"Korte reactie","(optional, only the admin sees it)":"(optioneel, alleen de beheerder ziet het)","Send my vote":"Mijn stem versturen","Everyone sees the thumbs up and down counts. This is separate from the admin rating.":"Iedereen ziet het aantal duimen omhoog en omlaag. Dit staat los van de beoordeling van de beheerder.","✓ You have voted on this post. Thank you!":"✓ Je hebt al gestemd op dit bericht. Bedankt!","✓ Thank you! Your vote has been recorded.":"✓ Bedankt! Je stem is opgeslagen.","Please tap a thumbs up or thumbs down.":"Tik op een duim omhoog of omlaag.","You have already voted on this post.":"Je hebt al op dit bericht gestemd.","Please wait a few seconds before voting on another post.":"Wacht een paar seconden voordat je op een ander bericht stemt.","You have voted on a lot of posts. Please try again later.":"Je hebt op veel berichten gestemd. Probeer het later opnieuw.","We couldn't send your vote. Check your connection and try again.":"We konden je stem niet versturen. Controleer je verbinding en probeer het opnieuw.","Couldn't load the contact details.":"De contactgegevens konden niet worden geladen.","You have looked up a lot of contacts. Please try again later.":"Je hebt veel contactgegevens opgevraagd. Probeer het later opnieuw.","Share a post":"Deel een bericht","Country":"Land","Category":"Categorie","What do you need or offer?":"Wat zoek of bied je aan?","Details":"Details","How should people reach you?":"Hoe kunnen mensen je bereiken?","(phone, email or WhatsApp)":"(telefoon, e-mail of WhatsApp)","Add a photo, audio or video (optional)":"Voeg een foto, audio of video toe (optioneel)","Photo":"Foto","(JPG, PNG, WebP, up to 5 MB)":"(JPG, PNG, WebP, tot 5 MB)","Audio":"Audio","(MP3, WAV, M4A, OGG, up to 10 MB)":"(MP3, WAV, M4A, OGG, tot 10 MB)","Video":"Video","(MP4, WebM or MOV, up to 25 MB)":"(MP4, WebM of MOV, tot 25 MB)","Cancel":"Annuleren","Share post":"Bericht plaatsen","Posts are reviewed by an administrator before they appear on the board. By posting you agree to the":"Een beheerder controleert berichten voordat ze op het prikbord verschijnen. Door te plaatsen ga je akkoord met de","e.g. Looking for a part-time job":"bijv. Ik zoek een bijbaan","Tell people what's happening, when and where.":"Vertel mensen wat er gebeurt, wanneer en waar.","e.g. +1 555 123 4567":"bijv. +1 555 123 4567","Choose the country this post is for.":"Kies het land waarvoor dit bericht bedoeld is.","Add a short title (at least 3 characters).":"Voeg een korte titel toe (minstens 3 tekens).","Add some details so people know how to help.":"Voeg wat details toe zodat mensen weten hoe ze kunnen helpen.","Please wait a few seconds before posting again.":"Wacht een paar seconden voordat je opnieuw plaatst.","Thanks! Your post will appear once an administrator has reviewed it.":"Bedankt! Je bericht verschijnt zodra een beheerder het heeft gecontroleerd.","Get updates by email":"Ontvang updates per e-mail","Jobs, scholarships, holidays and community news from your island, sent to your inbox.":"Banen, beurzen, feestdagen en nieuws uit de gemeenschap van je eiland, rechtstreeks in je inbox.","Email address":"E-mailadres","(optional)":"(optioneel)","What would you like to hear about?":"Waarover wil je berichten ontvangen?","I agree to receive emails from Isle Connect. I can ask to be removed at any time. (":"Ik ga akkoord met het ontvangen van e-mails van Isle Connect. Ik kan me op elk moment laten verwijderen. (","Enter a valid email address.":"Voer een geldig e-mailadres in.","Please tick the box to agree to receive emails.":"Vink het vakje aan om te akkoord te gaan met het ontvangen van e-mails.","Please wait a few seconds and try again.":"Wacht een paar seconden en probeer het opnieuw.","Subscribing…":"Aanmelden…","Thanks! You're on the list.":"Bedankt! Je staat op de lijst.","Any country":"Elk land","Country (optional)":"Land (optioneel)","Ask a question":"Stel een vraag","We read every message":"We lezen elk bericht","Your question":"Je vraag","Your email":"Je e-mail","Send":"Versturen","Topics":"Onderwerpen","Close chat":"Chat sluiten","Type your question…":"Typ je vraag…","Your email, so we can reply (optional)":"Je e-mail, zodat we kunnen antwoorden (optioneel)","Please type your question first.":"Typ eerst je vraag.","That email address doesn't look right.":"Dat e-mailadres lijkt niet te kloppen.","Please wait a few seconds before sending another question.":"Wacht een paar seconden voordat je nog een vraag verstuurt.","Show less":"Minder tonen","found this helpful":"vonden dit nuttig","say child-friendly":"vinden het kindvriendelijk","Cayman Islands":"Kaaimaneilanden","Cuba":"Cuba","Dominican Republic":"Dominicaanse Republiek","Haiti":"Haïti","Jamaica":"Jamaica","Puerto Rico":"Puerto Rico","Anguilla":"Anguilla","Antigua and Barbuda":"Antigua en Barbuda","Aruba":"Aruba","Barbados":"Barbados","British Virgin Islands":"Britse Maagdeneilanden","Curaçao":"Curaçao","Dominica":"Dominica","Grenada":"Grenada","Guadeloupe":"Guadeloupe","Martinique":"Martinique","Montserrat":"Montserrat","Saint Kitts and Nevis":"Saint Kitts en Nevis","Saint Lucia":"Saint Lucia","Saint Vincent and the Grenadines":"Saint Vincent en de Grenadines","Sint Maarten":"Sint Maarten","Trinidad and Tobago":"Trinidad en Tobago","U.S. Virgin Islands":"Amerikaanse Maagdeneilanden","Bahamas":"Bahama's","Turks and Caicos Islands":"Turks- en Caicoseilanden","Belize":"Belize","Guyana":"Guyana","Suriname":"Suriname","Jobs, meals, rides, school notices and emergency help, shared by people across the Caribbean. Search for your island, and add more than one if you like.":"Banen, maaltijden, ritten, schoolberichten en noodhulp, gedeeld door mensen in het hele Caribisch gebied. Zoek je eiland en voeg er gerust meer dan één toe.","Your islands:":"Jouw eilanden:","Open":"Openen","+ Add":"+ Toevoegen","Added":"Toegevoegd","Browse all islands":"Alle eilanden bekijken","Hide the list":"Lijst verbergen","Choose islands":"Eilanden kiezen","Search for an island, then press + Add. You can choose several.":"Zoek een eiland en druk op + Toevoegen. Je kunt er meerdere kiezen.","Change islands":"Eilanden wijzigen","Search posts in these islands":"Zoek berichten op deze eilanden","Promote your business here":"Promoot je bedrijf hier","Get updates for these islands by email":"Ontvang nieuws over deze eilanden per e-mail","You can choose up to 8 islands.":"Je kunt maximaal 8 eilanden kiezen.","Matching posts":"Overeenkomende berichten","Hi! 👋 Ask us anything about jobs, scholarships, holidays or using the site. Leave your email if you'd like a reply.":"Hoi! 👋 Vraag ons alles over banen, beurzen, feestdagen of het gebruik van de site. Laat je e-mailadres achter als je antwoord wilt.","That post is no longer available.":"Dat bericht is niet meer beschikbaar.","Language of this post":"Taal van dit bericht","Play video":"Video afspelen","The video is taking too long to load.":"De video doet er te lang over om te laden.","The video couldn't be loaded. Check your connection and try again.":"De video kon niet worden geladen. Controleer je verbinding en probeer het opnieuw.","Open the video file":"Het videobestand openen","Checking your video…":"Je video wordt gecontroleerd…","That file type isn't supported. Please choose an MP4, WebM or MOV video.":"Dit bestandstype wordt niet ondersteund. Kies een MP4-, WebM- of MOV-video.","This video can't be played in most browsers. It may use a newer phone format. On an iPhone choose Settings, Camera, Formats, Most Compatible and record again, or choose an MP4 video.":"Deze video kan in de meeste browsers niet worden afgespeeld. Het kan een nieuwer telefoonformaat zijn. Kies op een iPhone Instellingen, Camera, Formaten, Meest compatibel en neem opnieuw op, of kies een MP4-video.","This video is {size} but the limit is {max}.":"Deze video is {size} maar de limiet is {max}.","Make it smaller":"Kleiner maken","Please choose a shorter or smaller video.":"Kies een kortere of kleinere video.","Making your video smaller. Keep this tab open until it finishes.":"Je video wordt kleiner gemaakt. Houd dit tabblad open tot het klaar is.","Done. Your video is now {size} and ready to upload.":"Klaar. Je video is nu {size} en klaar om te uploaden.","Cancelled. You can choose a different video.":"Geannuleerd. Je kunt een andere video kiezen.","Your browser couldn't swap in the smaller video automatically. Please choose a smaller video yourself.":"Je browser kon het bestand niet automatisch door de kleinere video vervangen. Kies zelf een kleinere video.","Your browser can't make videos smaller. Please choose a shorter or smaller video.":"Je browser kan video's niet kleiner maken. Kies een kortere of kleinere video.","This video is too long to fit in {max}. The longest that can fit is about {seconds} seconds.":"Deze video is te lang om in {max} te passen. Maximaal ongeveer {seconds} seconden past erin.","Couldn't make the video smaller. Please choose a shorter or smaller video.":"De video kon niet kleiner worden gemaakt. Kies een kortere of kleinere video.","{name}: {details}. Ready to upload.":"{name}: {details}. Klaar om te uploaden.","We couldn't preview this video, but you can still upload it.":"We konden deze video niet bekijken, maar je kunt hem toch uploaden.","Please wait for the video to finish getting ready.":"Wacht tot de video klaar is.","This video couldn't be played. The file may be missing, or in a format your browser doesn't support, such as a newer phone format.":"Deze video kon niet worden afgespeeld. Het bestand ontbreekt misschien, of heeft een formaat dat je browser niet ondersteunt, bijvoorbeeld een nieuwer telefoonformaat."},"p":[["^\\+ Post in (.+)$","+ Plaatsen in $1"],["^Search posts in (.+)$","Berichten zoeken in $1"],["^Get (.+) updates by email$","Ontvang updates uit $1 per e-mail"],["^Promote your business in (.+)$","Promoot je bedrijf in $1"],["^Pin your post to the top of this page\\. Boosts start at US\\$(\\d+)\\.$","Zet je bericht bovenaan deze pagina. Boosts beginnen bij US$$1."],["^No one has posted in (.+) so far\\. Be the first to share a need or an offer\\.$","Er heeft nog niemand iets geplaatst in $1. Wees de eerste die een vraag of aanbod deelt."],["^1 post match your search and filters$","1 bericht komt overeen met je zoekopdracht en filters"],["^(\\d+) posts match your search and filters$","$1 berichten komen overeen met je zoekopdracht en filters"],["^1 post$","1 bericht"],["^(\\d+) posts$","$1 berichten"],["^Nothing matches “(.*)”\\. Check the spelling or clear the search to see every Caribbean island and country\\.$","Niets komt overeen met “$1”. Controleer de spelling of wis de zoekopdracht om alle eilanden en landen van het Caribisch gebied te zien."],["^Shown until (.+)$","Zichtbaar tot $1"],["^Closes (.+)$","Sluit op $1"],["^Posted (.+)$","Geplaatst $1"],["^Share (.+) on WhatsApp \\(opens in a new tab\\)$","Deel $1 via WhatsApp (opent in een nieuw tabblad)"],["^(.+) - Isle Connect$","$1 - Isle Connect"],["^(\\d+) thumbs up and (\\d+) thumbs down$","$1 duimen omhoog en $2 duimen omlaag"],["^(\\d+) thumbs up and (\\d+) thumbs down, (\\d+) percent (.+)$","$1 duimen omhoog en $2 duimen omlaag, $3 procent $4"],["^(\\d+)% (.+) \\(1 vote\\)$","$1% $2 (1 stem)"],["^(\\d+)% (.+) \\((\\d+) votes\\)$","$1% $2 ($3 stemmen)"],["^1 visitor vote so far$","1 stem van bezoekers tot nu toe"],["^(\\d+) visitor votes so far$","$1 stemmen van bezoekers tot nu toe"],["^Rated ([\\d.]+) out of 5$","Beoordeeld met $1 van 5"],["^([\\d.]+) · admin rating$","$1 · beoordeling beheerder"],["^Open (.+)$","$1 openen"],["^See posts from (\\d+) islands$","Berichten van $1 eilanden bekijken"],["^Remove (.+)$","$1 verwijderen"],["^(\\d+) islands$","$1 eilanden"],["^Nothing matches “(.+)”\\. Check the spelling, or choose Browse all islands\\.$","Niets gevonden voor “$1”. Controleer de spelling of kies Alle eilanden bekijken."]]}};
   for (const l in raw) raw[l].p = raw[l].p.map(([r, t]) => [new RegExp(r), t]);
   return raw;
 })();
@@ -743,7 +745,6 @@ function trStr(s, lang = UILANG){
 const trName = name => (UILANG !== "en" && I18N[UILANG] && hasOwn(I18N[UILANG].m, name)) ? I18N[UILANG].m[name] : name;
 const I18N_ATTRS = ["placeholder", "aria-label", "title", "alt"];
 const origText = new WeakMap(), origAttr = new WeakMap();
-/* Never translate: visitor-written text, the admin screens, scripts. A banner inside an English-only page can opt back in. */
 function i18nSkip(el, forAttr){
   if (!el) return true;
   if (el.closest(forAttr ? "script,style,pre,code" : "script,style,textarea,pre,code")) return true;
@@ -768,7 +769,7 @@ function i18nApply(root){
   for (const t of nodes) {
     if (i18nSkip(t.parentElement)) continue;
     const rec = origText.get(t), cur = t.nodeValue;
-    const base = rec && (cur === rec.base || cur === rec.last) ? rec.base : cur;     // text the app changed itself counts as new English
+    const base = rec && (cur === rec.base || cur === rec.last) ? rec.base : cur;
     if (!/\p{L}/u.test(base)) { if (rec) origText.delete(t); continue; }
     const out = UILANG === "en" ? null : trStr(base);
     if (out != null) { const val = withSpace(base, out); origText.set(t, {base, last:val}); if (cur !== val) t.nodeValue = val; }
@@ -798,37 +799,52 @@ function syncLangUI(){
   rtf = new Intl.RelativeTimeFormat(dateLocale(), {numeric:"auto"});
   for (const id of ["#langSel", "#langSelF"]) { const s = $(id); if (s) s.value = UILANG; }
 }
-/* Switch language. Everything on screen is rebuilt from the English templates (without counting a new page view), then translated. */
-/* Island pages: #/c/lc, #/c/bb,gd (several) and #/c/lc?p=<post id> (opens that one post) */
 const COUNTRY_HASH = /^#\/c\/([a-z]{2}(?:,[a-z]{2}){0,7})(?:\?p=([\w-]{1,64}))?$/;
 function setLang(lang, scope){
   if (!LANGS[lang]) lang = "en";
   const m0 = location.hash.match(COUNTRY_HASH), m = m0 && [m0[0], m0[1].slice(0, 2)];
   if (scope === "global") { store.set("ic_lang", lang); if (m) { const per = store.get("ic_lang_c", {}); per[m[1]] = lang; store.set("ic_lang_c", per); } }
   else if (m) { const per = store.get("ic_lang_c", {}); per[m[1]] = lang; store.set("ic_lang_c", per); }
-  UILANG = lang; syncLangUI();
+  UILANG = lang; state.pl = {}; syncLangUI();
   if (location.hash !== "#/" + ADMIN_PATH) { state.silent = true; try { route(); } finally { state.silent = false; } }
   translateAll();
 }
 const langOrder = code => { const own = countryLangs(code); return [...own, ...Object.keys(LANGS).filter(l => !own.includes(l))]; };
-const langPills = c => `<div class="langs" role="group" aria-label="Language">${langOrder(c.code).map(l => `<button class="lang" type="button" data-lang="${l}" lang="${l}" aria-pressed="${l === UILANG}">${LANGS[l].name}</button>`).join("")}</div>`;
-/* ----- post translations: official posts carry their own (translations column); any post can be machine-translated on request ----- */
+const langPills = c => {
+  const ls = countryLangs(c.code), duo = ls.length > 1;
+  const list = duo ? [...new Set(["en", ...ls, UILANG])] : langOrder(c.code);
+  return `<div class="langs${duo ? " duo" : ""}" role="group" aria-label="Language">${list.map(l => `<button class="lang" type="button" data-lang="${l}" lang="${l}" aria-pressed="${l === UILANG}">${LANGS[l].name}</button>`).join("")}</div>`;
+};
+function officialLangs(p){
+  const tr = p.translations && typeof p.translations === "object" ? p.translations : {};
+  return Object.keys(LANGS).filter(l => l !== "en" && tr[l] && typeof tr[l].title === "string" && typeof tr[l].description === "string");
+}
+function postToggleLangs(p){
+  const have = officialLangs(p); if (!have.length) return [];
+  const own = countryLangs(p.country_code).find(l => l !== "en");
+  const want = [...new Set([own, UILANG].filter(l => l && l !== "en"))].filter(l => have.includes(l));
+  return want.length ? ["en", ...want] : [];
+}
 function postView(p){
-  state.mt = state.mt || {}; state.orig = state.orig || {};
-  const t = p.translations && typeof p.translations === "object" ? p.translations[UILANG] : null;
-  const official = t && typeof t.title === "string" && typeof t.description === "string" ? t : null;
-  const x = official || state.mt[p.id + ":" + UILANG] || null;
+  state.mt = state.mt || {}; state.orig = state.orig || {}; state.pl = state.pl || {};
+  const langs = postToggleLangs(p);
+  if (langs.length) {
+    const pick = langs.includes(state.pl[p.id]) ? state.pl[p.id] : (langs.includes(UILANG) ? UILANG : "en");
+    const t = pick === "en" ? p : p.translations[pick];
+    return {title:t.title, description:t.description, kind:"toggle", lang:pick, langs};
+  }
+  const x = state.mt[p.id + ":" + UILANG] || null;
   if (!x) return {title:p.title, description:p.description, kind:null};
   if (state.orig[p.id]) return {title:p.title, description:p.description, kind:"original"};
-  return {title:x.title, description:x.description, kind:official ? "official" : "machine"};
+  return {title:x.title, description:x.description, kind:"machine"};
 }
 const gtUrl = p => "https://translate.google.com/?sl=auto&tl=" + UILANG + "&op=translate&text=" + encodeURIComponent((p.title + "\n\n" + p.description).slice(0, 1800));
 const deviceCanTranslate = () => typeof self.Translator !== "undefined";
 function transBar(p, v){
-  if (v.kind === "official") return `<div class="tbar"><span class="tbadge">🌐 Translated</span><button class="linkbtn" type="button" data-act="orig">Show original</button></div>`;
+  if (v.kind === "toggle") return `<div class="tbar ptoggle" role="group" aria-label="Language of this post"><span class="tbadge" aria-hidden="true">🌐</span>${v.langs.map(l => `<button class="seg" type="button" data-act="plang" data-l="${l}" lang="${l}" aria-pressed="${l === v.lang}">${LANGS[l].name}</button>`).join("")}</div>`;
   if (v.kind === "machine") return `<div class="tbar"><span class="tbadge">🌐 Machine translation</span><button class="linkbtn" type="button" data-act="orig">Show original</button></div>`;
   if (v.kind === "original") return `<div class="tbar"><button class="linkbtn" type="button" data-act="orig">Show translation</button></div>`;
-  if (UILANG === countryLangs(p.country_code)[0]) return "";   // already the language people there normally write in
+  if (UILANG === countryLangs(p.country_code)[0]) return "";
   return `<div class="tbar">${deviceCanTranslate()
     ? `<button class="linkbtn" type="button" data-act="mt">🌐 Translate</button>`
     : `<a class="linkbtn" href="${esc(gtUrl(p))}" ${NEWWIN}>🌐 Translate (opens Google Translate)</a>`}</div>`;
@@ -850,11 +866,19 @@ function refreshPost(pid){
   if (card) card.outerHTML = postCard(p);
   if ($("#viewDlg").open && $("#vd-body").dataset.pid === String(pid)) openView(pid);
 }
+function setPostLang(pid, l){
+  state.pl = state.pl || {}; state.pl[pid] = l;
+  const inDlg = $("#viewDlg").open && $("#vd-body").dataset.pid === String(pid) && !document.activeElement?.closest?.(".post[data-pid]");
+  refreshPost(pid);
+  const root = inDlg ? $("#vd-body") : [...document.querySelectorAll(".post[data-pid]")].find(c => c.dataset.pid === String(pid));
+  root?.querySelector(`[data-act="plang"][data-l="${l}"]`)?.focus();
+}
 document.addEventListener("click", async e => {
-  const b = e.target.closest("[data-lang],[data-act=\"orig\"],[data-act=\"mt\"]"); if (!b) return;
+  const b = e.target.closest("[data-lang],[data-act=\"orig\"],[data-act=\"mt\"],[data-act=\"plang\"]"); if (!b) return;
   if (b.dataset.lang) { e.preventDefault(); setLang(b.dataset.lang, "country"); return; }
   const pid = b.closest(".post[data-pid]")?.dataset.pid || ($("#viewDlg").open ? $("#vd-body").dataset.pid : null); if (!pid) return;
   const p = state.posts.find(x => String(x.id) === String(pid)); if (!p) return;
+  if (b.dataset.act === "plang") { setPostLang(pid, b.dataset.l); return; }
   state.mt = state.mt || {}; state.orig = state.orig || {};
   if (b.dataset.act === "orig") { state.orig[pid] = !state.orig[pid]; refreshPost(pid); return; }
   b.disabled = true; b.textContent = "Translating…";
@@ -877,11 +901,8 @@ function ago(iso){
   if (a < 2592000) return rtf.format(Math.round(s/86400), "day");
   return new Date(iso).toLocaleDateString(dateLocale(),{year:"numeric",month:"short",day:"numeric"});
 }
-/* Turn web addresses, emails and phone numbers inside contact text into links.
-   Web addresses (with or without https://) and emails open in a new window/tab. */
 const CONTACT_RE = /(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)|([A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,})|((?:[A-Za-z0-9-]+\.)+(?:com|net|org|gov|edu|info|io|co|bb|jm|tt|gd|lc|bz|gy|bs|ky|vc|kn|ag|dm|ai|vg|tc|sr|cw|aw|pr|do|ht|cu|vi|ms|gp|mq|sx|uk|us|ca)\b(?:\/[^\s<>"]*)?)|(\+?\(?\d[\d\s().-]{5,}\d)/gi;
 const NEWWIN = 'target="_blank" rel="noopener noreferrer"';
-/* Links are made clickable ONLY in administrator-written "Major news" posts. Visitor posts always stay plain text. */
 const linkNews = escaped => escaped.replace(/https:\/\/[^\s<"]+[^\s<".,;:!?)\]]/g, u => `<a href="${u}" ${NEWWIN}>${u}</a>`);
 const descHtml = (p, text) => { const d = text ?? p.description ?? ""; return p.category === "Major news" ? linkNews(esc(d)) : esc(d); };
 function linkify(text){
@@ -909,10 +930,9 @@ function srcLine(p){
   const u = safeUrl(p.source_url); if (!u) return "";
   return `<div class="srcline">Source: <a href="${esc(u)}" ${NEWWIN}><span data-ugc>${esc(p.source_name || "")}</span>${p.source_name ? "" : "Official notice"} ↗</a>${p.expires_at ? ` · ${(p.category === "Major news" || (p.translations && typeof p.translations === "object")) ? "Shown until" : "Closes"} ${esc(fmtDate(p.expires_at))}` : ""}</div>`;
 }
-/* Contact details are not part of the public post list. A visitor clicks to reveal one at a time. */
 function contactHtml(p){
   const shown = state.contacts[p.id];
-  const text = shown !== undefined ? shown : (p.contact || "");        // admin and not-yet-hardened databases already include it
+  const text = shown !== undefined ? shown : (p.contact || "");
   if (text) return `<div class="contact"><b>Contact:</b> <span data-ugc>${linkify(text)}</span></div>`;
   if (shown !== undefined || !p.has_contact) return "";
   return `<button class="btn ghost small" type="button" data-act="reveal">Show contact details</button>`;
@@ -927,7 +947,6 @@ function toast(msg, type=""){
 }
 const stars = (r, label = "admin rating", prefix = "") => { if (r == null || r === "") return ""; const n = Math.round(Number(r)); return `<span class="stars" aria-label="Rated ${esc(r)} out of 5">${"★".repeat(n)}${"☆".repeat(5-n)}<small>${Number(r).toFixed(1)} · ${esc(label)}</small></span>`; };
 
-/* ---------- Data layer (Supabase, with an in-memory demo fallback) ---------- */
 const daysAgo = d => new Date(Date.now() - d*86400000).toISOString();
 const demoDb = {
   posts: [
@@ -954,14 +973,12 @@ demoDb.ratings = [
   {id:"r1",post_id:"d1",vote:1,child_vote:1,comment:"Applied, quick reply.",status:"New",created_at:daysAgo(1),posts:{title:"Hiring: front-desk receptionist",category:"Jobs",country_code:"jm"}},
   {id:"r2",post_id:"d2",vote:1,child_vote:1,comment:"",status:"Reviewed",created_at:daysAgo(3),posts:{title:"Free hot meals every Saturday",category:"Food",country_code:"jm"}}
 ];
-/* public counts per post: up/down = helpful votes, cup/cdown = child-friendly votes */
 demoDb.pstats = {d1:{up:7,down:1,cup:3,cdown:0}, d2:{up:2,down:0,cup:0,cdown:0}, d12:{up:3,down:0,cup:0,cdown:0}};
 demoDb.subs = [
   {id:"s1",email:"ana@example.com",country_code:"jm",interests:["Jobs","Food"],source:"home",created_at:daysAgo(2)},
   {id:"s2",email:"marcus@example.com",country_code:"tt",interests:["Sports"],source:"country",created_at:daysAgo(5)},
   {id:"s3",email:"keisha@example.com",country_code:"bb",interests:[],source:"home",created_at:daysAgo(9)}
 ];
-/* Demo mode only: sample per-post statistics so the admin screens can be tried. Real events from this browser are added to them. */
 demoDb.postEvents = []; demoDb._seeded = false;
 function ensureDemoEvents(){
   if (demoDb._seeded) return; demoDb._seeded = true;
@@ -1019,7 +1036,7 @@ const api = {
     const PUBLIC_COLS = "id,country_code,title,category,description,image_url,audio_url,video_url,rating,created_at,featured_until,source_name,source_url,expires_at,has_contact,translations";
     const load = cols => sb.from("posts").select(cols).in("country_code", codes).eq("status","Approved").neq("category", REPORT.id).order("created_at",{ascending:false}).limit(Math.min(900, 300 * codes.length));
     let {data, error} = await load(PUBLIC_COLS);
-    if (error && /does not exist|column/i.test(error.message || "")) ({data, error} = await load("*"));     // database not hardened/updated yet
+    if (error && /does not exist|column/i.test(error.message || "")) ({data, error} = await load("*"));
     if (error) throw error;
     return data.filter(live);
   },
@@ -1039,7 +1056,7 @@ const api = {
   async subscribe(row){
     if (DEMO) { demoDb.subs.unshift({...row, id:"s"+Date.now(), created_at:new Date().toISOString()}); return; }
     const {error} = await sb.from("subscribers").insert(row);
-    if (error && error.code !== "23505") throw error;      // 23505 = already subscribed: treat as success
+    if (error && error.code !== "23505") throw error;
   },
   async ask(row){
     if (DEMO) { demoDb.questions.unshift({...row, id:"q"+Date.now(), status:"Open", created_at:new Date().toISOString()}); return; }
@@ -1122,7 +1139,6 @@ const api = {
     const {error} = await sb.from("post_ratings").delete().eq("id", id);
     if (error) throw error;
   },
-  /* "Post to all": publish the same post to many countries in one request (admin only) */
   async createMany(rows){
     if (DEMO) { rows.forEach((r, i) => demoDb.posts.unshift({...r, id:"b" + Date.now() + "-" + i, rating:null, created_at:new Date().toISOString()})); return; }
     const {error} = await sb.from("posts").insert(rows);
@@ -1139,10 +1155,8 @@ const api = {
     const {data} = await sb.from("posts").select("image_url,audio_url,video_url").eq("broadcast_id", bid).limit(1);
     const {error} = await sb.from("posts").delete().eq("broadcast_id", bid);
     if (error) throw error;
-    if (data && data[0]) await api.removeMedia(data[0]);              // every copy is gone, so the shared files can go too
+    if (data && data[0]) await api.removeMedia(data[0]);
   },
-  /* delete a post's uploaded photo/audio/video files from storage (best effort; admin only).
-     A file that another post still uses (for example the other copies of a "Post to all") is left alone. */
   async removeMedia(p){
     if (DEMO) return;
     const re = /\/storage\/v1\/object\/public\/([^/]+)\/(.+)$/, byBucket = {};
@@ -1160,7 +1174,7 @@ const api = {
   async logPostEvents(rows){
     if (DEMO) { const now = new Date().toISOString(); rows.forEach(r => demoDb.postEvents.push({...r, created_at:now})); return; }
     try { const {error} = await sb.from("post_events").insert(rows); if (!error) return; throw error; }
-    catch { if (rows.length > 1) for (const r of rows.slice(0, 40)) { try { await sb.from("post_events").insert(r); } catch {} } }   // one stale post must not lose the others
+    catch { if (rows.length > 1) for (const r of rows.slice(0, 40)) { try { await sb.from("post_events").insert(r); } catch {} } }
   },
   async postTraffic(days, country, limit = 300){
     if (DEMO) return demoPostTraffic(days, country, limit);
@@ -1193,7 +1207,6 @@ const api = {
     if (error) throw error;
     return data;
   },
-  /* admin */
   async session(){
     if (DEMO) return state.demoAdmin ? {email:"demo@admin"} : null;
     const {data:{session}} = await sb.auth.getSession();
@@ -1233,7 +1246,6 @@ const api = {
   }
 };
 
-/* ---------- State ---------- */
 const defaultFilters = () => ({sort:"new", when:"any"});
 const state = {
   countries:[], byCode:{}, country:null, posts:[], cat:"All", q:"", shown:24, filters:defaultFilters(),
@@ -1241,19 +1253,15 @@ const state = {
   region:"All", cq:"", adminTab:"posts", subs:[], subFilter:{q:"", country:"All", interest:"All"}, trafficDays:30, questions:[], qFilter:"Open", openQ:0, ratings:[], rFilter:"New", rCountry:"All", newR:0, pstats:{}, pr:{vote:0, child:0}, contacts:{},
   postStats:{}, postStatsOk:null, topPosts:[], topSort:"opens", topOk:null, psDays:30, psPost:null, psData:null
 };
-/* Cookie-free traffic counting: a random id kept only in this browser tab, no IP address, honours Do Not Track.
-   Your own visits are skipped while you are signed in as admin on this browser. */
 const SESSION_ID = (() => { try { let v = sessionStorage.getItem("ic_sid"); if (!v) { v = crypto.randomUUID(); sessionStorage.setItem("ic_sid", v); } return v; } catch { return crypto.randomUUID(); } })();
 let lastTrack = "";
-/* Resolves once we know whether this browser is signed in as the admin (see updateNav). Tracking waits for it,
-   so even the very first page view of an admin session is never counted. The database refuses admin page views too. */
 let adminCheckDone; const adminCheck = new Promise(r => { adminCheckDone = r; });
 const isAdminBrowser = () => state.isAdmin === true || store.get("ic_admin", false) === true;
 async function track(path, code){
   try {
     if (state.silent) return;
     if (DEMO || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true || isAdminBrowser()) return;
-    await Promise.race([adminCheck, new Promise(r => setTimeout(r, 4000))]);   // wait (briefly) for the admin check
+    await Promise.race([adminCheck, new Promise(r => setTimeout(r, 4000))]);
     if (isAdminBrowser()) return;
     const key = path + "|" + Math.floor(Date.now() / 3000);
     if (key === lastTrack) return; lastTrack = key;
@@ -1265,10 +1273,6 @@ async function track(path, code){
     api.track({path:path.slice(0,200), country_code:code || null, referrer:ref.slice(0,200), session_id:SESSION_ID});
   } catch {}
 }
-/* ---------- Per-post statistics: anonymous, cookie-free, never your own visits ----------
-   What is counted: a post shown on screen, opened, shared on WhatsApp, its contact details or source link used, and a visit
-   that arrives through a shared link. Same rules as page views: a random code kept only in this tab, nothing personal,
-   skipped when the browser sends Do Not Track or Global Privacy Control, and skipped while you are signed in as administrator. */
 const POST_EVENTS = ["view", "open", "share", "contact", "source", "arrive"], COUNT_ONCE = new Set(["view", "open", "contact", "arrive"]);
 const seenPE = (() => { try { return new Set(JSON.parse(sessionStorage.getItem("ic_pe") || "[]")); } catch { return new Set(); } })();
 const postQueue = []; let postTimer = null;
@@ -1276,7 +1280,7 @@ function postEvent(p, event){
   try {
     if (!p || !p.id || !POST_EVENTS.includes(event)) return;
     if (state.silent || AUTOMATED || navigator.doNotTrack === "1" || navigator.globalPrivacyControl === true || isAdminBrowser()) return;
-    if (COUNT_ONCE.has(event)) {                                     // once per post per browser tab, so reloading does not inflate the numbers
+    if (COUNT_ONCE.has(event)) {
       const k = event + "|" + p.id; if (seenPE.has(k)) return; seenPE.add(k);
       try { sessionStorage.setItem("ic_pe", JSON.stringify([...seenPE].slice(-800))); } catch {}
     }
@@ -1286,14 +1290,13 @@ function postEvent(p, event){
 }
 async function flushPostEvents(){
   if (!postQueue.length) return;
-  await Promise.race([adminCheck, new Promise(r => setTimeout(r, 4000))]);   // wait (briefly) to learn whether this is the administrator
+  await Promise.race([adminCheck, new Promise(r => setTimeout(r, 4000))]);
   if (isAdminBrowser()) { postQueue.length = 0; return; }
   const rows = postQueue.splice(0, 60);
   try { await api.logPostEvents(rows); } catch {}
   if (postQueue.length) { clearTimeout(postTimer); postTimer = setTimeout(flushPostEvents, 500); }
 }
 addEventListener("pagehide", () => { if (postQueue.length) flushPostEvents(); });
-/* A post counts as "seen" when at least half of it has been on screen for a moment (not when it merely scrolls past). */
 let viewObs = null; const viewTimers = new Map();
 function observeViews(){
   if (viewObs) viewObs.disconnect();
@@ -1314,12 +1317,11 @@ function setView(html, title, solidHeader, enOnly){
   app.innerHTML = html;
   if (enOnly) { app.setAttribute("data-noi18n", "1"); app.insertAdjacentHTML("afterbegin", '<div class="wrap"><p class="en-only" role="note" data-i18n-force>This page is available in English only for now.</p></div>'); } else app.removeAttribute("data-noi18n");
   $("#siteHeader").classList.toggle("solid", !!solidHeader);
-  { const t = title ? `${title} – Isle Connect` : "Isle Connect – community resources across the Caribbean"; document.title = UILANG === "en" ? t : (trStr(t) ?? t); }
+  { const t = title ? `${title} - Isle Connect` : "Isle Connect: community resources across the Caribbean"; document.title = UILANG === "en" ? t : (trStr(t) ?? t); }
   window.scrollTo(0,0);
   const h = app.querySelector("h1"); if (h){ h.tabIndex = -1; h.focus({preventScroll:true}); }
 }
 
-/* ---------- Router ---------- */
 function route(){
   const h = location.hash || "#/";
   let m;
@@ -1334,18 +1336,16 @@ function routeInner(h){
   if ((m = h.match(/^#\/advertise(?:\?(.*))?$/))) return showAdvertise(m[1] || "");
   if (h === "#/privacy") return showLegal("privacy");
   if (h === "#/terms") return showLegal("terms");
-  if (h === "#/" + ADMIN_PATH) { store.set("ic_admin", true); return showAdmin(); }   /* your own device is never counted, even before you sign in */
+  if (h === "#/" + ADMIN_PATH) { store.set("ic_admin", true); return showAdmin(); }
   location.hash = "#/";
 }
 window.addEventListener("hashchange", route);
 
-/* ---------- Home: search first, then pick one island or several ---------- */
 const searchIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.500-3.500"/></svg>`;
 const MAX_ISLANDS = 8;
 const plain = s => String(s).normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
-const normName = s => plain(s).replace(/\bst\b\.?/g, "saint").replace(/[^a-z0-9]+/g, " ").trim();      // "St. Lucia" finds Saint Lucia; accents are ignored
+const normName = s => plain(s).replace(/\bst\b\.?/g, "saint").replace(/[^a-z0-9]+/g, " ").trim();
 const parseCodes = str => { const out = []; for (const c of String(str || "").split(",")) if (state.byCode[c] && !out.includes(c)) out.push(c); return out.slice(0, MAX_ISLANDS); };
-/* One picker used on the home page and in the "Change islands" window. pre = id prefix of its elements. */
 function mountPicker(pre, {root, initial = [], initialQ = "", onApply, onChange}){
   const S = {sel: parseCodes([].concat(initial).join(",")), q: initialQ, browse: false};
   const el = id => document.getElementById(pre + id);
@@ -1400,7 +1400,7 @@ function mountPicker(pre, {root, initial = [], initialQ = "", onApply, onChange}
 }
 function showHome(){
   state.country = null; state.sel = [];
-  if (!state.silent) { state.pick = []; state.cq = ""; }          // coming back to the home page starts fresh (a language switch keeps your choice)
+  if (!state.silent) { state.pick = []; state.cq = ""; }
   track("/", null);
   const recent = store.get("recent", []).map(parseCodes).filter(a => a.length).slice(0, 4);
   setView(`
@@ -1427,7 +1427,6 @@ function showHome(){
   mountPicker("h", {root: $("#app"), initial: state.pick || [], initialQ: state.cq || "",
     onApply: codes => { location.hash = "#/c/" + codes.join(","); }, onChange: (sel, q) => { state.pick = sel; state.cq = q; }});
 }
-/* Share a country page on WhatsApp (link only: no tracking added) */
 function waShare(list){
   const arr = Array.isArray(list) ? list : [list];
   const url = location.href.split("#")[0] + "#/c/" + arr.map(c => c.code).join(",");
@@ -1436,15 +1435,13 @@ function waShare(list){
   const msg = {en:`Jobs, rides, school notices and community help for ${nm("en")} on Isle Connect: ${url}`, es:`Empleos, transporte, avisos escolares y ayuda comunitaria en ${nm("es")} en Isle Connect: ${url}`, fr:`Emplois, trajets, avis scolaires et entraide communautaire : ${nm("fr")} sur Isle Connect : ${url}`, nl:`Banen, ritten, schoolberichten en hulp uit de gemeenschap in ${nm("nl")} op Isle Connect: ${url}`}[UILANG] || "";
   return "https://wa.me/?text=" + encodeURIComponent(msg);
 }
-/* Share ONE post on WhatsApp. The message carries the title, a short excerpt, the island and a link that opens exactly this post.
-   Contact details are never included. */
 const postLink = p => location.href.split("#")[0] + "#/c/" + p.country_code + "?p=" + encodeURIComponent(p.id);
 function waSharePost(p){
   const v = postView(p), isl = state.byCode[p.country_code], name = isl ? (UILANG === "en" ? isl.name : trName(isl.name)) : "";
   const clean = t => String(t || "").replace(/[*_~`]/g, "").replace(/\s+/g, " ").trim();
   const title = clean(v.title), body = clean(v.description);
   const snippet = body.length > 140 ? body.slice(0, 140).replace(/\s+\S*$/, "") + "…" : body;
-  const where = {en:`${name} on Isle Connect`, es:`${name} en Isle Connect`, fr:`${name} sur Isle Connect`, nl:`${name} op Isle Connect`}[UILANG] || `${name} on Isle Connect`;
+  const where = {en:`${name} on Isle Connect`, es:`${name} en Isle Connect`, fr:`${name} sur Isle Connect`, nl:`${name} op Isle Connect`}[v.lang || UILANG] || `${name} on Isle Connect`;
   return "https://wa.me/?text=" + encodeURIComponent(`*${title}*\n${snippet}\n${where}\n${postLink(p)}`);
 }
 const shareLink = (p, cls) => `<a class="${cls}" href="${esc(waSharePost(p))}" ${NEWWIN} aria-label="Share “${esc(postView(p).title)}” on WhatsApp (opens in a new tab)">📲 Share on WhatsApp</a>`;
@@ -1452,7 +1449,6 @@ function regionList(){
   const set = [...new Set(state.countries.map(c => c.region))];
   return set.sort((a,b) => (REGION_ORDER.indexOf(a)+1||99) - (REGION_ORDER.indexOf(b)+1||99));
 }
-/* ---------- Country page ---------- */
 function showCountry(arg, openPid){
   const codes = parseCodes(arg);
   if (!codes.length) { location.hash = "#/"; return; }
@@ -1522,9 +1518,9 @@ async function loadPosts(){
     const rows = await api.posts(codes);
     if (state.sel.join(",") !== key) return;
     state.posts = rows; renderCats(); renderPosts();
-    if (state.openPid) {                                   // someone shared a single post with you: open it
+    if (state.openPid) {
       const pid = state.openPid; state.openPid = null;
-      history.replaceState(null, "", "#/c/" + key);       // tidy the address (no re-load), so closing or reloading does not reopen it
+      history.replaceState(null, "", "#/c/" + key);
       const hit = rows.find(x => String(x.id) === pid);
       if (hit) { postEvent(hit, "arrive"); openView(hit.id); } else toast("That post is no longer available.", "error");
     }
@@ -1536,7 +1532,6 @@ async function loadPosts(){
   }
 }
 
-/* Filtering, sorting and counts */
 function activeFilterCount(){
   const f = state.filters;
   return (f.sort !== "new") + (f.when !== "any");
@@ -1551,7 +1546,7 @@ function matches(p, ignoreCat){
   }
   return true;
 }
-function score(p){                                   // share of thumbs up (scaled to 5) if enough votes, otherwise the admin rating
+function score(p){
   const st = state.pstats[p.id];
   if (st && st.up + st.down >= MIN_RATINGS_TO_SHOW) return 5 * st.up / (st.up + st.down);
   return Number(p.rating ?? -1);
@@ -1562,7 +1557,6 @@ function sortPosts(list){
   const cmp = s === "old" ? (a,b) => a.created_at.localeCompare(b.created_at)
             : s === "rating" ? (a,b) => (score(b) - score(a)) || byDate(a,b)
             : byDate;
-  /* Featured (sponsored) posts stay pinned at the top, then Major news, then everything else */
   const isNews = p => p.category === "Major news";
   return [...list].sort((a,b) => (isFeatured(b) - isFeatured(a)) || (isNews(b) - isNews(a)) || cmp(a,b));
 }
@@ -1612,7 +1606,7 @@ function postCard(p){
       ${srcLine(p)}
       ${contactHtml(p)}
       ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
-      ${vid ? `<video controls preload="metadata" playsinline src="${esc(vid)}"></video>` : ""}
+      ${vid ? videoHtml(vid, v.title) : ""}
       ${stars(p.rating)}
       ${communityLine(p)}
       <div class="pactions"><button class="linkbtn" type="button" data-act="open">👍 Vote on this post</button>${shareLink(p, "linkbtn share")}</div>
@@ -1620,7 +1614,6 @@ function postCard(p){
   </article>`;
 }
 
-/* ---------- Posting ---------- */
 function openIslands(){
   const dlg = $("#islandDlg");
   mountPicker("i", {root: dlg, initial: state.sel, initialQ: "", onApply: codes => { dlg.close(); location.hash = "#/c/" + codes.join(","); }});
@@ -1645,11 +1638,14 @@ function checkFile(f, rule){
   if (f.size > rule.max) return `${rule.label} is too large. The limit is ${rule.max/1048576} MB.`;
   return "";
 }
+if (window.IsleVideos) IsleVideos.configure({ maxBytes: FILE_RULES.vid.max, t: s => UILANG === "en" ? s : (trStr(s) ?? s), allowUrl: u => !!mediaUrl(u) });
+const videoHtml = (u, title, preload) => window.IsleVideos ? IsleVideos.html(u, {title}) : `<video controls preload="${preload || "metadata"}" playsinline src="${esc(u)}"></video>`;
 let lastPost = 0;
 $("#postForm").addEventListener("submit", async e => {
   e.preventDefault();
   const err = $("#pf-err"), btn = $("#pf-submit"); err.textContent = "";
-  if ($("#pf-website").value) return;                       // honeypot
+  if ($("#pf-website").value) return;
+  if (window.IsleVideos?.busy($("#pf-vidfile"))) return $("#pf-err").textContent = "Please wait for the video to finish getting ready.";
   const code = $("#pf-country").value, title = $("#pf-title").value.trim(), desc = $("#pf-desc").value.trim(), contact = $("#pf-contact").value.trim();
   if (!code) return err.textContent = "Choose the country this post is for.";
   if (title.length < 3) return err.textContent = "Add a short title (at least 3 characters).";
@@ -1673,7 +1669,6 @@ $("#postForm").addEventListener("submit", async e => {
   } finally { btn.disabled = false; btn.textContent = "Share post"; }
 });
 
-/* ---------- Admin ---------- */
 async function showAdmin(){
   state.admin = await api.session();
   if (!state.admin) {
@@ -1754,7 +1749,6 @@ function showAdminPosts(){
   loadAdmin();
 }
 
-/* ---------- Admin: post to many countries at once ---------- */
 function updateBcCount(){
   const boxes = [...document.querySelectorAll('#bcForm input[name="bc-c"]')], n = boxes.filter(b => b.checked).length;
   const c = $("#bcCount"); if (c) c.textContent = `${n} of ${boxes.length} countries selected`;
@@ -1817,6 +1811,7 @@ document.addEventListener("submit", async e => {
   if (description.length < 3) return err.textContent = "Add some details.";
   if (!codes.length) return err.textContent = "Choose at least one country.";
   const imgF = $("#bc-img").files[0], audF = $("#bc-aud").files[0], vidF = $("#bc-vid").files[0];
+  if (window.IsleVideos?.busy($("#bc-vid"))) return err.textContent = "Please wait for the video to finish getting ready.";
   const fe = checkFile(imgF, FILE_RULES.img) || checkFile(audF, FILE_RULES.aud) || checkFile(vidF, FILE_RULES.vid);
   if (fe) return err.textContent = fe;
   if (!confirm(`Publish "${title}" in ${codes.length} ${codes.length === 1 ? "country" : "countries"} right now?`)) return;
@@ -1837,7 +1832,6 @@ document.addEventListener("submit", async e => {
   }
 });
 
-/* ---------- Admin: questions ---------- */
 async function showQuestions(){
   const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:120px;margin-top:1rem"></div>';
   try { state.questions = await api.questions(); renderQuestions(); }
@@ -1871,7 +1865,6 @@ function renderQuestionList(){
   }).join("") : `<div class="state"><div class="big">💬</div><h2>No ${state.qFilter === "All" ? "" : state.qFilter.toLowerCase() + " "}questions</h2><p>Questions from the chat button will appear here.</p></div>`;
 }
 
-/* ---------- Admin: ratings on posts ---------- */
 const starText = n => "★".repeat(n) + "☆".repeat(5 - n);
 async function showRatings(){
   const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:160px;margin-top:1rem"></div>';
@@ -1921,7 +1914,6 @@ function renderRatingList(){
   }).join("") : `<div class="state"><div class="big">👍</div><h2>No ${state.rFilter === "All" ? "" : state.rFilter.toLowerCase() + " "}votes</h2><p>Votes and comments from visitors will appear here.</p></div>`;
 }
 
-/* ---------- Admin: subscribers ---------- */
 async function showSubs(){
   const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:120px;margin-top:1rem"></div>';
   try { state.subs = await api.subscribers(); renderSubs(); }
@@ -1977,7 +1969,6 @@ async function copyEmails(){
   catch { toast("Couldn't copy. Use Download CSV instead.", "error"); }
 }
 
-/* ---------- Admin: statistics for each post ---------- */
 const PS_ZERO = {views:0, opens:0, shares:0, contacts:0, sources:0, arrivals:0, sessions:0};
 const pctOf = (a, b) => Number(b) > 0 ? Math.round(Number(a) / Number(b) * 100) + "%" : "–";
 function pstatStrip(p){
@@ -2050,7 +2041,6 @@ function exportPostStats(){
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
-/* ---------- Admin: traffic ---------- */
 async function showTraffic(){
   const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:160px;margin-top:1rem"></div>';
   try { renderTraffic(await api.traffic(state.trafficDays)); loadTopPosts(); }
@@ -2099,7 +2089,7 @@ function adminRow(p){
     ${srcLine(p)}
     ${p.contact ? `<div class="contact"><b>Contact:</b> ${linkify(p.contact)}</div>` : ""}
     ${img ? `<a href="${esc(img)}" target="_blank" rel="noopener">View photo</a>` : ""} ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
-    ${vid ? `<video controls preload="none" playsinline src="${esc(vid)}"></video>` : (p.video_url ? `<a href="${esc(safeUrl(p.video_url))}" target="_blank" rel="noopener noreferrer">External video link</a>` : "")}
+    ${vid ? videoHtml(vid, p.title, "none") : (p.video_url ? `<a href="${esc(safeUrl(p.video_url))}" target="_blank" rel="noopener noreferrer">External video link</a>` : "")}
     ${p.status === "Approved" && state.postStatsOk ? pstatStrip(p) : ""}
     <div class="arow-actions">
       ${p.status !== "Approved" ? `<button class="btn small" type="button" data-act="approve">Approve</button>` : ""}
@@ -2121,7 +2111,6 @@ $("#editForm").addEventListener("submit", async e => {
     $("#editDlg").close(); toast("Changes saved.", "ok"); loadAdmin();
   } catch (ex) { console.error(ex); $("#ef-err").textContent = "Couldn't save your changes. Try again."; }
 });
-/* Boost: pins the post to the top of its country for N days. Extending adds time to the current end date. */
 function boostEnd(p, days){
   const base = isFeatured(p) ? new Date(p.featured_until) : new Date();
   return new Date(base.getTime() + days * 86400000);
@@ -2166,12 +2155,10 @@ async function adminAct(act, id){
   } catch (ex) { console.error(ex); toast("That didn't work. Check your connection and permissions, then try again.", "error"); }
 }
 
-/* ---------- Visitor ratings on a specific post ---------- */
 const voterId = () => { let v = store.get("ic_voter", ""); if (!v) { v = crypto.randomUUID(); store.set("ic_voter", v); } return v; };
 const hasRated = id => store.get("ic_rated", []).includes(String(id));
 const markRated = id => store.set("ic_rated", [...new Set([...store.get("ic_rated", []), String(id)])].slice(-500));
 const avgStars = (sum, n) => n ? sum / n : null;
-/* Visitor votes: thumbs up / thumbs down tally, shown the same way as the admin rating. */
 function voteLine(up, down, label, prefix = "") {
   const total = up + down, pct = Math.round(100 * up / total);
   return `<div class="rline" title="${up} thumbs up and ${down} thumbs down">${prefix}<span class="thumbs" aria-hidden="true">👍 <b>${up}</b> &nbsp;👎 <b>${down}</b></span> <small>${pct}% ${esc(label)} (${total} vote${total === 1 ? "" : "s"})</small><span class="sr-only">${up} thumbs up and ${down} thumbs down, ${pct} percent ${esc(label)}</span></div>`;
@@ -2207,7 +2194,7 @@ document.addEventListener("submit", async e => {
   if (e.target.id !== "rateForm") return;
   e.preventDefault();
   const form = e.target, pid = form.dataset.pid, err = $("#rp-err"), btn = $("#rp-send"); err.textContent = "";
-  if ($("#rp-website").value) return;                                      // honeypot
+  if ($("#rp-website").value) return;
   const {vote, child} = state.pr, comment = $("#rp-comment").value.trim();
   if (!vote && !child) return err.textContent = "Please tap a thumbs up or thumbs down.";
   if (hasRated(pid)) return err.textContent = "You have already voted on this post.";
@@ -2215,7 +2202,7 @@ document.addEventListener("submit", async e => {
   btn.disabled = true; btn.textContent = "Sending…";
   try {
     try { await api.ratePost({post_id:pid, voter_id:voterId(), vote: vote || null, child_vote: child || null, comment: comment || null}); }
-    catch (ex) { if (ex?.code !== "23505") throw ex; }                     // 23505 = this browser already voted
+    catch (ex) { if (ex?.code !== "23505") throw ex; }
     lastRate = Date.now(); markRated(pid);
     const st = (state.pstats[pid] = state.pstats[pid] || {up:0, down:0, cup:0, cdown:0});
     if (vote === 1) st.up++; if (vote === -1) st.down++; if (child === 1) st.cup++; if (child === -1) st.cdown++;
@@ -2306,7 +2293,6 @@ function showAbout(){
         <li>Have a question? Tap <b>Ask a question</b> at the bottom right of any page.</li></ul></article>
     </section>`, "About", true, true);
 }
-/* ---------- Advertise ---------- */
 const adPayUrl = id => safeUrl(PAYMENT_LINKS[id] || "");
 function showAdvertise(query){
   state.country = null;
@@ -2376,7 +2362,6 @@ document.addEventListener("submit", async e => {
   } catch (ex) { console.error(ex); err.textContent = isLimited(ex) ? "You have sent several messages recently. Please try again later." : "We couldn't send that. Check your connection and try again."; btn.disabled = false; btn.textContent = "Send request"; }
 });
 
-/* ---------- Subscribe ---------- */
 function openSub(code){
   $("#sf-country").innerHTML = `<option value="">Any country</option>` + state.countries.map(c => `<option value="${esc(c.code)}">${esc(c.name)}</option>`).join("");
   $("#sf-country").value = code || "";
@@ -2389,7 +2374,7 @@ let lastSub = 0;
 $("#subForm").addEventListener("submit", async e => {
   e.preventDefault();
   const err = $("#sf-err"), btn = $("#sf-submit"); err.textContent = "";
-  if ($("#sf-website").value) return;                                   // honeypot
+  if ($("#sf-website").value) return;
   const email = $("#sf-email").value.trim().toLowerCase();
   if (!EMAIL_RE.test(email) || email.length > 254) return err.textContent = "Enter a valid email address.";
   if (!$("#sf-consent").checked) return err.textContent = "Please tick the box to agree to receive emails.";
@@ -2404,7 +2389,6 @@ $("#subForm").addEventListener("submit", async e => {
   finally { btn.disabled = false; btn.textContent = "Subscribe"; }
 });
 
-/* ---------- Ask a question (chat) ---------- */
 const bubble = (who, text) => `<div class="bubble ${who}">${esc(text)}</div>`;
 let lastAsk = 0;
 function setChat(open){
@@ -2422,7 +2406,7 @@ $("#ch-text").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shi
 $("#chatForm").addEventListener("submit", async e => {
   e.preventDefault();
   const err = $("#ch-err"), btn = $("#ch-send"); err.textContent = "";
-  if ($("#ch-website").value) return;                                   // honeypot
+  if ($("#ch-website").value) return;
   const question = $("#ch-text").value.trim(), email = $("#ch-email").value.trim().toLowerCase();
   if (question.length < 3) return err.textContent = "Please type your question first.";
   if (email && (!EMAIL_RE.test(email) || email.length > 254)) return err.textContent = "That email address doesn't look right.";
@@ -2438,8 +2422,6 @@ $("#chatForm").addEventListener("submit", async e => {
   finally { btn.disabled = false; btn.textContent = "Send"; }
 });
 
-/* ---------- Global events ---------- */
-/* Suggestions: matching posts listed under the search box; click one to open it on its own */
 let sugIdx = -1;
 function hideSuggest(){ const el = $("#suggest"); if (el) { el.hidden = true; el.innerHTML = ""; } sugIdx = -1; }
 function showSuggest(){
@@ -2471,7 +2453,7 @@ function openView(id){
     ${srcLine(p)}
     ${contactHtml(p)}
     ${aud ? `<audio controls preload="none" src="${esc(aud)}"></audio>` : ""}
-    ${vid ? `<video controls preload="metadata" playsinline src="${esc(vid)}"></video>` : ""}
+    ${vid ? videoHtml(vid, v.title) : ""}
     ${stars(p.rating)}
     ${communityLine(p)}
     ${ratePanelHtml(p)}
@@ -2485,7 +2467,7 @@ function resetSearch(){
 }
 document.addEventListener("click", e => {
   if (!e.target.closest(".search.small")) hideSuggest();
-  { const a = e.target.closest("a.share, .srcline a");                       // Share on WhatsApp, or following a post's source link
+  { const a = e.target.closest("a.share, .srcline a");
     if (a) { const pid = a.closest(".post[data-pid]")?.dataset.pid || (a.closest("#vd-body") ? $("#vd-body").dataset.pid : null);
       const sp = pid && state.posts.find(x => String(x.id) === String(pid)); if (sp) postEvent(sp, a.matches("a.share") ? "share" : "source"); } }
   const sug = e.target.closest("[data-sid]");
@@ -2564,18 +2546,15 @@ document.addEventListener("change", e => {
 document.addEventListener("error", e => { if (e.target.matches?.("img.flag")) e.target.style.visibility = "hidden"; }, true);
 for (const d of document.querySelectorAll("dialog")) d.addEventListener("click", e => { if (e.target === d) d.close(); });
 
-/* The Admin link is hidden for everyone except a signed-in administrator.
-   (The real protection is Row Level Security in Supabase; this only controls what is shown.) */
 async function updateNav(){
   const a = await api.session().catch(() => null);
   state.isAdmin = !!a;
-  if (a) store.set("ic_admin", true);                    // remembered until you sign out, so your visits are never counted
+  if (a) store.set("ic_admin", true);
   $("#navAdmin").href = "#/" + ADMIN_PATH;
   $("#navAdmin").hidden = !a;
   adminCheckDone();
 }
 
-/* ---------- Start ---------- */
 (async function init(){
   if (DEMO) {
     $("#demoNote").hidden = false;
