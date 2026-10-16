@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1b1464">
+<meta name="theme-color" content="#0a2f3c">
 <title>Isle Connect: community resources across the Caribbean</title>
 <meta name="description" content="Find jobs, food, transport, education and emergency help posted by people across the Caribbean.">
 <meta property="og:type" content="website">
@@ -17,19 +17,36 @@
 
 <style>
 :root{
+  --ink:#0a2f3c; --ink-2:#14485a; --palm:#1f7a4d; --palm-d:#165a39; --sun:#f5b82e; --sun-d:#e0a114;
+  --second:#1f7a4d; --second-d:#165a39; --bg:#f0f6f4; --card:#ffffff; --line:#d7e3e0; --line-2:#bfd0cd;
+  --muted:#53707c; --text-2:#2c4852; --tint:#eef6f2; --tint-2:#e3ecea; --hover:#e6efec;
+  --on-ink:#cfe3e6; --on-ink-2:#9fc0c6; --link:#1f7a4d; --focus:#1366d6;
+  --hero-a:#0a2f3c; --hero-b:#0a2f3c; --hero-c:#0a2f3c;
+  --sh:10,47,60; --sh-d:5,25,32; --pri-rgb:31,122,77; --acc-rgb:245,184,46; --sec-rgb:31,122,77;
+  --hero-bg:#0a2f3c;
+  --band-bg:#0a2f3c;
+  --stripe:none; --stripe-h:0px;
+  --ghost-line:var(--line); --btn-sh:none; --btn-sh-acc:none; --ph:#7b929b; --info-bg:#e8f1ff; --info-fg:#16418a;
+  --promo-bg:#fff8e1; --promo-line:#f1d98a; --play-bg:rgba(255,255,255,.92); --vp-a:#0b2f3d; --vp-b:#145c4a;
+  --on-ink-3:#b6d2d6; --hero-p:#c3dadd; --accd-rgb:224,161,20;
+  --danger:#b4332b; --ok:#1f7a4d; --star:#c98a00;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+html[data-theme="carnival"]{
   --ink:#1b1464; --ink-2:#2f1f93; --palm:#c0179a; --palm-d:#94107a; --sun:#ffc72c; --sun-d:#f0b000;
   --second:#14b8a6; --second-d:#0a7f73; --bg:#f6f3ff; --card:#ffffff; --line:#ded7f7; --line-2:#c4bbec;
   --muted:#5a5690; --text-2:#322d62; --tint:#efeaff; --tint-2:#e3dcfa; --hover:#e8e1fd;
   --on-ink:#e6e1fc; --on-ink-2:#c3bbf0; --link:#94107a; --focus:#2b6fe0;
   --hero-a:#1b1464; --hero-b:#33209c; --hero-c:#6a1fa6;
-  --sh:27,20,100; --pri-rgb:192,23,154; --acc-rgb:255,199,44; --sec-rgb:20,184,166;
+  --sh:27,20,100; --sh-d:27,20,100; --pri-rgb:192,23,154; --acc-rgb:255,199,44; --sec-rgb:20,184,166;
   --hero-bg:radial-gradient(62rem 28rem at 88% -8%, rgba(var(--pri-rgb),0.42), transparent 62%), radial-gradient(50rem 24rem at -6% 108%, rgba(var(--sec-rgb),0.3), transparent 62%), linear-gradient(135deg, #1b1464 0%, #33209c 58%, #6a1fa6 100%);
   --band-bg:linear-gradient(135deg, #1b1464 0%, #33209c 100%);
   --stripe:linear-gradient(90deg, #c0179a 0%, #ffc72c 50%, #14b8a6 100%); --stripe-h:5px;
-  --danger:#b4332b; --ok:#1f7a4d; --star:#c98a00; --promo-bg:#fff6c9; --promo-line:#f0d54a;
-  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
-  --body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  color-scheme:light;
+  --ghost-line:var(--line-2); --btn-sh:0 8px 18px -10px rgba(var(--pri-rgb),.85); --btn-sh-acc:0 8px 18px -10px rgba(var(--acc-rgb),.95); --ph:var(--muted); --info-bg:var(--tint-2); --info-fg:var(--ink-2);
+  --promo-bg:#fff6c9; --promo-line:#f0d54a; --play-bg:var(--sun); --vp-a:var(--ink); --vp-b:var(--ink-2);
+  --on-ink-3:#c3bbf0; --hero-p:#e6e1fc; --accd-rgb:240,176,0;
 }
 html[data-theme="lagoon"]{
   --ink:#062d5e; --ink-2:#0b4f8a; --palm:#0877a0; --palm-d:#065a7a; --sun:#ffd23f; --sun-d:#f2bd00;
@@ -37,10 +54,13 @@ html[data-theme="lagoon"]{
   --muted:#476a7c; --text-2:#1f4256; --tint:#e2f4f8; --tint-2:#d3ebf2; --hover:#d9eff4;
   --on-ink:#eaf7fc; --on-ink-2:#bbdceb; --link:#065a7a; --focus:#1366d6;
   --hero-a:#062d5e; --hero-b:#0a5a9a; --hero-c:#096c86;
-  --sh:6,45,94; --pri-rgb:8,119,160; --acc-rgb:255,210,63; --sec-rgb:34,199,184;
+  --sh:6,45,94; --sh-d:6,45,94; --pri-rgb:8,119,160; --acc-rgb:255,210,63; --sec-rgb:34,199,184;
   --hero-bg:radial-gradient(62rem 28rem at 88% -8%, rgba(var(--acc-rgb),0.12), transparent 62%), radial-gradient(50rem 24rem at -6% 108%, rgba(var(--sec-rgb),0.1), transparent 62%), linear-gradient(135deg, #062d5e 0%, #0a5a9a 58%, #096c86 100%);
   --band-bg:linear-gradient(135deg, #062d5e 0%, #0a5a9a 100%);
   --stripe:linear-gradient(90deg, #0877a0 0%, #ffd23f 50%, #22c7b8 100%); --stripe-h:5px;
+  --ghost-line:var(--line-2); --btn-sh:0 8px 18px -10px rgba(var(--pri-rgb),.85); --btn-sh-acc:0 8px 18px -10px rgba(var(--acc-rgb),.95); --ph:var(--muted); --info-bg:var(--tint-2); --info-fg:var(--ink-2);
+  --promo-bg:#fff6c9; --promo-line:#f0d54a; --play-bg:var(--sun); --vp-a:var(--ink); --vp-b:var(--ink-2);
+  --on-ink-3:#bbdceb; --hero-p:#eaf7fc; --accd-rgb:242,189,0;
 }
 html[data-theme="sunset"]{
   --ink:#2a0f5e; --ink-2:#4a1a8c; --palm:#d6246f; --palm-d:#a8145a; --sun:#ffd36b; --sun-d:#f2b83a;
@@ -48,23 +68,14 @@ html[data-theme="sunset"]{
   --muted:#715083; --text-2:#41225a; --tint:#f6e9f6; --tint-2:#eedcf0; --hover:#f2e1f3;
   --on-ink:#f1e4fb; --on-ink-2:#d3bdea; --link:#a8145a; --focus:#6b3fd8;
   --hero-a:#2a0f5e; --hero-b:#5a1a95; --hero-c:#a3206f;
-  --sh:42,15,94; --pri-rgb:214,36,111; --acc-rgb:255,211,107; --sec-rgb:139,92,246;
+  --sh:42,15,94; --sh-d:42,15,94; --pri-rgb:214,36,111; --acc-rgb:255,211,107; --sec-rgb:139,92,246;
   --hero-bg:radial-gradient(62rem 28rem at 88% -8%, rgba(var(--acc-rgb),0.12), transparent 62%), radial-gradient(50rem 24rem at -6% 108%, rgba(var(--pri-rgb),0.3), transparent 62%), linear-gradient(135deg, #2a0f5e 0%, #5a1a95 58%, #a3206f 100%);
   --band-bg:linear-gradient(135deg, #2a0f5e 0%, #5a1a95 100%);
   --stripe:linear-gradient(90deg, #d6246f 0%, #ffd36b 50%, #8b5cf6 100%); --stripe-h:5px;
+  --ghost-line:var(--line-2); --btn-sh:0 8px 18px -10px rgba(var(--pri-rgb),.85); --btn-sh-acc:0 8px 18px -10px rgba(var(--acc-rgb),.95); --ph:var(--muted); --info-bg:var(--tint-2); --info-fg:var(--ink-2);
+  --promo-bg:#fff6c9; --promo-line:#f0d54a; --play-bg:var(--sun); --vp-a:var(--ink); --vp-b:var(--ink-2);
+  --on-ink-3:#d3bdea; --hero-p:#f1e4fb; --accd-rgb:242,184,58;
 }
-html[data-theme="classic"]{
-  --ink:#0a2f3c; --ink-2:#14485a; --palm:#1f7a4d; --palm-d:#165a39; --sun:#f5b82e; --sun-d:#e0a114;
-  --second:#2aa6b8; --second-d:#177a89; --bg:#f0f6f4; --card:#ffffff; --line:#d7e3e0; --line-2:#bfd0cd;
-  --muted:#53707c; --text-2:#2c4852; --tint:#eef6f2; --tint-2:#e3ecea; --hover:#e6efec;
-  --on-ink:#cfe3e6; --on-ink-2:#9fc0c6; --link:#165a39; --focus:#1366d6;
-  --hero-a:#0a2f3c; --hero-b:#0a2f3c; --hero-c:#0a2f3c;
-  --sh:10,47,60; --pri-rgb:31,122,77; --acc-rgb:245,184,46; --sec-rgb:42,166,184;
-  --hero-bg:#0a2f3c;
-  --band-bg:#0a2f3c;
-  --stripe:none; --stripe-h:0px;
-}
-
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:var(--body);font-size:1rem;line-height:1.55;color:var(--ink);background:var(--bg);min-height:100vh;display:flex;flex-direction:column}
@@ -102,7 +113,7 @@ h1:focus,h1:focus-visible{outline:none}
 .lang{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:.28rem .75rem;font:600 .82rem var(--body);cursor:pointer}
 .lang[aria-pressed="true"]{background:var(--sun);color:var(--ink);border-color:var(--sun)}
 .tbar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin:.15rem 0 .35rem;font-size:.85rem}
-.tbadge{background:var(--tint-2);color:var(--ink-2);border-radius:99px;padding:.1rem .6rem;font-weight:700;font-size:.78rem}
+.tbadge{background:var(--info-bg);color:var(--info-fg);border-radius:99px;padding:.1rem .6rem;font-weight:700;font-size:.78rem}
 .footlang{margin-bottom:.4rem}.footlang select{background:transparent;color:inherit;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:.2rem .4rem;font:inherit}
 .footlang select option{color:var(--ink)}
 .en-only{background:var(--promo-bg);border:1px solid var(--promo-line);border-radius:12px;padding:.6rem .9rem;margin:1rem 0 0;font-size:.92rem}
@@ -110,13 +121,13 @@ html[lang="en"] .en-only{display:none}
 @media(max-width:420px){#navAdvertise{display:none}}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;font:600 .98rem/1 var(--body);padding:.8rem 1.15rem;border-radius:12px;border:2px solid transparent;cursor:pointer;background:var(--palm);color:#fff;text-decoration:none;transition:background .15s,transform .1s}
-.btn{box-shadow:0 8px 18px -10px rgba(var(--pri-rgb),.85)}
+.btn{box-shadow:var(--btn-sh)}
 .btn:hover{background:var(--palm-d)}
 .btn:active{transform:translateY(1px)}
 .btn.accent{background:var(--sun);color:var(--ink)}
-.btn.accent{box-shadow:0 8px 18px -10px rgba(var(--acc-rgb),.95)}
+.btn.accent{box-shadow:var(--btn-sh-acc)}
 .btn.accent:hover{background:var(--sun-d)}
-.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2);box-shadow:none}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ghost-line);box-shadow:none}
 .btn.ghost:hover{background:var(--hover)}
 .btn.danger{background:transparent;color:var(--danger);border-color:#e7c3c0;box-shadow:none}
 .btn.danger:hover{background:#fbeceb}
@@ -125,11 +136,11 @@ html[lang="en"] .en-only{display:none}
 
 .hero{background:var(--hero-bg);color:#fff;position:relative;padding:7.5rem 0 0}
 .hero h1{font-size:clamp(1.2rem,5.2vw,3.4rem);font-weight:800;letter-spacing:-.025em;white-space:nowrap}
-.hero p{font-size:1.12rem;color:var(--on-ink);max-width:52ch;margin:1.1rem 0 1.8rem}
+.hero p{font-size:1.12rem;color:var(--hero-p);max-width:52ch;margin:1.1rem 0 1.8rem}
 .search{position:relative;max-width:560px}
 .search svg{position:absolute;left:1rem;top:50%;translate:0 -50%;width:20px;height:20px;color:var(--muted);pointer-events:none}
 .search input{width:100%;font:500 1.05rem var(--body);padding:1rem 1rem 1rem 2.9rem;border-radius:14px;border:2px solid transparent;background:#fff;color:var(--ink)}
-.search input::placeholder{color:var(--muted)}
+.search input::placeholder{color:var(--ph)}
 .search.small input{font-size:.97rem;padding:.75rem .9rem .75rem 2.5rem;border-color:var(--line);border-radius:12px}
 .search.small svg{left:.8rem;width:18px;height:18px}
 .recent{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:1rem;color:var(--on-ink-2);font-size:.9rem}
@@ -157,11 +168,11 @@ html[lang="en"] .en-only{display:none}
 .empty-grid{padding:2rem 0;color:var(--muted)}
 
 .band{background:var(--band-bg);color:#fff;padding:1rem 0 2rem}
-.band .back{display:inline-block;color:var(--on-ink-2);text-decoration:none;font-weight:600;font-size:.92rem;margin-bottom:1rem}
+.band .back{display:inline-block;color:var(--on-ink-3);text-decoration:none;font-weight:600;font-size:.92rem;margin-bottom:1rem}
 .band .back:hover{color:#fff}
 .band-row{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
 .band h1{font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:800;letter-spacing:-.02em}
-.band .sub{color:var(--on-ink-2);font-size:.95rem}
+.band .sub{color:var(--on-ink-3);font-size:.95rem}
 .band .grow{flex:1;min-width:200px}
 .band .actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
 .switch{font:600 .92rem var(--body);padding:.7rem .8rem;border-radius:12px;border:2px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;max-width:200px}
@@ -231,8 +242,8 @@ a.linkbtn.share{align-self:auto}
 .state h2{font-size:1.5rem;margin:.8rem 0 .4rem}
 .state p{color:var(--muted);margin:0 0 1.2rem}
 
-dialog{border:0;border-radius:20px;padding:0;width:min(580px,100% - 1.5rem);max-height:calc(100vh - 2rem);color:var(--ink);background:#fff;box-shadow:0 24px 60px rgba(var(--sh),.4)}
-dialog::backdrop{background:rgba(var(--sh),.6)}
+dialog{border:0;border-radius:20px;padding:0;width:min(580px,100% - 1.5rem);max-height:calc(100vh - 2rem);color:var(--ink);background:#fff;box-shadow:0 24px 60px rgba(var(--sh-d),.4)}
+dialog::backdrop{background:rgba(var(--sh-d),.6)}
 .dlg-head{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.4rem .2rem}
 .dlg-head h2{font-size:1.45rem}
 .x{background:none;border:0;font-size:1.7rem;line-height:1;cursor:pointer;color:var(--muted);padding:.2rem .5rem;border-radius:8px}
@@ -313,7 +324,7 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 .chat-fab span[aria-hidden]{font-size:1.2rem;line-height:1}
 .chat-panel{position:fixed;right:1rem;bottom:1rem;z-index:95;width:min(360px,100% - 2rem);max-height:min(560px,100vh - 2rem);display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 60px rgba(var(--sh),.4);overflow:hidden}
 .chat-panel header{display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:var(--ink);color:#fff;padding:.8rem 1rem}
-.chat-panel header small{display:block;color:var(--on-ink-2);font-size:.8rem}
+.chat-panel header small{display:block;color:var(--on-ink-3);font-size:.8rem}
 .chat-panel header .x{color:var(--on-ink)}
 .chat-panel header .x:hover{background:rgba(255,255,255,.12)}
 .chat-log{flex:1;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.55rem;background:var(--bg);min-height:120px}
@@ -330,7 +341,7 @@ details.media .inner{display:grid;gap:.9rem;margin-top:.9rem}
 
 .pkgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:.8rem}
 .pkg{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.3rem}
-.pkg.pop{border-color:var(--sun);box-shadow:0 10px 26px -14px rgba(var(--acc-rgb),.8)}
+.pkg.pop{border-color:var(--sun);box-shadow:0 10px 26px -14px rgba(var(--accd-rgb),.8)}
 .pop-tag{position:absolute;top:-.7rem;right:1rem;background:var(--sun);color:var(--ink);font-weight:800;font-size:.78rem;padding:.2rem .65rem;border-radius:99px}
 .pkg h3{font-size:1.15rem}
 .pkg .price{font:800 2rem/1.1 var(--display);color:var(--ink)}
@@ -619,13 +630,13 @@ const CONFIG = {
   MEDIA_BUCKET: "post-media"
 };
 
-const THEME = "carnival";
+const THEME = "classic";
 
 const ADMIN_PATH = "owner-7k3q";
 const THEME_BAR = {carnival:"#1b1464", lagoon:"#062d5e", sunset:"#2a0f5e", classic:"#0a2f3c"};
 (() => {
   const pick = (() => { try { return new URLSearchParams(location.search).get("theme"); } catch { return null; } })();
-  const t = [pick, THEME].find(x => x && Object.prototype.hasOwnProperty.call(THEME_BAR, x)) || "carnival";
+  const t = [pick, THEME].find(x => x && Object.prototype.hasOwnProperty.call(THEME_BAR, x)) || "classic";
   document.documentElement.dataset.theme = t;
   const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = THEME_BAR[t];
 })();
