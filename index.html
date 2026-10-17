@@ -998,7 +998,7 @@ demoDb.subs = [
   {id:"s2",email:"marcus@example.com",country_code:"tt",interests:["Sports"],source:"country",created_at:daysAgo(5)},
   {id:"s3",email:"keisha@example.com",country_code:"bb",interests:[],source:"home",created_at:daysAgo(9)}
 ];
-demoDb.postEvents = []; demoDb._seeded = false;
+demoDb.postEvents = []; demoDb._seeded = false; demoDb.pvRows = 8420; demoDb.pvOldestDays = 150;
 function ensureDemoEvents(){
   if (demoDb._seeded) return; demoDb._seeded = true;
   let seed = 4242; const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
@@ -1041,6 +1041,21 @@ function demoPostDays(id, days){
     if (e.event === "view") b.views++; if (e.event === "open") b.opens++; if (e.event === "share") b.shares++;
   }
   return {post_id:id, totals:{...t, sessions:sess.size}, by_day:Object.values(byDay).sort((a, b) => a.day.localeCompare(b.day))};
+}
+function demoStorage(){
+  ensureDemoEvents();
+  const pe = demoDb.postEvents.length, oldest = demoDb.postEvents.reduce((m, e) => e.created_at < m ? e.created_at : m, new Date().toISOString());
+  return {keep:{views:180, events:60},
+    page_views:{rows:demoDb.pvRows, bytes:demoDb.pvRows * 250, oldest:demoDb.pvRows ? new Date(Date.now() - demoDb.pvOldestDays * 864e5).toISOString() : null},
+    post_events:{rows:pe, bytes:pe * 200, oldest:pe ? oldest : null}, database_bytes:41 * 1048576 + (demoDb.pvRows + pe) * 230};
+}
+function demoPurge(days){
+  ensureDemoEvents();
+  const cutoff = days === 0 ? Infinity : Date.now() - days * 864e5, before = demoDb.postEvents.length, pvBefore = demoDb.pvRows;
+  demoDb.postEvents = demoDb.postEvents.filter(e => new Date(e.created_at).getTime() >= cutoff);
+  demoDb.pvRows = days === 0 ? 0 : Math.round(demoDb.pvRows * Math.min(1, days / demoDb.pvOldestDays));
+  demoDb.pvOldestDays = days === 0 ? 0 : Math.min(demoDb.pvOldestDays, days);
+  return {page_views:pvBefore - demoDb.pvRows, post_events:before - demoDb.postEvents.length};
 }
 const api = {
   async countries(){
@@ -1202,6 +1217,20 @@ const api = {
   async postTrafficDays(id, days){
     if (DEMO) return demoPostDays(id, days);
     const {data, error} = await sb.rpc("post_traffic_days", {p_post:id, p_days:days}); if (error) throw error; return data;
+  },
+  async statsStorage(){
+    if (DEMO) return demoStorage();
+    const {data, error} = await sb.rpc("stats_storage"); if (error) throw error; return data;
+  },
+  async purgeStats(days){
+    if (DEMO) return demoPurge(days);
+    const total = {page_views:0, post_events:0};
+    for (let i = 0; i < 40; i++) {
+      const {data, error} = await sb.rpc("purge_stats", {p_days:days, p_max:50000}); if (error) throw error;
+      total.page_views += Number(data.page_views); total.post_events += Number(data.post_events);
+      if (!data.more) break;
+    }
+    return total;
   },
   async subscribers(){
     if (DEMO) return [...demoDb.subs].sort((a,b) => b.created_at.localeCompare(a.created_at));
@@ -2017,7 +2046,7 @@ async function renderPostStats(){
   const chart = (k, label) => { const sr = series(k), m = Math.max(1, ...sr.map(x => x[1])); return `<div class="panel"><h3>${label}</h3><div class="chart" role="img" aria-label="${label}">${sr.map(([dd, v]) => `<i style="height:${Math.max(2, v / m * 100)}%" title="${dd}: ${v}"></i>`).join("")}</div></div>`; };
   body.innerHTML = `
     <p class="result-info" style="margin:0">${isl ? flag(isl.code) + esc(isl.name) + " · " : ""}${esc(p.category || "")}</p>
-    <div class="regions" role="group" aria-label="Date range">${[7, 30, 90].map(n => `<button class="chip" type="button" data-sdays="${n}" aria-pressed="${days === n}">Last ${n} days</button>`).join("")}</div>
+    <div class="regions" role="group" aria-label="Date range">${[7, 30, 60].map(n => `<button class="chip" type="button" data-sdays="${n}" aria-pressed="${days === n}">Last ${n} days</button>`).join("")}</div>
     <div class="stats">
       <div class="stat"><b>${Number(t.views)}</b><span>Seen in lists</span></div>
       <div class="stat"><b>${Number(t.opens)}</b><span>Opened</span></div>
@@ -2030,7 +2059,7 @@ async function renderPostStats(){
     <p class="result-info" style="margin:0">Of the times it was seen, ${pctOf(t.opens, t.views)} led to it being opened. Of the times it was opened, ${pctOf(t.shares, t.opens)} led to a share and ${pctOf(t.contacts, t.opens)} to a request for the contact details.</p>
     ${chart("views", "Seen per day")}${chart("opens", "Opened per day")}${chart("shares", "Shares per day")}
     <div class="form-actions"><button class="btn ghost" type="button" data-act="pscopy">Copy a report to send</button><button class="btn" type="button" data-close>Close</button></div>
-    <p class="result-info" style="margin:0">Anonymous and cookie-free: a post counts as seen after half of it has been on screen for a moment, and each browser tab counts once per post. Your own visits are never counted.</p>`;
+    <p class="result-info" style="margin:0">Anonymous and cookie-free: a post counts as seen after half of it has been on screen for a moment, and each browser tab counts once per post. Your own visits are never counted. Detailed post statistics are kept for ${keepEvents()} days, then deleted automatically.</p>`;
 }
 function postReport(){
   const p = state.psPost, t = {...PS_ZERO, ...((state.psData || {}).totals || {})}, days = state.psDays || 30, isl = state.byCode[p.country_code];
@@ -2060,9 +2089,39 @@ function exportPostStats(){
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
+const fmtBytes = n => { n = Number(n) || 0; return n >= 1073741824 ? (n / 1073741824).toFixed(2) + " GB" : n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB"; };
+const fmtNum = n => Number(n || 0).toLocaleString("en-US");
+const keepEvents = () => Number(state.storage && state.storage.keep && state.storage.keep.events) || 60;
+async function loadStorage(){
+  try { state.storage = await api.statsStorage(); state.storageOk = true; } catch (e) { console.error(e); state.storageOk = false; }
+  renderStorage();
+}
+function renderStorage(){
+  const host = $("#admbody"); if (!host) return;
+  let panel = $("#storage"); if (!panel) { host.insertAdjacentHTML("beforeend", '<div class="panel" id="storage"></div>'); panel = $("#storage"); }
+  if (state.storageOk === false) { panel.innerHTML = `<h3>Statistics storage</h3><p class="result-info">Not set up yet. Run supabase_stats_cleanup.sql in Supabase, then supabase_security_hardening.sql again.</p>`; return; }
+  const s = state.storage; if (!s) { panel.innerHTML = '<h3>Statistics storage</h3><div class="skeleton" style="height:90px"></div>'; return; }
+  const since = d => d ? new Date(d).toLocaleDateString(undefined, {year:"numeric", month:"short", day:"numeric"}) : "none";
+  const row = (label, x) => `<tr><td>${label}</td><td>${fmtNum(x.rows)}</td><td>${fmtBytes(x.bytes)}</td><td>${since(x.oldest)}</td></tr>`;
+  panel.innerHTML = `<h3>Statistics storage</h3>
+    <div style="overflow-x:auto"><table class="ptable"><thead><tr><th>Records</th><th>Count</th><th>Space used</th><th>Oldest</th></tr></thead><tbody>
+      ${row("Visit records (page views)", s.page_views)}${row("Post statistics", s.post_events)}
+      <tr><td>Whole database</td><td></td><td>${fmtBytes(s.database_bytes)}</td><td></td></tr></tbody></table></div>
+    <p class="result-info">This is database storage, not memory. Compare the whole-database size with your plan's limit under Supabase, Settings, Usage. Old records are deleted automatically: visit records after ${Number(s.keep.views)} days and post statistics after ${Number(s.keep.events)} days. Posts, subscribers and everything else are never touched.</p>
+    <div class="arow-actions"><button class="btn ghost small" type="button" data-act="purge" data-keep="30">Delete older than 30 days</button><button class="btn ghost small" type="button" data-act="purge" data-keep="7">Delete older than 7 days</button><button class="btn danger small" type="button" data-act="purge" data-keep="0">Delete all statistics</button></div>`;
+}
+async function doPurge(days){
+  const msg = days === 0 ? "Delete ALL visit records and post statistics? This cannot be undone. Your posts, subscribers and everything else are not affected."
+    : `Delete all visit records and post statistics older than ${days} days? This cannot be undone. Your posts, subscribers and everything else are not affected.`;
+  if (!confirm(msg)) return;
+  document.querySelectorAll('#storage [data-act="purge"]').forEach(b => b.disabled = true);
+  try { const r = await api.purgeStats(days); toast(`Deleted ${fmtNum(r.page_views)} visit records and ${fmtNum(r.post_events)} post records.`, "ok"); }
+  catch (e) { console.error(e); toast("Couldn't delete. Make sure you ran supabase_stats_cleanup.sql and are signed in as the administrator.", "error"); }
+  await showTraffic();
+}
 async function showTraffic(){
   const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:160px;margin-top:1rem"></div>';
-  try { renderTraffic(await api.traffic(state.trafficDays)); loadTopPosts(); }
+  try { renderTraffic(await api.traffic(state.trafficDays)); loadTopPosts(); loadStorage(); }
   catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load traffic</h2><p>Make sure you ran supabase_subscribers_traffic.sql and that you are signed in as an administrator.</p></div>`; }
 }
 function renderTraffic(t){
@@ -2239,7 +2298,7 @@ function legalSections(kind, op, mail){
       <li><b>Questions and advertising requests you send</b> with the chat button or the Advertise form: your message, your business name if you give one, and optionally your email and country. We use them to reply to you and to arrange payment.</li>
       <li><b>Votes and feedback on posts</b>: a thumbs up or down, and an optional comment that only the administrator can see. Everyone else sees only the totals.</li>
       <li><b>Visit counts</b>: to see which pages are used, we record which page you opened (the home page or a country page), a random code that lasts only while that browser tab is open, and the name of the website you came from. We do not record your IP address and we do not use cookies. We do not count visits when your browser sends Do Not Track or Global Privacy Control, or when the administrator is signed in.</li>
-      <li><b>Post counts</b>: in the same anonymous way we count how often each post is shown on screen, opened or shared on WhatsApp, how often its contact details or source link are used, and how many people open a post from a shared link. This lets the people who post, and the administrator, see how a post is doing. These counts hold only the post, the island, the kind of action, the same random tab code and the time. They are switched off in the same situations as visit counts.</li>
+      <li><b>Post counts</b>: in the same anonymous way we count how often each post is shown on screen, opened or shared on WhatsApp, how often its contact details or source link are used, and how many people open a post from a shared link. This lets the people who post, and the administrator, see how a post is doing. These counts hold only the post, the island, the kind of action, the same random tab code and the time. They are switched off in the same situations as visit counts. Visit counts are deleted automatically after 180 days and per-post counts after 60 days.</li>
       <li><b>Spam protection</b>: to stop abuse we keep a scrambled (hashed) form of your network address for a short time, about a day, to count how many requests come from one place. It cannot be turned back into your address.</li></ul>`},
     {h:"Cookies and what your browser stores", html:`<p>We do not use cookies. Your browser keeps a few small items on your device: the islands you visited recently, the language you choose (saved only if you pick one), a random code and a list showing which posts you have voted on (so a vote cannot be repeated), and, for the administrator only, a note that this device belongs to the administrator. A short-lived code in your browser tab is used for the visit count, and a short list in the same tab remembers which posts have already been counted as seen or opened, so that reloading a page does not count them again. You can clear all of these in your browser settings at any time.</p>`},
     {h:"Other organisations that handle data for us", html:`<ul class="know">
@@ -2562,6 +2621,7 @@ document.addEventListener("click", e => {
     case "pstats": return openPostStats(t.dataset.pid || t.closest("[data-id]")?.dataset.id);
     case "pscopy": return navigator.clipboard.writeText(postReport()).then(() => toast("Report copied. Paste it into WhatsApp or an email.", "ok")).catch(() => toast("Couldn't copy the report.", "error"));
     case "topcsv": return exportPostStats();
+    case "purge": return doPurge(Number(t.dataset.keep));
     case "islands": return openIslands();
     case "subscribe": return openSub(state.country?.code);
     case "exportsubs": return exportSubs();
