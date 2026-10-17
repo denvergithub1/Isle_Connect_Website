@@ -440,6 +440,14 @@ footer a:hover{color:#fff}
 .pstat{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem 1rem;margin:.55rem 0;color:var(--ink);font-weight:600;font-size:.92rem}
 .pstat span{white-space:nowrap}
 .pstat small{color:var(--muted);font-weight:500}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:.7rem;margin:.6rem 0 1rem}
+.fcard{background:var(--tint);border-radius:14px;padding:.8rem .95rem}
+.fcard span{display:block;color:var(--muted);font-size:.82rem;font-weight:600}
+.fcard b{display:block;font-size:1.05rem;margin:.15rem 0;overflow-wrap:anywhere}
+.fcard small{color:var(--text-2);font-size:.86rem}
+#focus h4{margin:1rem 0 .4rem;font-size:1rem}
+#focus ol{margin:.2rem 0 .8rem;padding-left:1.25rem}
+#focus li{margin:.35rem 0}
 .ptable{width:100%;border-collapse:collapse;font-size:.92rem}
 .ptable th,.ptable td{padding:.5rem .55rem;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
 .ptable th:first-child,.ptable td:first-child{text-align:left;white-space:normal;min-width:220px}
@@ -1042,6 +1050,11 @@ function demoPostDays(id, days){
   }
   return {post_id:id, totals:{...t, sessions:sess.size}, by_day:Object.values(byDay).sort((a, b) => a.day.localeCompare(b.day))};
 }
+function demoInsights(days){
+  const total = Array.from({length:days}, (_, i) => 20 + ((i * 37) % 41)).reduce((a, b) => a + b, 0), sessions = Math.round(total * .6);
+  const split = shares => Object.entries(shares).map(([key, f]) => ({key, n:Math.round(sessions * f)}));
+  return {days, sessions, sessions_with_device:sessions, by_device:split({phone:.71, computer:.24, tablet:.05}), by_lang:split({en:.82, es:.09, fr:.06, nl:.03})};
+}
 function demoStorage(){
   ensureDemoEvents();
   const pe = demoDb.postEvents.length, oldest = demoDb.postEvents.reduce((m, e) => e.created_at < m ? e.created_at : m, new Date().toISOString());
@@ -1204,7 +1217,17 @@ const api = {
     }
     for (const [bucket, paths] of Object.entries(byBucket)) { try { await sb.storage.from(bucket).remove(paths); } catch (e) { console.error(e); } }
   },
-  async track(row){ if (DEMO) return; try { await sb.from("page_views").insert(row); } catch {} },
+  async track(row){
+    if (DEMO) return;
+    try {
+      const {error} = await sb.from("page_views").insert(row);
+      if (error && "device" in row && /device|lang|column/i.test(error.message || "")) { const {device, lang, ...base} = row; await sb.from("page_views").insert(base); }
+    } catch {}
+  },
+  async trafficInsights(days){
+    if (DEMO) return demoInsights(days);
+    const {data, error} = await sb.rpc("traffic_insights", {p_days:days}); if (error) throw error; return data;
+  },
   async logPostEvents(rows){
     if (DEMO) { const now = new Date().toISOString(); rows.forEach(r => demoDb.postEvents.push({...r, created_at:now})); return; }
     try { const {error} = await sb.from("post_events").insert(rows); if (!error) return; throw error; }
@@ -1305,6 +1328,10 @@ const SESSION_ID = (() => { try { let v = sessionStorage.getItem("ic_sid"); if (
 let lastTrack = "";
 let adminCheckDone; const adminCheck = new Promise(r => { adminCheckDone = r; });
 const isAdminBrowser = () => state.isAdmin === true || store.get("ic_admin", false) === true;
+function deviceClass(){
+  try { const w = window.innerWidth || screen.width || 1024, coarse = matchMedia("(pointer: coarse)").matches; return w < 640 ? "phone" : (w < 1025 && coarse) ? "tablet" : "computer"; }
+  catch { return null; }
+}
 async function track(path, code){
   try {
     if (state.silent) return;
@@ -1318,7 +1345,7 @@ async function track(path, code){
       sessionStorage.setItem("ic_ref", "1");
       try { if (document.referrer) { const h = new URL(document.referrer).hostname; if (h && h !== location.hostname) ref = h; } } catch {}
     }
-    api.track({path:path.slice(0,200), country_code:code || null, referrer:ref.slice(0,200), session_id:SESSION_ID});
+    api.track({path:path.slice(0,200), country_code:code || null, referrer:ref.slice(0,200), session_id:SESSION_ID, device:deviceClass(), lang:UILANG});
   } catch {}
 }
 const POST_EVENTS = ["view", "open", "share", "contact", "source", "arrive"], COUNT_ONCE = new Set(["view", "open", "contact", "arrive"]);
@@ -2065,6 +2092,110 @@ function postReport(){
   const p = state.psPost, t = {...PS_ZERO, ...((state.psData || {}).totals || {})}, days = state.psDays || 30, isl = state.byCode[p.country_code];
   return `Isle Connect report: "${p.title}"${isl ? ` (${isl.name})` : ""}\nLast ${days} days: shown in lists ${t.views} times, opened ${t.opens} times, shared on WhatsApp ${t.shares} times, contact details shown ${t.contacts} times, source link followed ${t.sources} times, and ${t.arrivals} visits from shared links.\nThese are anonymous counts: no cookies and no personal data.`;
 }
+const FOCUS_MODES = [["opens", "Opened in full"], ["contacts", "Contact details shown"], ["shares", "Shared on WhatsApp"], ["sources", "Source link followed"], ["arrivals", "Arrived from a shared link"]];
+const DEVICE_WORD = {phone:"phones", tablet:"tablets", computer:"computers"}, LANG_WORD = {en:"English", es:"Spanish", fr:"French", nl:"Dutch"};
+function buildFocus(x){
+  const days = x.days, cur = x.cur || {}, prev = x.prev || null, name = x.name || (c => c), tv = Number(cur.total_views || 0);
+  const pc = (a, b) => b > 0 ? Math.round(a / b * 100) : 0;
+  const f = {days, totalViews:tv, visits:Number(cur.unique_visitors || 0), tips:[], postsOk:Array.isArray(x.posts)};
+  const prevMap = prev ? Object.fromEntries((prev.by_country || []).map(r => [r.code, Number(r.views)])) : null;
+  f.islands = (cur.by_country || []).map(r => ({code:r.code, name:name(r.code), views:Number(r.views)})).filter(r => r.views > 0).sort((a, b) => b.views - a.views)
+    .map(i => { const before = prevMap ? (prevMap[i.code] || 0) : null; return {...i, pct:pc(i.views, tv), before, growth:before !== null && before >= 20 ? (i.views - before) / before : null}; });
+  f.topIsland = f.islands[0] || null;
+  f.fastest = f.islands.filter(i => i.growth !== null && i.views >= 20 && i.growth >= 0.25).sort((a, b) => b.growth - a.growth)[0] || null;
+  const refs = (cur.by_referrer || []).map(r => ({ref:String(r.ref), views:Number(r.views)})).sort((a, b) => b.views - a.views);
+  const refTotal = refs.reduce((a, r) => a + r.views, 0);
+  f.refs = refs; f.topRef = refs.find(r => !/^direct/i.test(r.ref)) || null;
+  f.topRefPct = f.topRef ? pc(f.topRef.views, refTotal) : 0;
+  f.directPct = pc((refs.find(r => /^direct/i.test(r.ref)) || {views:0}).views, refTotal);
+  const P = (x.posts || []).map(r => ({id:String(r.post_id), title:String(r.title || ""), code:r.country_code, category:r.category || "Other", views:Number(r.views), opens:Number(r.opens), shares:Number(r.shares), contacts:Number(r.contacts), sources:Number(r.sources), arrivals:Number(r.arrivals)}));
+  const sum = k => P.reduce((a, p) => a + p[k], 0);
+  const T = f.totals = {views:sum("views"), opens:sum("opens"), shares:sum("shares"), contacts:sum("contacts"), sources:sum("sources"), arrivals:sum("arrivals")};
+  const best = k => [...P].filter(p => p[k] > 0).sort((a, b) => b[k] - a[k] || b.opens - a.opens)[0] || null;
+  f.topPosts = [...P].filter(p => p.opens > 0).sort((a, b) => b.opens - a.opens || b.views - a.views).slice(0, 3);
+  f.mostShared = best("shares"); f.mostContacted = best("contacts");
+  const cats = {}; P.forEach(p => { const c = cats[p.category] = cats[p.category] || {name:p.category, opens:0, views:0, posts:0}; c.opens += p.opens; c.views += p.views; c.posts++; });
+  f.categories = Object.values(cats).sort((a, b) => b.opens - a.opens || b.views - a.views);
+  f.topCategory = f.categories[0] && f.categories[0].opens > 0 ? {...f.categories[0], pct:pc(f.categories[0].opens, T.opens)} : null;
+  f.modes = FOCUS_MODES.map(([k, label]) => ({key:k, label, n:T[k]})).sort((a, b) => b.n - a.n);
+  f.topMode = f.modes[0] && f.modes[0].n > 0 ? f.modes[0] : null;
+  f.rates = {open:T.views ? T.opens / T.views : null, share:T.opens ? T.shares / T.opens : null, contact:T.opens ? T.contacts / T.opens : null};
+  const ins = x.ins || null, dv = ins ? (ins.by_device || []) : [], dvN = ins ? Number(ins.sessions_with_device || 0) : 0, lg = ins ? (ins.by_lang || []) : [], lgN = lg.reduce((a, l) => a + Number(l.n), 0);
+  f.insMissing = x.insMissing === true; f.viewSessions = dvN;
+  f.devices = dvN >= 20 ? dv.map(d => ({key:d.key, label:DEVICE_WORD[d.key] || d.key, n:Number(d.n), pct:pc(Number(d.n), dvN)})) : []; f.topDevice = f.devices[0] || null;
+  f.langs = lgN >= 20 ? lg.map(l => ({key:l.key, label:LANG_WORD[l.key] || l.key, n:Number(l.n), pct:pc(Number(l.n), lgN)})) : []; f.topLang = f.langs[0] || null;
+  f.otherLangPct = f.langs.filter(l => l.key !== "en").reduce((a, l) => a + l.pct, 0);
+  f.small = tv < 50 || T.views < 100;
+  const isl = c => name(c);
+  if (f.small) f.tips.push(`There is not much data yet (${fmtNum(tv)} page views). Treat these as early hints: they become reliable after a few hundred visits.`);
+  if (f.topIsland) f.tips.push(`Put most of your effort into ${f.topIsland.name}: it brings ${f.topIsland.pct}% of page views (${fmtNum(f.topIsland.views)} of ${fmtNum(tv)}).`);
+  if (f.fastest) f.tips.push(`Watch ${f.fastest.name}: page views are up ${Math.round(f.fastest.growth * 100)}% on the previous ${days} days. Add posts there while interest is growing.`);
+  if (f.topCategory && f.topCategory.opens >= 10) f.tips.push(`People open ${f.topCategory.name} posts the most (${f.topCategory.pct}% of all opens). Add more ${f.topCategory.name} posts${f.topIsland ? ", especially on " + f.topIsland.name : ""}.`);
+  if (f.topDevice && f.topDevice.key === "phone" && f.topDevice.pct >= 60) f.tips.push(`Most people use phones (${f.topDevice.pct}% of visits). Check that new posts, photos and videos look good on a small screen.`);
+  if (f.topLang && f.otherLangPct >= 15) f.tips.push(`${f.otherLangPct}% of visits are in Spanish, French or Dutch. Make sure your important posts have translations.`);
+  if (f.topPosts[0]) f.tips.push(`Your best post is "${f.topPosts[0].title}" (${isl(f.topPosts[0].code)}, ${fmtNum(f.topPosts[0].opens)} opens). Use it as a model for new posts, and think about boosting it or similar ones.`);
+  if (f.rates.open !== null && T.views >= 100 && f.rates.open < 0.10) f.tips.push(`Only ${Math.round(f.rates.open * 100)}% of the people who see a post open it. Put the key facts (what, where, when, price) in the title.`);
+  if (T.opens >= 30 && f.rates.contact >= 0.15 && f.rates.share < 0.05) f.tips.push(`Many people ask for contact details (${Math.round(f.rates.contact * 100)}% of opens) but few share (${Math.round(f.rates.share * 100)}%). Add "please share on WhatsApp" to your posts.`);
+  if (T.arrivals >= 5) f.tips.push(`Shared links brought ${fmtNum(T.arrivals)} visits. Keep encouraging people to share posts on WhatsApp.`);
+  if (f.topRef && f.topRefPct >= 15 && tv >= 50) f.tips.push(`${f.topRef.ref} sends the most visitors you can identify (${f.topRefPct}%). Post your island links there regularly.`);
+  f.tips = f.tips.slice(0, 6);
+  return f;
+}
+function focusText(f){
+  const L = [`Isle Connect summary: last ${f.days} days`, `Page views: ${fmtNum(f.totalViews)}. Visits (browser sessions): ${fmtNum(f.visits)}.`];
+  L.push(f.topIsland ? `Most popular island: ${f.topIsland.name} (${f.topIsland.pct}% of page views, ${fmtNum(f.topIsland.views)}).` : "Most popular island: not enough data yet.");
+  if (f.fastest) L.push(`Fastest growing island: ${f.fastest.name} (up ${Math.round(f.fastest.growth * 100)}% on the previous ${f.days} days).`);
+  L.push(f.topRef ? `Top source of visitors: ${f.topRef.ref} (${f.topRefPct}%).` : "Top source of visitors: not enough data yet.");
+  if (f.postsOk) {
+    L.push(f.topPosts[0] ? `Most popular post: "${f.topPosts[0].title}" (${f.topPosts[0].opens} opens, ${f.topPosts[0].views} seen, ${f.topPosts[0].shares} shared).` : "Most popular post: not enough data yet.");
+    L.push(f.topMode ? `Most popular way people engage: ${f.topMode.label.toLowerCase()} (${fmtNum(f.topMode.n)}). Seen in a list: ${fmtNum(f.totals.views)}. ` + f.modes.filter(m => m !== f.topMode).map(m => `${m.label.toLowerCase()}: ${fmtNum(m.n)}`).join(", ") + "." : "Most popular way people engage: not enough data yet.");
+    if (f.topCategory) L.push(`Most opened category: ${f.topCategory.name} (${f.topCategory.pct}% of opens).`);
+  }
+  if (f.topDevice) L.push(`Most popular way to view: ${f.topDevice.label} (${f.topDevice.pct}% of visits)` + (f.devices.length > 1 ? `. Also: ${f.devices.slice(1).map(d => d.label + " " + d.pct + "%").join(", ")}.` : "."));
+  if (f.topLang) L.push(`Language shown: ${f.langs.slice(0, 3).map(l => l.label + " " + l.pct + "%").join(", ")}.`);
+  L.push("", "Where to focus:"); f.tips.forEach((t, i) => L.push(`${i + 1}. ${t}`));
+  L.push("", "These are anonymous counts: no cookies and no personal data.");
+  return L.join("\n");
+}
+function renderFocus(f){
+  const host = $("#admbody"); if (!host) return;
+  let panel = $("#focus");
+  if (!panel) { const anchor = host.querySelector(".regions"); if (!anchor) return; anchor.insertAdjacentHTML("afterend", '<div class="panel" id="focus"></div>'); panel = $("#focus"); }
+  if (!f) { panel.hidden = true; return; }
+  panel.hidden = false; state.focus = f;
+  const card = (label, big, small) => `<div class="fcard"><span>${label}</span><b>${big}</b><small>${small}</small></div>`;
+  const il = f.topIsland ? (state.byCode[f.topIsland.code] ? flag(f.topIsland.code) : "") + esc(f.topIsland.name) : "Not enough data yet";
+  const tp = f.topPosts[0];
+  const cards = [
+    card("Most popular island", il, f.topIsland ? `${f.topIsland.pct}% of page views (${fmtNum(f.topIsland.views)})${f.fastest && f.fastest.code !== f.topIsland.code ? `. Fastest growing: ${esc(f.fastest.name)}` : ""}` : "Visits will appear here."),
+    card("Top source of visitors", f.topRef ? esc(f.topRef.ref) : "Not enough data yet", f.topRef ? `${f.topRefPct}% of visits${f.directPct ? `. Direct or unknown: ${f.directPct}%` : ""}` : (f.directPct ? `Direct or unknown: ${f.directPct}%` : "")),
+    f.postsOk ? card("Most popular post", tp ? esc(tp.title) : "Not enough data yet", tp ? `${esc(state.byCode[tp.code] ? state.byCode[tp.code].name : tp.code)}: ${fmtNum(tp.opens)} opens, ${fmtNum(tp.views)} seen, ${fmtNum(tp.shares)} shared` : "") : card("Most popular post", "Not available", "Run supabase_post_stats.sql to see this."),
+    f.postsOk ? card("Most popular way people engage", f.topMode ? esc(f.topMode.label) : "Not enough data yet", f.topMode ? `${fmtNum(f.topMode.n)} times${f.rates.open !== null ? `. ${Math.round(f.rates.open * 100)}% of posts people see get opened` : ""}` : "") : "",
+    f.postsOk && f.topCategory ? card("Most opened category", esc(f.topCategory.name), `${f.topCategory.pct}% of all opens (${fmtNum(f.topCategory.opens)})`) : "",
+    f.topDevice ? card("Most popular way to view", esc(f.topDevice.label), `${f.topDevice.pct}% of visits${f.devices.length > 1 ? ". Also: " + esc(f.devices.slice(1).map(d => d.label + " " + d.pct + "%").join(", ")) : ""}`) : "",
+    f.topLang ? card("Language shown", esc(f.topLang.label), `${f.topLang.pct}% of visits${f.langs.length > 1 ? ". Also: " + esc(f.langs.slice(1, 3).map(l => l.label + " " + l.pct + "%").join(", ")) : ""}`) : ""
+  ].join("");
+  const maxM = Math.max(1, ...f.modes.map(m => m.n));
+  const modes = f.postsOk ? `<h4>Ways people use posts, most popular first</h4><p class="result-info" style="margin:0 0 .4rem">Seen in a list: ${fmtNum(f.totals.views)} times. Of those, here is what people then did:</p><div class="rank">${f.modes.map(m => `<div class="rank-row"><span class="lab">${esc(m.label)}</span><span class="rank-bar"><i style="width:${m.n / maxM * 100}%"></i></span><b>${fmtNum(m.n)}</b></div>`).join("")}</div>` : "";
+  const top3 = f.postsOk && f.topPosts.length ? `<h4>Most popular posts</h4><ol>${f.topPosts.map(p => `<li><b>${esc(p.title)}</b> (${esc(state.byCode[p.code] ? state.byCode[p.code].name : p.code)}): ${fmtNum(p.opens)} opens, ${fmtNum(p.views)} seen, ${fmtNum(p.shares)} shared, ${fmtNum(p.contacts)} contact</li>`).join("")}</ol>${f.mostShared && f.mostShared.id !== f.topPosts[0].id ? `<p class="result-info" style="margin:0">Most shared: <b>${esc(f.mostShared.title)}</b> (${fmtNum(f.mostShared.shares)}). ` : `<p class="result-info" style="margin:0">`}${f.mostContacted && f.mostContacted.id !== f.topPosts[0].id ? `Most contact requests: <b>${esc(f.mostContacted.title)}</b> (${fmtNum(f.mostContacted.contacts)}).` : ""}</p>` : "";
+  panel.innerHTML = `<h3>What to focus on (last ${f.days} days)</h3>
+    <p class="result-info" style="margin-top:0">Everything below compiled into plain words. It uses the same anonymous counts as the charts.</p>
+    <div class="fgrid">${cards}</div>${f.insMissing ? '<p class="result-info">To also see whether people use phones or computers, and which language they view in, run supabase_traffic_insights.sql once. It then fills in over the next few days.</p>' : ""}
+    <h4>Where to focus</h4>${f.tips.length ? `<ol>${f.tips.map(t => `<li>${esc(t)}</li>`).join("")}</ol>` : '<p class="result-info">Nothing to suggest yet.</p>'}
+    ${top3}${modes}
+    <div class="arow-actions" style="margin-top:.8rem"><button class="btn ghost small" type="button" data-act="focuscopy">Copy this summary</button></div>`;
+}
+async function loadFocus(t){
+  const days = state.trafficDays, token = state.focusToken = (state.focusToken || 0) + 1;
+  const [t2, posts, ins] = await Promise.all([api.traffic(days * 2).catch(() => null), api.postTraffic(days, null, 1000).catch(() => null), api.trafficInsights(days).catch(() => null)]);
+  if (token !== state.focusToken) return;
+  let prev = null;
+  if (t2 && Number(t2.total_views) >= Number(t.total_views)) {
+    const now = Object.fromEntries((t.by_country || []).map(r => [r.code, Number(r.views)]));
+    prev = {by_country:(t2.by_country || []).map(r => ({code:r.code, views:Math.max(0, Number(r.views) - (now[r.code] || 0))}))};
+  }
+  renderFocus(buildFocus({days, cur:t, prev, posts, ins, insMissing:ins === null, name:c => (state.byCode[c] ? state.byCode[c].name : c)}));
+}
 const TOP_SORTS = [["opens", "Most opened"], ["views", "Most seen"], ["shares", "Most shared"], ["contacts", "Most contacts"]];
 async function loadTopPosts(){
   try { state.topPosts = await api.postTraffic(state.trafficDays, null, 100); state.topOk = true; } catch (e) { console.error(e); state.topOk = false; }
@@ -2121,7 +2252,7 @@ async function doPurge(days){
 }
 async function showTraffic(){
   const el = $("#admbody"); el.innerHTML = '<div class="skeleton" style="height:160px;margin-top:1rem"></div>';
-  try { renderTraffic(await api.traffic(state.trafficDays)); loadTopPosts(); loadStorage(); }
+  try { { const t = await api.traffic(state.trafficDays); renderTraffic(t); loadFocus(t); loadTopPosts(); loadStorage(); } }
   catch (e) { console.error(e); el.innerHTML = `<div class="state"><h2>Couldn't load traffic</h2><p>Make sure you ran supabase_subscribers_traffic.sql and that you are signed in as an administrator.</p></div>`; }
 }
 function renderTraffic(t){
@@ -2297,7 +2428,7 @@ function legalSections(kind, op, mail){
       <li><b>Email sign-ups</b>: your email address, and optionally your country and topics of interest. We use it only to send the updates you asked for, and you can ask to be removed at any time.</li>
       <li><b>Questions and advertising requests you send</b> with the chat button or the Advertise form: your message, your business name if you give one, and optionally your email and country. We use them to reply to you and to arrange payment.</li>
       <li><b>Votes and feedback on posts</b>: a thumbs up or down, and an optional comment that only the administrator can see. Everyone else sees only the totals.</li>
-      <li><b>Visit counts</b>: to see which pages are used, we record which page you opened (the home page or a country page), a random code that lasts only while that browser tab is open, and the name of the website you came from. We do not record your IP address and we do not use cookies. We do not count visits when your browser sends Do Not Track or Global Privacy Control, or when the administrator is signed in.</li>
+      <li><b>Visit counts</b>: to see which pages are used, we record which page you opened (the home page or a country page), a random code that lasts only while that browser tab is open, the name of the website you came from, whether you are using a phone, tablet or computer, and which language the site is showing. We do not record your IP address and we do not use cookies. We do not count visits when your browser sends Do Not Track or Global Privacy Control, or when the administrator is signed in.</li>
       <li><b>Post counts</b>: in the same anonymous way we count how often each post is shown on screen, opened or shared on WhatsApp, how often its contact details or source link are used, and how many people open a post from a shared link. This lets the people who post, and the administrator, see how a post is doing. These counts hold only the post, the island, the kind of action, the same random tab code and the time. They are switched off in the same situations as visit counts. Visit counts are deleted automatically after 180 days and per-post counts after 60 days.</li>
       <li><b>Spam protection</b>: to stop abuse we keep a scrambled (hashed) form of your network address for a short time, about a day, to count how many requests come from one place. It cannot be turned back into your address.</li></ul>`},
     {h:"Cookies and what your browser stores", html:`<p>We do not use cookies. Your browser keeps a few small items on your device: the islands you visited recently, the language you choose (saved only if you pick one), a random code and a list showing which posts you have voted on (so a vote cannot be repeated), and, for the administrator only, a note that this device belongs to the administrator. A short-lived code in your browser tab is used for the visit count, and a short list in the same tab remembers which posts have already been counted as seen or opened, so that reloading a page does not count them again. You can clear all of these in your browser settings at any time.</p>`},
@@ -2622,6 +2753,7 @@ document.addEventListener("click", e => {
     case "pscopy": return navigator.clipboard.writeText(postReport()).then(() => toast("Report copied. Paste it into WhatsApp or an email.", "ok")).catch(() => toast("Couldn't copy the report.", "error"));
     case "topcsv": return exportPostStats();
     case "purge": return doPurge(Number(t.dataset.keep));
+    case "focuscopy": return navigator.clipboard.writeText(focusText(state.focus)).then(() => toast("Summary copied. Paste it into a note, WhatsApp or an email.", "ok")).catch(() => toast("Couldn't copy the summary.", "error"));
     case "islands": return openIslands();
     case "subscribe": return openSub(state.country?.code);
     case "exportsubs": return exportSubs();
