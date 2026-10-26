@@ -1,0 +1,1144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Caribbean Pitching Marbles &amp; Ring Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lilita+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e6f1ef; --panel:#ffffff; --panel-2:#f3f9f8; --ink:#0b2530; --muted:#456068; --line:#bcd3cf;
+  --brand:#c81f47; --brand-ink:#ffffff; --sun:#f6a21d; --sun-ink:#2b1a00; --sea:#0c5c6e; --sea-ink:#ffffff;
+  --focus:#1f6fd1; --shadow:0 8px 22px rgba(11,37,48,.16);
+  --display:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a222c; --panel:#11384a; --panel-2:#0e2f3e; --ink:#f1f7f6; --muted:#a8c3ca; --line:#245468;
+    --brand:#ff5a7e; --brand-ink:#2a0610; --sun:#ffb22e; --sun-ink:#2b1a00; --sea:#38b3c9; --sea-ink:#06222b;
+    --focus:#7db6ff; --shadow:0 8px 22px rgba(0,0,0,.4); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a222c; --panel:#11384a; --panel-2:#0e2f3e; --ink:#f1f7f6; --muted:#a8c3ca; --line:#245468;
+  --brand:#ff5a7e; --brand-ink:#2a0610; --sun:#ffb22e; --sun-ink:#2b1a00; --sea:#38b3c9; --sea-ink:#06222b;
+  --focus:#7db6ff; --shadow:0 8px 22px rgba(0,0,0,.4); color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);-webkit-text-size-adjust:100%;overflow:hidden}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:8px}
+#app{height:100%;display:flex;flex-direction:column;max-width:980px;margin:0 auto}
+.top{display:flex;align-items:center;gap:.5rem;padding:.55rem .85rem}
+.brand{font:400 1.3rem/1 var(--display);letter-spacing:.01em}
+.grow{flex:1}
+.icon{min-width:44px;height:44px;border-radius:14px;border:2px solid var(--line);background:var(--panel);cursor:pointer;font-size:1.15rem;line-height:1;display:inline-grid;place-items:center;padding:0 .6rem}
+.icon:hover{border-color:var(--sea)}
+main{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+.screen{flex:1;min-height:0;display:flex;flex-direction:column}
+#menu,#setup{overflow:auto;padding:.4rem 1rem 1.6rem}
+h1.sign{font:400 clamp(2.1rem,8.2vw,3.7rem)/1.02 var(--display);margin:.5rem 0 .6rem;letter-spacing:.005em;text-wrap:balance}
+.lede{font-size:1.1rem;max-width:34rem;margin:0 0 1.2rem;color:var(--muted)}
+.tiles2{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:700px){.tiles2{grid-template-columns:1fr 1fr}}
+.gtile{display:grid;grid-template-columns:auto 1fr;gap:.2rem 1rem;align-items:center;text-align:left;padding:1.1rem;border-radius:26px;border:2px solid var(--line);background:var(--panel);box-shadow:var(--shadow);cursor:pointer;transition:transform .12s,border-color .12s}
+.gtile:hover{border-color:var(--sea);transform:translateY(-2px)}
+.gtile:active{transform:translateY(0)}
+.gtile svg{grid-row:1 / span 3;width:118px;height:118px}
+.gt-title{font:400 1.7rem/1.05 var(--display)}
+.gt-sub{color:var(--muted);font-size:1rem}
+.gt-cta{justify-self:start;margin-top:.5rem;background:var(--brand);color:var(--brand-ink);font-weight:700;padding:.5rem 1.2rem;border-radius:99px}
+.note{color:var(--muted);font-size:.95rem;margin:1.2rem 0 0;max-width:36rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-weight:700;padding:.75rem 1.3rem;border-radius:16px;border:2px solid transparent;background:var(--brand);color:var(--brand-ink);cursor:pointer;min-height:48px}
+.btn.alt{background:var(--panel);color:var(--ink);border-color:var(--line)}
+.btn.alt:hover{border-color:var(--sea)}
+.btn.sun{background:var(--sun);color:var(--sun-ink)}
+.btn:disabled{opacity:.5;cursor:default}
+.field{margin:0 0 1.2rem;padding:0;border:0}
+.field legend{font:400 1.35rem/1.1 var(--display);margin-bottom:.5rem;padding:0}
+.choices{display:grid;gap:.6rem;grid-template-columns:1fr}
+@media(min-width:560px){.choices{grid-template-columns:1fr 1fr}}
+.choice{text-align:left;padding:.85rem 1rem;border-radius:18px;border:2px solid var(--line);background:var(--panel);cursor:pointer;min-height:56px}
+.choice b{display:block;font-size:1.05rem}
+.choice span{color:var(--muted);font-size:.95rem}
+.choice[aria-pressed="true"]{border-color:var(--sea);box-shadow:inset 0 0 0 2px var(--sea);background:var(--panel-2)}
+.rules{background:var(--panel);border:2px solid var(--line);border-radius:18px;padding:.9rem 1.1rem;margin:0 0 1.2rem;max-width:38rem}
+.rules p{margin:.2rem 0}
+/* game screens */
+.hud{display:flex;gap:.5rem;padding:.2rem .85rem .4rem;flex-wrap:wrap;align-items:stretch}
+.pbadge{flex:1;min-width:128px;display:flex;align-items:center;gap:.55rem;padding:.4rem .7rem;border-radius:16px;border:2px solid var(--line);background:var(--panel)}
+.pbadge[data-active="true"]{border-color:var(--sun);box-shadow:inset 0 0 0 2px var(--sun)}
+.pbadge i{width:22px;height:22px;border-radius:50%;flex:none;box-shadow:inset -3px -3px 5px rgba(0,0,0,.3),inset 3px 3px 5px rgba(255,255,255,.5)}
+.pbadge b{font-weight:700;line-height:1.1}
+.pbadge .sc{margin-left:auto;font:400 1.7rem/1 var(--display)}
+.pbadge small{display:block;color:var(--muted);line-height:1.1}
+.stage{flex:1;min-height:0;position:relative;display:grid;place-items:center;padding:0 .5rem}
+canvas{display:block;touch-action:none;border-radius:20px;box-shadow:var(--shadow);background:#d6ab76}
+.status{padding:.45rem .9rem .5rem;text-align:center;font-weight:700;min-height:2.9em}
+.moves{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:.1rem .85rem .9rem}
+.move{display:grid;gap:.1rem;place-items:center;min-height:72px;border-radius:20px;border:2px solid var(--line);background:var(--panel);cursor:pointer;padding:.4rem .2rem;font-weight:700}
+.move span.e{font-size:1.7rem;line-height:1}
+.move small{color:var(--muted);font-weight:400}
+.move:hover:not(:disabled){border-color:var(--sea)}
+.move:disabled{opacity:.55;cursor:default}
+.move[data-lit="true"]{background:var(--sun);color:var(--sun-ink);border-color:var(--sun);transform:scale(1.04)}
+.move[data-lit="true"] small{color:var(--sun-ink)}
+.dots{display:flex;gap:.35rem;justify-content:center;flex-wrap:wrap;padding:0 .9rem}
+.dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--sea);background:transparent}
+.dots i.on{background:var(--sea)}
+.lives{font-size:1.2rem;letter-spacing:.1em}
+.rgbar{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.2rem .95rem .3rem}
+.rgbar b{font:400 1.5rem/1 var(--display)}
+dialog{border:2px solid var(--line);border-radius:26px;background:var(--panel);color:var(--ink);box-shadow:var(--shadow);padding:1.3rem 1.4rem 1.1rem;max-width:min(30rem,92vw)}
+dialog::backdrop{background:rgba(5,20,28,.62)}
+dialog h2{font:400 1.8rem/1.05 var(--display);margin:0 0 .5rem}
+dialog p{margin:.4rem 0}
+.dacts{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.gtile.wide{grid-column:1 / -1}
+.boardwrap{flex:1;min-height:0;overflow:auto;padding:.2rem 1rem 1.6rem}
+.boardwrap h1.sign{font-size:clamp(1.9rem,6.5vw,2.8rem)}
+.me{margin:.1rem 0 .4rem;min-height:2.6rem}
+.seg{display:flex;gap:.4rem;flex-wrap:wrap;margin:.5rem 0}
+.seg button{flex:1;min-width:104px;min-height:46px;border-radius:14px;border:2px solid var(--line);background:var(--panel);cursor:pointer;font-weight:700;padding:.4rem .7rem}
+.seg button:hover{border-color:var(--sea)}
+.seg button[aria-pressed="true"]{background:var(--sea);color:var(--sea-ink);border-color:var(--sea)}
+.rows{list-style:none;margin:.6rem 0;padding:0;display:grid;gap:.45rem}
+.rows li{display:grid;grid-template-columns:2.6rem 1fr auto;gap:.6rem;align-items:center;padding:.6rem .8rem;border-radius:16px;border:2px solid var(--line);background:var(--panel)}
+.rows li.you{border-color:var(--sun);box-shadow:inset 0 0 0 2px var(--sun)}
+.rows li.gap{display:block;border:0;background:none;text-align:center;color:var(--muted);padding:0}
+.rk{font:400 1.5rem/1 var(--display);text-align:center}
+.who b{display:block;line-height:1.15}
+.who small{color:var(--muted)}
+.pts{font:400 1.6rem/1 var(--display)}
+.pts small{font:400 .85rem var(--body);color:var(--muted);display:block;text-align:right}
+.bar{display:block;height:8px;border-radius:99px;background:var(--sea);margin-top:.4rem;min-width:6px}
+.pf{margin:.9rem 0}
+.pf label,.pf .lbl{display:block;font-weight:700;margin-bottom:.3rem}
+.pf select{width:100%;min-height:48px;border-radius:14px;border:2px solid var(--line);background:var(--panel);color:var(--ink);padding:.4rem .7rem;font:inherit}
+.namebox{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.namebox b{font:400 1.6rem/1 var(--display)}
+.err{color:var(--brand);font-weight:700;min-height:1.4em;margin:.3rem 0 0}
+.muted{color:var(--muted)}
+.linkbtn{background:none;border:0;padding:0;color:var(--sea);font-weight:700;text-decoration:underline;cursor:pointer}
+.mdot{width:22px;height:22px;flex:none;vertical-align:middle}
+.who .mdot{width:22px;height:22px;margin-right:.4rem;position:relative;top:-1px}
+.mbig{width:56px;height:56px;flex:none}
+.choice.mpick{display:flex;gap:.8rem;align-items:center}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:.5rem;margin:.4rem 0 .8rem}
+.mcell{display:grid;justify-items:center;gap:.2rem;padding:.5rem .3rem;border-radius:16px;border:2px solid var(--line);background:var(--panel);cursor:pointer;font-size:.82rem;line-height:1.15;text-align:center;color:var(--ink)}
+.mcell:hover:not(.locked){border-color:var(--sea)}
+.mcell[aria-pressed="true"]{border-color:var(--sun);box-shadow:inset 0 0 0 2px var(--sun)}
+.mcell img,.mcell .lockdot{width:56px;height:56px}
+.mcell.locked{opacity:.7;cursor:default;border-style:dashed}
+.lockdot{border-radius:50%;background:radial-gradient(circle at 35% 30%,#d5dde0,#8b999e 70%,#5d6a6f);display:grid;place-items:center;font:400 1.5rem var(--display);color:#fff}
+.prize{margin:.6rem 0;padding:.7rem .9rem;border-radius:18px;background:var(--panel-2);border:2px solid var(--sun)}
+.prow{display:flex;gap:.8rem;flex-wrap:wrap;margin:.5rem 0}
+.prow figure{margin:0;text-align:center;font-size:.85rem;animation:pop .5s ease-out both}
+.prow img{display:block;margin:0 auto .15rem}
+.lvl{padding:.6rem .8rem;border-radius:16px;border:2px solid var(--line);background:var(--panel);margin:.4rem 0}
+.lvl b{display:block}
+.lvl small{color:var(--muted)}
+.lvl .bar{background:var(--sun)}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion: reduce){.prow figure{animation:none}}
+@media (prefers-reduced-motion: reduce){.gtile,.gtile:hover{transition:none;transform:none}}
+</style>
+</head>
+<body>
+<noscript><p style="padding:1rem">This game needs JavaScript. Please turn it on and reload the page.</p></noscript>
+<div id="app">
+  <header class="top">
+    <button id="btnBack" class="icon" type="button" aria-label="Back to Isle Connect">‹</button>
+    <div class="brand" id="hdrTitle">Caribbean yard games</div>
+    <span class="grow"></span>
+    <button id="btnSound" class="icon" type="button" aria-pressed="true" aria-label="Sound is on. Turn it off">🔊</button>
+    <button id="btnAbout" class="icon" type="button" aria-label="About these games">?</button>
+  </header>
+  <main>
+    <section id="menu" class="screen" aria-labelledby="menuTitle">
+      <h1 class="sign" id="menuTitle">Pitching marbles and ring games</h1>
+      <p class="lede">Two yard games from across the Caribbean. Flick a marble, copy the leader, and pass the game on.</p>
+      <div class="tiles2">
+        <button class="gtile" type="button" data-go="setup">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <radialGradient id="m1" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ff9aa9"/><stop offset=".5" stop-color="#e63946"/><stop offset="1" stop-color="#7d0f1c"/></radialGradient>
+              <radialGradient id="m2" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#9fe3da"/><stop offset=".5" stop-color="#2a9d8f"/><stop offset="1" stop-color="#0d4a42"/></radialGradient>
+              <radialGradient id="m3" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffe0a3"/><stop offset=".5" stop-color="#f4a261"/><stop offset="1" stop-color="#8c4a14"/></radialGradient>
+            </defs>
+            <circle cx="60" cy="60" r="54" fill="#d9ad78"/>
+            <circle cx="60" cy="60" r="46" fill="none" stroke="#8a5a2b" stroke-width="4" stroke-dasharray="2 5" stroke-linecap="round"/>
+            <circle cx="60" cy="60" r="14" fill="url(#m1)"/><circle cx="43" cy="50" r="12" fill="url(#m2)"/><circle cx="77" cy="52" r="12" fill="url(#m3)"/>
+            <circle cx="52" cy="76" r="12" fill="url(#m3)"/><circle cx="72" cy="75" r="12" fill="url(#m2)"/>
+            <ellipse cx="56" cy="55" rx="4" ry="2.6" fill="#fff" opacity=".7"/>
+          </svg>
+          <span class="gt-title">Pitching marbles</span>
+          <span class="gt-sub">Pull back and let go. Knock marbles out of the ring or pitch into the hole.</span>
+          <span class="gt-cta">Play</span>
+        </button>
+        <button class="gtile" type="button" data-go="ring">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="56" fill="#f6dfa8"/>
+            <g>
+              <circle cx="60" cy="14" r="9" fill="#c81f47"/><circle cx="92.5" cy="27.5" r="9" fill="#f6a21d"/><circle cx="106" cy="60" r="9" fill="#2b78c2"/>
+              <circle cx="92.5" cy="92.5" r="9" fill="#5da130"/><circle cx="60" cy="106" r="9" fill="#8338ec"/><circle cx="27.5" cy="92.5" r="9" fill="#0c8f8f"/>
+              <circle cx="14" cy="60" r="9" fill="#e76f51"/><circle cx="27.5" cy="27.5" r="9" fill="#ff6fa5"/>
+            </g>
+            <circle cx="60" cy="60" r="17" fill="#8d5524"/><circle cx="60" cy="52" r="11" fill="#c68642"/>
+            <circle cx="56" cy="50" r="1.8" fill="#222"/><circle cx="64" cy="50" r="1.8" fill="#222"/><path d="M55 56q5 4 10 0" stroke="#222" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          </svg>
+          <span class="gt-title">Ring game</span>
+          <span class="gt-sub">Watch the leader, copy the moves in order, then pick who leads next.</span>
+          <span class="gt-cta">Play</span>
+        </button>
+      </div>
+      <div class="tiles2" style="margin-top:1rem"><button class="gtile" type="button" data-go="board">
+          <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" fill="#cfe9e4"/><rect x="18" y="68" width="26" height="30" rx="4" fill="#2b78c2"/><rect x="47" y="48" width="26" height="50" rx="4" fill="#f6a21d"/><rect x="76" y="76" width="26" height="22" rx="4" fill="#c81f47"/><path d="M60 22l4 9 10 1-7.500 6.500 2.500 9.500-9-5.500-9 5.500 2.500-9.500L46 32l10-1z" fill="#f6a21d"/></svg>
+          <span class="gt-title">Island scoreboard</span>
+          <span class="gt-sub">See the top players, and which islands are ahead.</span>
+          <span class="gt-cta">See scores</span></button>
+        <button class="gtile" type="button" data-go="bag">
+          <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" fill="#f6dfa8"/><circle cx="42" cy="48" r="22" fill="#0b9d58"/><circle cx="42" cy="48" r="22" fill="#fcd116" clip-path="polygon(0 0,100% 0,0 100%)"/><circle cx="80" cy="56" r="22" fill="#cf142b"/><rect x="58" y="49" width="44" height="14" fill="#fff" clip-path="circle(22px at 22px 7px)"/><circle cx="62" cy="86" r="22" fill="#00247d"/><circle cx="62" cy="86" r="9" fill="#fff"/><ellipse cx="34" cy="38" rx="6" ry="3.500" fill="#fff" opacity=".6"/><ellipse cx="72" cy="46" rx="6" ry="3.500" fill="#fff" opacity=".6"/></svg>
+          <span class="gt-title">My marbles</span>
+          <span class="gt-sub">Win levels to collect a flag marble for every island.</span>
+          <span class="gt-cta">See my marbles</span></button></div>
+      <p class="note">Names and rules change from island to island. Tap the question mark to read more.</p>
+      <p class="note"><a href="./">Back to Isle Connect</a></p>
+    </section>
+
+    <section id="setup" class="screen" hidden aria-labelledby="setupTitle">
+      <h1 class="sign" id="setupTitle" style="font-size:clamp(1.9rem,6.5vw,2.8rem)">Pitching marbles</h1>
+      <fieldset class="field"><legend>Pick a game</legend>
+        <div class="choices" id="modeChoices">
+          <button class="choice" type="button" data-mode="ring" aria-pressed="true"><b>Knock out the ring</b><span>13 marbles in a ring. Knock them out.</span></button>
+          <button class="choice" type="button" data-mode="hole" aria-pressed="false"><b>Pitch to the hole</b><span>Land your marble in the hole.</span></button>
+        </div>
+      </fieldset>
+      <fieldset class="field"><legend>Who is playing?</legend>
+        <div class="choices" id="playerChoices">
+          <button class="choice" type="button" data-players="1" aria-pressed="true"><b>One player</b><span>Beat your best score.</span></button>
+          <button class="choice" type="button" data-players="2" aria-pressed="false"><b>Two players</b><span>Take turns on one screen.</span></button>
+        </div>
+      </fieldset>
+      <fieldset class="field"><legend>Pick your marble</legend><div class="choices" id="marbleChoices"></div></fieldset>
+      <div class="rules" id="rulesBox" aria-live="polite"></div>
+      <button class="btn" type="button" id="startMarbles">Start playing</button>
+    </section>
+
+    <section id="marbles" class="screen" hidden aria-label="Pitching marbles">
+      <div class="hud" id="mgHud"></div>
+      <div class="stage" id="mgStage"><canvas id="mgCanvas" width="600" height="800" aria-label="Marble yard. Pull back anywhere and let go to shoot, or use the arrow keys and the space bar."></canvas></div>
+      <div class="status" id="mgStatus" role="status" aria-live="polite"></div>
+    </section>
+
+    <section id="bag" class="screen" hidden aria-labelledby="bagTitle">
+      <div class="boardwrap">
+        <h1 class="sign" id="bagTitle">My marbles</h1>
+        <p class="me" id="bagSummary"></p>
+        <div id="bagLevels"></div>
+        <h2 style="font:400 1.4rem/1.1 var(--display);margin:1rem 0 .3rem">Flag marbles</h2>
+        <div class="mgrid" id="bagGrid"></div>
+        <p class="muted" style="font-size:.9rem">The flag designs are simplified. Tap a marble to play with it.</p>
+      </div>
+    </section>
+
+    <section id="board" class="screen" hidden aria-labelledby="boardTitle">
+      <div class="boardwrap">
+        <h1 class="sign" id="boardTitle">Island scoreboard</h1>
+        <p class="me" id="boardMe"></p>
+        <div class="seg" id="viewSeg" role="group" aria-label="What to show"><button type="button" data-view="players" aria-pressed="true">Top players</button><button type="button" data-view="islands" aria-pressed="false">Islands</button></div>
+        <div id="playerOpts">
+          <div class="seg" id="gameSeg" role="group" aria-label="Game"><button type="button" data-game="ring" aria-pressed="true">Knock out the ring</button><button type="button" data-game="hole" aria-pressed="false">Pitch to the hole</button><button type="button" data-game="follow" aria-pressed="false">Ring game</button></div>
+          <div class="seg" id="scopeSeg" role="group" aria-label="Who to show"><button type="button" data-scope="all" aria-pressed="true">Everyone</button><button type="button" data-scope="island" aria-pressed="false">My island</button></div>
+        </div>
+        <div id="boardBody" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="ring" class="screen" hidden aria-label="Ring game">
+      <div class="rgbar"><b id="rgRound">Round 1</b><span class="lives" id="rgLives" aria-label="Lives left"></span></div>
+      <div class="stage" id="rgStage"><canvas id="rgCanvas" width="600" height="620" aria-label="A ring of eight children with a leader in the middle."></canvas></div>
+      <div class="dots" id="rgDots" aria-hidden="true"></div>
+      <div class="status" id="rgStatus" role="status" aria-live="polite"></div>
+      <div class="moves" id="rgMoves"></div>
+    </section>
+  </main>
+</div>
+<dialog id="dlg" aria-labelledby="dlgTitle"><h2 id="dlgTitle"></h2><div id="dlgBody"></div><div class="dacts" id="dlgActs"></div></dialog>
+
+<script>
+"use strict";
+/* ---------- small helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const store = {
+  get(k, d){ try { const v = localStorage.getItem("yg:" + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
+  set(k, v){ try { localStorage.setItem("yg:" + k, JSON.stringify(v)); } catch {} }
+};
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const rand = (a, b) => a + Math.random() * (b - a);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const REDUCED = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const hex2rgb = h => { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; };
+const mix = (h, t, amt) => { const a = hex2rgb(h), b = hex2rgb(t); return "rgb(" + a.map((v, i) => Math.round(v + (b[i] - v) * amt)).join(",") + ")"; };
+const lighten = (h, a) => mix(h, "#ffffff", a), darken = (h, a) => mix(h, "#000000", a);
+
+/* ---------- sound: everything is made in the browser, nothing is downloaded ---------- */
+const Snd = (() => {
+  let ctx = null, on = store.get("sound", true);
+  const ensure = () => {
+    if (!on) return null;
+    if (!ctx) { try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch { return null; } }
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  };
+  const tone = (f, dur = .15, type = "sine", vol = .18, when = 0, slide = 0) => {
+    const c = ensure(); if (!c) return; const t = c.currentTime + when, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t); if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f * slide), t + dur);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur); o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur + .03);
+  };
+  const noise = (dur = .08, vol = .2, when = 0, hp = 1500) => {
+    const c = ensure(); if (!c) return; const t = c.currentTime + when, n = Math.floor(c.sampleRate * dur), b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+    const s = c.createBufferSource(); s.buffer = b; const f = c.createBiquadFilter(); f.type = "highpass"; f.frequency.value = hp; const g = c.createGain(); g.gain.value = vol;
+    s.connect(f).connect(g).connect(c.destination); s.start(t);
+  };
+  return {
+    get on(){ return on; },
+    set(v){ on = v; store.set("sound", v); if (v) ensure(); },
+    unlock(){ ensure(); },
+    clack(p = .5){ tone(1700 + p * 1000, .05, "square", .04 + p * .07, 0, .5); noise(.03, .06 + p * .1, 0, 3200); },
+    wall(){ tone(280, .06, "triangle", .07, 0, .6); },
+    pop(){ tone(520, .12, "sine", .2, 0, 1.8); tone(780, .1, "sine", .12, .06); },
+    drop(){ tone(420, .28, "sine", .22, 0, .4); noise(.05, .08, 0, 600); },
+    good(){ [523, 659, 784].forEach((f, i) => tone(f, .18, "triangle", .16, i * .08)); },
+    bad(){ tone(190, .32, "sawtooth", .1, 0, .6); },
+    kick(){ tone(120, .16, "sine", .32, 0, .4); },
+    clap(){ noise(.07, .22, 0, 1200); },
+    blip(f){ tone(f, .22, "triangle", .2); },
+    cheer(){ [523, 659, 784, 1047].forEach((f, i) => tone(f, .22, "triangle", .15, i * .09)); }
+  };
+})();
+
+/* ---------- dialog ---------- */
+const dlg = $("#dlg");
+function openDialog(title, bodyHtml, buttons){
+  $("#dlgTitle").textContent = title; $("#dlgBody").innerHTML = bodyHtml;
+  const acts = $("#dlgActs"); acts.innerHTML = "";
+  buttons.forEach(b => { const el = document.createElement("button"); el.type = "button"; el.className = "btn" + (b.alt ? " alt" : ""); el.textContent = b.label;
+    el.addEventListener("click", () => { dlg.close(); if (b.fn) b.fn(); }); acts.appendChild(el); });
+  if (!dlg.open) dlg.showModal();
+  const first = acts.querySelector("button"); if (first) first.focus();
+}
+const bestOf = (key, v) => { const old = store.get("best:" + key, 0); if (v > old) { store.set("best:" + key, v); return {best: v, isNew: old > 0 || v > 0}; } return {best: old, isNew: false}; };
+
+/* ---------- screens ---------- */
+const SCREENS = ["menu", "setup", "marbles", "ring", "board", "bag"];
+const TITLES = {menu: "Caribbean yard games", setup: "Pitching marbles", marbles: "Pitching marbles", ring: "Ring game", board: "Island scoreboard", bag: "My marbles"};
+let stopCurrent = null, currentScreen = "menu";
+function show(id){
+  if (stopCurrent) { stopCurrent(); stopCurrent = null; }
+  SCREENS.forEach(s => { $("#" + s).hidden = s !== id; });
+  currentScreen = id; $("#btnBack").setAttribute("aria-label", id === "menu" ? "Back to Isle Connect" : "Back"); $("#hdrTitle").textContent = TITLES[id];
+  if (id === "menu" || id === "setup") $("#" + id).scrollTop = 0;
+  if (id === "board") showBoard();
+  if (id === "bag") showBag();
+  if (id === "setup") renderMarbleChoices();
+}
+$("#btnBack").addEventListener("click", () => { if (currentScreen === "menu") location.href = "./"; else show(currentScreen === "marbles" ? "setup" : "menu"); });
+$$("[data-go]").forEach(b => b.addEventListener("click", () => { Snd.unlock(); const g = b.dataset.go; if (g === "setup") show("setup"); else if (g === "board") show("board"); else if (g === "bag") show("bag"); else { show("ring"); startRing(); } }));
+function syncSound(){ const b = $("#btnSound"); b.textContent = Snd.on ? "🔊" : "🔇"; b.setAttribute("aria-pressed", String(Snd.on)); b.setAttribute("aria-label", Snd.on ? "Sound is on. Turn it off" : "Sound is off. Turn it on"); }
+$("#btnSound").addEventListener("click", () => { Snd.set(!Snd.on); syncSound(); });
+syncSound();
+$("#btnAbout").addEventListener("click", () => openDialog("About these games",
+  "<p>Pitching marbles and ring games are yard games that children have played across the Caribbean for generations. Every island, and often every yard, has its own names, rules and songs.</p>" +
+  "<p>These versions are simplified so anyone can pick them up in a minute. If your island plays differently, that is the real game: ask an elder to show you, and teach your friends.</p>" +
+  "<p>All the sounds in this game are made on your device. Your best scores are saved on this device. If you choose to add a score to the island scoreboard, the game shares only your made-up yard name, your island, the marble you play with and your score. Two-player games never go on the scoreboard.</p>", [{label: "Close"}]));
+
+
+/* =====================================================================
+   SCOREBOARD: shared scores for one-player games, shown per player and per island
+   Paste the same two values you use in Isle Connect (the Supabase URL and the anon key).
+   Leave them empty and the game still works, with scores kept on this device only.
+   ===================================================================== */
+const CONFIG = { SUPABASE_URL: "", SUPABASE_ANON_KEY: "" };
+const NET_ON = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
+async function rpc(fn, args){
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 9000);
+  try {
+    const res = await fetch(CONFIG.SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/rpc/" + fn, { method: "POST", signal: ctl.signal,
+      headers: {"Content-Type": "application/json", apikey: CONFIG.SUPABASE_ANON_KEY, Authorization: "Bearer " + CONFIG.SUPABASE_ANON_KEY}, body: JSON.stringify(args || {}) });
+    if (!res.ok) { let msg = ""; try { msg = (await res.json()).message || ""; } catch {} const e = new Error(msg || "HTTP " + res.status); e.status = res.status; throw e; }
+    return await res.json();
+  } finally { clearTimeout(timer); }
+}
+const ISLANDS = [["ai", "Anguilla"], ["ag", "Antigua and Barbuda"], ["aw", "Aruba"], ["bs", "Bahamas"], ["bb", "Barbados"], ["bz", "Belize"], ["vg", "British Virgin Islands"], ["ky", "Cayman Islands"], ["cu", "Cuba"], ["cw", "Curaçao"], ["dm", "Dominica"], ["do", "Dominican Republic"], ["gd", "Grenada"], ["gp", "Guadeloupe"], ["gy", "Guyana"], ["ht", "Haiti"], ["jm", "Jamaica"], ["mq", "Martinique"], ["ms", "Montserrat"], ["pr", "Puerto Rico"], ["kn", "Saint Kitts and Nevis"], ["lc", "Saint Lucia"], ["vc", "Saint Vincent and the Grenadines"], ["sx", "Sint Maarten"], ["sr", "Suriname"], ["tt", "Trinidad and Tobago"], ["tc", "Turks and Caicos Islands"], ["vi", "U.S. Virgin Islands"]];
+const islandName = c => (ISLANDS.find(x => x[0] === c) || [c, c])[1];
+const ADJ = ["Quick", "Brave", "Sunny", "Clever", "Mighty", "Lucky", "Gentle", "Bright", "Steady", "Swift", "Jolly", "Proud", "Calm", "Bold", "Merry", "Sharp", "Happy", "Cool", "Fancy", "Golden", "Breezy", "Coral", "Silver", "Wise"], NOUN = ["Mango", "Conch", "Lizard", "Parrot", "Turtle", "Dolphin", "Pelican", "Iguana", "Coconut", "Starfish", "Flamingo", "Manatee", "Crab", "Marlin", "Hibiscus", "Banana", "Tamarind", "Guava", "Cricket", "Firefly", "Seagull", "Pineapple", "Coqui", "Anole"];
+const pickOne = a => a[Math.floor(Math.random() * a.length)];
+const makeName = () => pickOne(ADJ) + " " + pickOne(NOUN) + " " + (10 + Math.floor(Math.random() * 90));
+const uuid = () => crypto.randomUUID ? crypto.randomUUID() : "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c => (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const ord = n => { const v = n % 100; return n + (v >= 11 && v <= 13 ? "th" : ({1: "st", 2: "nd", 3: "rd"}[n % 10] || "th")); };
+const getProfile = () => { const p = store.get("profile", null); return p && p.device && p.island && p.name ? p : null; };
+const GAMES = [{id: "ring", name: "Knock out the ring", unit: "marbles"}, {id: "hole", name: "Pitch to the hole", unit: "points"}, {id: "follow", name: "Ring game", unit: "rounds"}];
+const unitOf = id => (GAMES.find(g => g.id === id) || {}).unit || "points";
+
+function askProfile(done){
+  const pr = getProfile() || {device: uuid(), island: "", name: makeName()};
+  $("#dlgTitle").textContent = "Your island and yard name";
+  $("#dlgBody").innerHTML = "<p>Your yard name is made up, so nobody has to share a real name. The scoreboard shows your yard name, your island and your score. Nothing else is shared.</p>" +
+    "<div class=\"pf\"><label for=\"pfIsland\">Your island</label><select id=\"pfIsland\"><option value=\"\">Choose your island</option>" + ISLANDS.map(([c, n]) => "<option value=\"" + c + "\"" + (c === pr.island ? " selected" : "") + ">" + esc(n) + "</option>").join("") + "</select></div>" +
+    "<div class=\"pf\"><span class=\"lbl\">Your yard name</span><div class=\"namebox\"><b id=\"pfName\">" + esc(pr.name) + "</b><button class=\"btn alt\" type=\"button\" id=\"pfRoll\"><span aria-hidden=\"true\">🎲</span> New name</button></div></div><p class=\"err\" id=\"pfErr\" role=\"alert\"></p>";
+  const acts = $("#dlgActs"); acts.innerHTML = "";
+  const save = document.createElement("button"); save.type = "button"; save.className = "btn"; save.textContent = "Save";
+  const no = document.createElement("button"); no.type = "button"; no.className = "btn alt"; no.textContent = "Not now";
+  acts.append(save, no);
+  $("#pfRoll").addEventListener("click", () => { pr.name = makeName(); $("#pfName").textContent = pr.name; });
+  save.addEventListener("click", () => { const isl = $("#pfIsland").value; if (!isl) { $("#pfErr").textContent = "Choose your island first."; $("#pfIsland").focus(); return; } pr.island = isl; store.set("profile", pr); if (!bag.home) { bag.home = isl; saveBag(); } dlg.close(); if (done) done(pr); });
+  no.addEventListener("click", () => dlg.close());
+  if (!dlg.open) dlg.showModal(); $("#pfIsland").focus();
+}
+
+async function submitScore(game, score){
+  const pr = getProfile(); if (!NET_ON || !pr || !(score > 0)) return null;
+  try { return await rpc("game_submit_score", {p_device: pr.device, p_game: game, p_score: score, p_island: pr.island, p_name: pr.name, p_marble: marbleToken()}); }
+  catch (e) { return {error: e.message || "error"}; }
+}
+function rankText(res){
+  if (!res || res.error) {
+    const m = (res && res.error) || "";
+    if (/too_fast/.test(m)) return "Nice! Your score was sent a moment ago.";
+    if (/daily_limit/.test(m)) return "That is a lot of playing today. Each game takes up to 200 scores a day.";
+    return "Your best score is saved on this device. The scoreboard could not be reached just now.";
+  }
+  return (res.new_best ? "New best! " : "") + "You are " + ord(res.rank_island) + " of " + res.players_island + " on " + islandName(res.island) + ", and " + ord(res.rank_world) + " of " + res.players_world + " overall.";
+}
+function finishWithBoard(game, score, title, body, buttons){
+  if (!NET_ON || !(score > 0)) return openDialog(title, body, buttons);
+  const pr = getProfile();
+  if (pr) {
+    openDialog(title, body + "<p id=\"rankLine\" class=\"muted\">Sending your score to the scoreboard…</p>", buttons);
+    submitScore(game, score).then(res => { const el = $("#rankLine"); if (el && dlg.open) { el.classList.remove("muted"); el.textContent = rankText(res); } });
+  } else {
+    openDialog(title, body + "<p>Want your score on the island scoreboard? Pick your island and a made-up yard name. There is no sign-up and no real name.</p>",
+      [{label: "Add to the scoreboard", fn: () => askProfile(p => finishWithBoard(game, score, title, body, buttons))}].concat(buttons.map(b => ({...b, alt: true}))));
+  }
+}
+
+const B = {view: "players", game: "ring", scope: "all", token: 0};
+function renderMe(){
+  const pr = getProfile();
+  $("#boardMe").innerHTML = pr ? "Playing as <b>" + esc(pr.name) + "</b> from <b>" + esc(islandName(pr.island)) + "</b> <button class=\"linkbtn\" type=\"button\" id=\"btnProfile\">Change</button>"
+                               : "<button class=\"btn alt\" type=\"button\" id=\"btnProfile\">Choose your island and yard name</button>";
+  $("#btnProfile").addEventListener("click", () => askProfile(() => { renderMe(); loadBoard(); }));
+}
+function syncSegs(){
+  $$("#viewSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === B.view)));
+  $$("#gameSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.game === B.game)));
+  $$("#scopeSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.scope === B.scope)));
+  $("#playerOpts").hidden = B.view !== "players";
+}
+const miniMarble = t => { const sp = tokenSpec(t); return sp ? "<img class=\"mdot\" alt=\"\" src=\"" + marbleURL(sp, 44) + "\"> " : ""; };
+const medal = r => r === 1 ? "🥇" : r === 2 ? "🥈" : r === 3 ? "🥉" : String(r);
+function playersHtml(res){
+  const rows = (res && res.rows) || [], unit = unitOf(B.game);
+  if (!rows.length) return "<p>No scores here yet. Play a one-player game and be the first!</p>";
+  let html = "<ol class=\"rows\">" + rows.map(r => "<li class=\"" + (r.you ? "you" : "") + "\"><span class=\"rk\">" + medal(r.rank) + "</span><span class=\"who\"><b>" + miniMarble(r.marble) + esc(r.name) + (r.you ? " (you)" : "") + "</b><small>" + esc(islandName(r.island)) + "</small></span><span class=\"pts\">" + r.score + "<small>" + unit + "</small></span></li>").join("");
+  if (res.me && !rows.some(r => r.you)) html += "<li class=\"gap\" aria-hidden=\"true\">…</li><li class=\"you\"><span class=\"rk\">" + res.me.rank + "</span><span class=\"who\"><b>" + esc(res.me.name) + " (you)</b><small>" + esc(islandName(res.me.island)) + "</small></span><span class=\"pts\">" + res.me.score + "<small>" + unit + "</small></span></li>";
+  return html + "</ol>";
+}
+function islandsHtml(rows){
+  if (!rows || !rows.length) return "<p>No island has a score yet. Play a one-player game and put your island on the board!</p>";
+  const pr = getProfile(), max = Math.max(...rows.map(r => r.points), 1);
+  return "<p class=\"muted\">Every point scored by every player counts for their island.</p><ol class=\"rows\">" + rows.map((r, i) => "<li class=\"" + (pr && pr.island === r.island ? "you" : "") + "\"><span class=\"rk\">" + medal(i + 1) + "</span><span class=\"who\"><b>" + esc(islandName(r.island)) + (pr && pr.island === r.island ? " (your island)" : "") + "</b><small>" + r.players + " player" + (r.players === 1 ? "" : "s") + ", " + r.plays + " game" + (r.plays === 1 ? "" : "s") + "</small><i class=\"bar\" style=\"width:" + Math.max(2, Math.round(r.points / max * 100)) + "%\"></i></span><span class=\"pts\">" + r.points + "<small>points</small></span></li>").join("") + "</ol>";
+}
+function localBoardHtml(){
+  const keys = {ring: "ring-1p", hole: "hole-1p", follow: "ring-game"};
+  return "<p>The shared scoreboard is not connected yet. Your best scores on this device:</p><ol class=\"rows\">" + GAMES.map(g => "<li><span class=\"rk\" aria-hidden=\"true\">★</span><span class=\"who\"><b>" + g.name + "</b></span><span class=\"pts\">" + store.get("best:" + keys[g.id], 0) + "<small>" + g.unit + "</small></span></li>").join("") + "</ol>";
+}
+async function loadBoard(){
+  const tok = ++B.token, box = $("#boardBody");
+  if (!NET_ON) { box.innerHTML = localBoardHtml(); return; }
+  box.innerHTML = "<p class=\"muted\">Loading…</p>";
+  try {
+    const pr = getProfile();
+    if (B.view === "players") {
+      if (B.scope === "island" && !pr) { box.innerHTML = "<p>Choose your island to see its top players.</p>"; return; }
+      const res = await rpc("game_leaderboard", {p_game: B.game, p_island: B.scope === "island" ? pr.island : null, p_limit: 10, p_device: pr ? pr.device : null});
+      if (tok === B.token) box.innerHTML = playersHtml(res);
+    } else {
+      const res = await rpc("game_island_tally", {});
+      if (tok === B.token) box.innerHTML = islandsHtml(res);
+    }
+  } catch (e) {
+    if (tok !== B.token) return;
+    box.innerHTML = "<p class=\"err\">The scoreboard could not be reached. Check your connection and try again.</p><button class=\"btn alt\" type=\"button\" id=\"boardRetry\">Try again</button>";
+    $("#boardRetry").addEventListener("click", loadBoard);
+  }
+}
+function showBoard(){ renderMe(); syncSegs(); loadBoard(); }
+$$("#viewSeg button").forEach(b => b.addEventListener("click", () => { B.view = b.dataset.view; syncSegs(); loadBoard(); }));
+$$("#gameSeg button").forEach(b => b.addEventListener("click", () => { B.game = b.dataset.game; syncSegs(); loadBoard(); }));
+$$("#scopeSeg button").forEach(b => b.addEventListener("click", () => { B.scope = b.dataset.scope; syncSegs(); loadBoard(); }));
+
+/* ---------- drawing helpers ---------- */
+if (window.CanvasRenderingContext2D && !CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r){ this.moveTo(x + r, y); this.arcTo(x + w, y, x + w, y + h, r); this.arcTo(x + w, y + h, x, y + h, r); this.arcTo(x, y + h, x, y, r); this.arcTo(x, y, x + w, y, r); this.closePath(); };
+}
+function fitCanvas(canvas, stage, W, H){
+  const r = stage.getBoundingClientRect(), pad = 6;
+  const s = Math.max(.2, Math.min((r.width - pad) / W, (r.height - pad) / H));
+  const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+  canvas.style.width = Math.floor(W * s) + "px"; canvas.style.height = Math.floor(H * s) + "px";
+  canvas.width = Math.floor(W * s * dpr); canvas.height = Math.floor(H * s * dpr);
+  return {k: canvas.width / W};
+}
+function toWorld(canvas, e, W, H){ const r = canvas.getBoundingClientRect(); return {x: (e.clientX - r.left) / r.width * W, y: (e.clientY - r.top) / r.height * H}; }
+
+
+/* =====================================================================
+   FLAG MARBLES: one for every island. Win levels to collect them.
+   (The flags are drawn in a simple square form so they read well on a small marble.)
+   ===================================================================== */
+const FX = {
+  r(c, col, x, y, w, h){ c.fillStyle = col; c.fillRect(x, y, w, h); },
+  p(c, col, pts){ c.fillStyle = col; c.beginPath(); pts.forEach((q, i) => i ? c.lineTo(q[0], q[1]) : c.moveTo(q[0], q[1])); c.closePath(); c.fill(); },
+  d(c, col, x, y, rad){ c.fillStyle = col; c.beginPath(); c.arc(x, y, rad, 0, 7); c.fill(); },
+  s(c, col, x, y, rad, n = 5){ c.fillStyle = col; c.beginPath(); for (let i = 0; i < n * 2; i++) { const a = -Math.PI / 2 + i * Math.PI / n, q = i % 2 ? rad * (n === 4 ? .35 : .4) : rad, px = x + Math.cos(a) * q, py = y + Math.sin(a) * q; i ? c.lineTo(px, py) : c.moveTo(px, py); } c.closePath(); c.fill(); },
+  l(c, col, w, x1, y1, x2, y2){ c.strokeStyle = col; c.lineWidth = w; c.lineCap = "butt"; c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.stroke(); }
+};
+function ensign(c, top, bot){
+  const {r, l, p} = FX; r(c, "#00247d", 0, 0, 120, 120);
+  c.save(); c.beginPath(); c.rect(0, 0, 64, 64); c.clip();
+  l(c, "#fff", 13, 0, 0, 64, 64); l(c, "#fff", 13, 64, 0, 0, 64); l(c, "#cf142b", 5, 0, 0, 64, 64); l(c, "#cf142b", 5, 64, 0, 0, 64);
+  r(c, "#fff", 0, 24, 64, 16); r(c, "#fff", 24, 0, 16, 64); r(c, "#cf142b", 0, 28, 64, 8); r(c, "#cf142b", 28, 0, 8, 64); c.restore();
+  if (top) { p(c, "#fff", [[58, 58], [102, 58], [102, 84], [80, 107], [58, 84]]); p(c, top, [[62, 62], [98, 62], [98, 76], [62, 76]]); p(c, bot, [[62, 76], [98, 76], [98, 82], [80, 101], [62, 82]]); }
+}
+const tricolor = c => { FX.r(c, "#0055a4", 0, 0, 40, 120); FX.r(c, "#fff", 40, 0, 40, 120); FX.r(c, "#ef4135", 80, 0, 40, 120); };
+const FLAG_ART = {
+  ky: c => ensign(c, "#cf142b", "#00247d"),
+  ai: c => { ensign(c); FX.d(c, "#fff", 80, 82, 21); [[71, 87], [80, 76], [89, 87]].forEach(q => FX.d(c, "#ff8c00", q[0], q[1], 6)); },
+  vg: c => ensign(c, "#009e49", "#ffffff"),
+  ms: c => ensign(c, "#009e49", "#00247d"),
+  tc: c => ensign(c, "#fcd116", "#cf142b"),
+  cu: c => { const {r, p, s} = FX; for (let i = 0; i < 5; i++) r(c, i % 2 ? "#fff" : "#002a8f", 0, i * 24, 120, 24); p(c, "#cf142b", [[0, 0], [0, 120], [66, 60]]); s(c, "#fff", 24, 60, 15); },
+  do: c => { const {r, d} = FX; r(c, "#fff", 0, 0, 120, 120); r(c, "#002d62", 0, 0, 52, 52); r(c, "#ce1126", 68, 0, 52, 52); r(c, "#ce1126", 0, 68, 52, 52); r(c, "#002d62", 68, 68, 52, 52); d(c, "#fff", 60, 60, 11); d(c, "#4a9d3f", 60, 60, 6); },
+  ht: c => { const {r} = FX; r(c, "#00209f", 0, 0, 120, 60); r(c, "#d21034", 0, 60, 120, 60); r(c, "#fff", 36, 40, 48, 40); r(c, "#2e7d32", 46, 50, 28, 20); },
+  jm: c => { const {p, l} = FX; p(c, "#000", [[0, 0], [60, 60], [0, 120]]); p(c, "#000", [[120, 0], [60, 60], [120, 120]]); p(c, "#009b3a", [[0, 0], [120, 0], [60, 60]]); p(c, "#009b3a", [[0, 120], [120, 120], [60, 60]]); l(c, "#fed100", 22, 0, 0, 120, 120); l(c, "#fed100", 22, 120, 0, 0, 120); },
+  pr: c => { const {r, p, s} = FX; for (let i = 0; i < 5; i++) r(c, i % 2 ? "#fff" : "#ed0000", 0, i * 24, 120, 24); p(c, "#0050f0", [[0, 0], [0, 120], [66, 60]]); s(c, "#fff", 24, 60, 15); },
+  ag: c => { const {r, d} = FX; r(c, "#ce1126", 0, 0, 120, 120); c.save(); c.beginPath(); c.moveTo(0, 0); c.lineTo(120, 0); c.lineTo(60, 120); c.closePath(); c.clip(); r(c, "#000", 0, 0, 120, 44); r(c, "#0072c6", 0, 44, 120, 26); r(c, "#fff", 0, 70, 120, 50); c.save(); c.beginPath(); c.rect(0, 0, 120, 44); c.clip(); d(c, "#fcd116", 60, 44, 24); c.restore(); c.restore(); },
+  aw: c => { const {r, s} = FX; r(c, "#418fde", 0, 0, 120, 120); r(c, "#fbe122", 0, 70, 120, 9); r(c, "#fbe122", 0, 88, 120, 9); s(c, "#fff", 26, 28, 21, 4); s(c, "#ef3340", 26, 28, 17, 4); },
+  bb: c => { const {r} = FX; r(c, "#00267f", 0, 0, 40, 120); r(c, "#ffc726", 40, 0, 40, 120); r(c, "#00267f", 80, 0, 40, 120); r(c, "#000", 57, 28, 6, 72); r(c, "#000", 45, 28, 5, 30); r(c, "#000", 70, 28, 5, 30); r(c, "#000", 45, 54, 30, 5); },
+  cw: c => { const {r, s} = FX; r(c, "#002b7f", 0, 0, 120, 120); r(c, "#f9e814", 0, 76, 120, 14); s(c, "#fff", 26, 26, 12); s(c, "#fff", 50, 48, 16); },
+  dm: c => { const {r, d} = FX; r(c, "#006b3f", 0, 0, 120, 120); r(c, "#fcd116", 42, 0, 36, 120); r(c, "#fcd116", 0, 42, 120, 36); r(c, "#000", 48, 0, 24, 120); r(c, "#000", 0, 48, 120, 24); r(c, "#fff", 54, 0, 12, 120); r(c, "#fff", 0, 54, 120, 12); d(c, "#d41c30", 60, 60, 24); d(c, "#006b3f", 60, 60, 9); },
+  gd: c => { const {r, p, d, s} = FX; r(c, "#ce1126", 0, 0, 120, 120); p(c, "#fcd116", [[14, 14], [106, 14], [60, 60]]); p(c, "#fcd116", [[14, 106], [106, 106], [60, 60]]); p(c, "#007a5e", [[14, 14], [60, 60], [14, 106]]); p(c, "#007a5e", [[106, 14], [60, 60], [106, 106]]); d(c, "#ce1126", 60, 60, 15); s(c, "#fcd116", 60, 60, 12); [30, 60, 90].forEach(x => { s(c, "#fcd116", x, 7, 5); s(c, "#fcd116", x, 113, 5); }); },
+  gp: tricolor, mq: tricolor,
+  kn: c => { const {p, l, s} = FX; p(c, "#009e49", [[0, 0], [120, 0], [0, 120]]); p(c, "#ce1126", [[120, 0], [120, 120], [0, 120]]); l(c, "#fcd116", 52, 0, 120, 120, 0); l(c, "#000", 38, 0, 120, 120, 0); s(c, "#fff", 42, 78, 11); s(c, "#fff", 78, 42, 11); },
+  lc: c => { const {r, p} = FX; r(c, "#66ccff", 0, 0, 120, 120); p(c, "#fff", [[60, 14], [108, 104], [12, 104]]); p(c, "#000", [[60, 28], [97, 97], [23, 97]]); p(c, "#fcd116", [[60, 62], [97, 97], [23, 97]]); },
+  vc: c => { const {r, p} = FX; r(c, "#0072c6", 0, 0, 30, 120); r(c, "#fcd116", 30, 0, 60, 120); r(c, "#009e60", 90, 0, 30, 120); [[45, 36], [75, 36], [60, 68]].forEach(q => p(c, "#009e60", [[q[0], q[1] - 15], [q[0] + 11, q[1]], [q[0], q[1] + 15], [q[0] - 11, q[1]]])); },
+  sx: c => { const {r, p, d} = FX; r(c, "#c8102e", 0, 0, 120, 60); r(c, "#012a87", 0, 60, 120, 60); p(c, "#fff", [[0, 0], [0, 120], [60, 60]]); d(c, "#fcd116", 18, 60, 8); },
+  tt: c => { const {r, l} = FX; r(c, "#ce1126", 0, 0, 120, 120); l(c, "#fff", 56, 0, 0, 120, 120); l(c, "#000", 38, 0, 0, 120, 120); },
+  vi: c => { const {r, p, d, l} = FX; r(c, "#fff", 0, 0, 120, 120); d(c, "#fcd116", 60, 44, 20); p(c, "#0033a0", [[42, 58], [78, 58], [78, 80], [60, 96], [42, 80]]); r(c, "#ce1126", 42, 66, 36, 5); c.lineJoin = "miter"; l(c, "#0033a0", 7, 12, 84, 24, 114); l(c, "#0033a0", 7, 24, 114, 36, 84); l(c, "#0033a0", 7, 96, 84, 96, 114); },
+  bs: c => { const {r, p} = FX; r(c, "#00abc9", 0, 0, 120, 40); r(c, "#ffc72c", 0, 40, 120, 40); r(c, "#00abc9", 0, 80, 120, 40); p(c, "#000", [[0, 0], [0, 120], [58, 60]]); },
+  bz: c => { const {r, d} = FX; r(c, "#003f87", 0, 0, 120, 120); r(c, "#ce1126", 0, 0, 120, 12); r(c, "#ce1126", 0, 108, 120, 12); d(c, "#fff", 60, 60, 38); c.strokeStyle = "#00a44a"; c.lineWidth = 5; c.beginPath(); c.arc(60, 60, 30, 0, 7); c.stroke(); d(c, "#ce1126", 60, 60, 9); },
+  gy: c => { const {r, p} = FX; r(c, "#009e49", 0, 0, 120, 120); p(c, "#fff", [[0, 0], [0, 120], [120, 60]]); p(c, "#fcd116", [[0, 8], [0, 112], [106, 60]]); p(c, "#000", [[0, 0], [0, 120], [58, 60]]); p(c, "#ce1126", [[0, 12], [0, 108], [46, 60]]); },
+  sr: c => { const {r, s} = FX; r(c, "#377e3f", 0, 0, 120, 24); r(c, "#fff", 0, 24, 120, 8); r(c, "#b40a2d", 0, 32, 120, 56); r(c, "#fff", 0, 88, 120, 8); r(c, "#377e3f", 0, 96, 120, 24); s(c, "#ecc81d", 60, 60, 21); }
+};
+function drawFlagArt(c, code){ c.save(); c.beginPath(); c.rect(0, 0, 120, 120); c.clip(); (FLAG_ART[code] || (k => FX.r(k, "#8b999e", 0, 0, 120, 120)))(c); c.restore(); }
+const _mc = {};
+function marbleURL(spec, size = 64){
+  const key = (spec.flag ? "f:" + spec.flag : "c:" + spec.color) + "@" + size; if (_mc[key]) return _mc[key];
+  const cv = document.createElement("canvas"), px = Math.round(size * Math.min(window.devicePixelRatio || 1, 2)); cv.width = cv.height = px;
+  const c = cv.getContext("2d"); c.scale(px / size, px / size);
+  drawMarble(c, {x: size / 2, y: size / 2 - size * .02, r: size * .4, color: spec.color || "#888888", flag: spec.flag, swirl: "rgba(255,255,255,.6)", ang: .6, alpha: 1, scale: 1});
+  return (_mc[key] = cv.toDataURL("image/png"));
+}
+const tokenSpec = t => { const m = /^f:([a-z]{2})$/.exec(t || ""); if (m) return {flag: m[1]}; const k = /^c:([0-9a-f]{6})$/.exec(t || ""); return k ? {color: "#" + k[1]} : null; };
+
+const ALL_CODES = ISLANDS.map(x => x[0]);
+const COLORS = [["#d9263f", "Red"], ["#1f6fd1", "Blue"], ["#2a9d8f", "Teal"], ["#f4a261", "Orange"], ["#8338ec", "Purple"], ["#ffb703", "Yellow"], ["#ef476f", "Pink"], ["#80b918", "Lime"]];
+const LEVELS = {
+  ring:   {name: "Knock out the ring", at: [2, 4, 6, 8, 10, 12, 13], hint: v => "win " + v + " marbles in one game"},
+  hole:   {name: "Pitch to the hole", at: [3, 5, 7, 9, 11, 13, 15], hint: v => "score " + v + " points in one game"},
+  follow: {name: "Ring game", at: [2, 3, 5, 7, 10, 14, 20], hint: v => "lead the ring through " + v + " rounds"},
+  wins:   {name: "Two-player wins", at: [1, 2, 3, 5, 8, 12, 20], hint: v => "win " + v + " two-player " + (v === 1 ? "game" : "games")}
+};
+const BAG0 = {lv: {ring: 0, hole: 0, follow: 0, wins: 0}, sel: [{k: "c", v: "#d9263f"}, {k: "c", v: "#1f6fd1"}]};
+let bag = (() => { const b = store.get("bag", null) || {}; return {
+  owned: Array.isArray(b.owned) ? [...new Set(b.owned.filter(x => ALL_CODES.includes(x)))] : [], lv: Object.assign({}, BAG0.lv, b.lv || {}), wins2p: b.wins2p | 0,
+  home: ALL_CODES.includes(b.home) ? b.home : null, sel: Array.isArray(b.sel) && b.sel.length === 2 ? b.sel : BAG0.sel.map(x => ({...x}))}; })();
+const saveBag = () => store.set("bag", bag);
+const selOk = x => x && (x.k === "c" ? COLORS.some(c => c[0] === x.v) : x.k === "f" && bag.owned.includes(x.v));
+function selSpec(i){ const x = selOk(bag.sel[i]) ? bag.sel[i] : BAG0.sel[i]; return x.k === "f" ? {flag: x.v, color: "#888888"} : {color: x.v}; }
+function playerSpec(i){
+  const a = selSpec(i);
+  if (i === 1) { const f = selSpec(0); if ((a.flag && a.flag === f.flag) || (!a.flag && !f.flag && a.color === f.color)) { const alt = COLORS.find(c => c[0] !== f.color && c[0] !== "#d9263f") || COLORS[1]; return {color: alt[0]}; } }
+  return a;
+}
+const specName = sp => sp.flag ? islandName(sp.flag) + " marble" : ((COLORS.find(c => c[0] === sp.color) || [0, "Colour"])[1] + " marble");
+const specToken = sp => sp.flag ? "f:" + sp.flag : "c:" + sp.color.slice(1);
+const marbleToken = () => { const x = bag.sel[0]; return selOk(x) ? (x.k === "f" ? "f:" + x.v : "c:" + x.v.slice(1)) : null; };
+
+function askHome(done, change){
+  $("#dlgTitle").textContent = change ? "Your home island" : "You won your first marble!";
+  $("#dlgBody").innerHTML = "<p>" + (change ? "Your home island is shown on your marbles page." : "Which island is home? Your first flag marble will be from there.") + "</p><div class=\"pf\"><label for=\"hmIsland\">Your home island</label><select id=\"hmIsland\"><option value=\"\">Choose your island</option>" + ISLANDS.map(([c, n]) => "<option value=\"" + c + "\"" + (c === bag.home ? " selected" : "") + ">" + esc(n) + "</option>").join("") + "</select></div><p class=\"err\" id=\"hmErr\" role=\"alert\"></p>";
+  const acts = $("#dlgActs"); acts.innerHTML = "";
+  const save = document.createElement("button"); save.type = "button"; save.className = "btn"; save.textContent = "Save";
+  const skip = document.createElement("button"); skip.type = "button"; skip.className = "btn alt"; skip.textContent = change ? "Cancel" : "Skip";
+  acts.append(save, skip);
+  save.addEventListener("click", () => { const v = $("#hmIsland").value; if (!v) { $("#hmErr").textContent = "Choose your island first."; return; } bag.home = v; saveBag(); dlg.close(); if (done) done(); });
+  skip.addEventListener("click", () => { dlg.close(); if (!change && done) done(); });
+  if (!dlg.open) dlg.showModal(); $("#hmIsland").focus();
+}
+function giveMarbles(n){
+  const got = [];
+  for (let i = 0; i < n; i++) {
+    const left = ALL_CODES.filter(c => !bag.owned.includes(c)); if (!left.length) break;
+    const c = (!bag.owned.length && bag.home && left.includes(bag.home)) ? bag.home : left[Math.floor(Math.random() * left.length)];
+    bag.owned.push(c); got.push(c);
+  }
+  return got;
+}
+function withPrizes(mode, value, cb){
+  const L = LEVELS[mode], reached = L.at.filter(x => value >= x).length, prev = bag.lv[mode] || 0;
+  if (reached <= prev) return cb([], reached);
+  const go = () => { const got = giveMarbles(reached - prev); bag.lv[mode] = reached; saveBag(); if (got.length) Snd.cheer(); cb(got, reached); };
+  if (!bag.home && !bag.owned.length) { const pr = getProfile(); if (pr) { bag.home = pr.island; saveBag(); go(); } else askHome(go); } else go();
+}
+function prizeBlock(got, mode, reached){
+  if (!got.length) return "";
+  const L = LEVELS[mode], next = L.at[reached];
+  return "<div class=\"prize\"><p><b>Level " + reached + " reached! You won " + (got.length === 1 ? "a flag marble:" : got.length + " flag marbles:") + "</b></p><div class=\"prow\">" +
+    got.map(c => "<figure><img src=\"" + marbleURL({flag: c}, 72) + "\" alt=\"" + esc(islandName(c)) + " flag marble\" width=\"72\" height=\"72\"><figcaption>" + esc(islandName(c)) + "</figcaption></figure>").join("") +
+    "</div><p class=\"muted\" style=\"margin:0\">" + bag.owned.length + " of 28 collected. " + (next ? "Next level: " + L.hint(next) + "." : "That is every level in this game!") + "</p></div>";
+}
+const seeMarbles = got => got.length ? [{label: "See my marbles", alt: true, fn: () => show("bag")}] : [];
+
+/* ----- picking a marble to play with ----- */
+function renderMarbleChoices(){
+  const n = setup.players;
+  $("#marbleChoices").innerHTML = [0, 1].slice(0, n).map(i => { const sp = playerSpec(i);
+    return "<button class=\"choice mpick\" type=\"button\" data-pick=\"" + i + "\"><img class=\"mbig\" src=\"" + marbleURL(sp, 56) + "\" alt=\"\"><span><b>" + (n === 1 ? "Your marble" : "Player " + (i + 1) + "’s marble") + "</b><span>" + esc(specName(sp)) + ". Tap to change.</span></span></button>"; }).join("");
+  $$("#marbleChoices .mpick").forEach(b => b.addEventListener("click", () => openMarblePicker(Number(b.dataset.pick))));
+}
+function openMarblePicker(i){
+  const cur = bag.sel[i], owned = bag.owned.slice().sort((a, b) => islandName(a).localeCompare(islandName(b)));
+  const cell = (k, v, label) => "<button class=\"mcell\" type=\"button\" data-k=\"" + k + "\" data-v=\"" + v + "\" aria-pressed=\"" + (cur.k === k && cur.v === v) + "\" aria-label=\"" + esc(label) + "\"><img src=\"" + marbleURL(k === "f" ? {flag: v} : {color: v}, 56) + "\" alt=\"\" width=\"56\" height=\"56\"><span>" + esc(label) + "</span></button>";
+  $("#dlgTitle").textContent = setup.players === 1 ? "Choose your marble" : "Player " + (i + 1) + "’s marble";
+  $("#dlgBody").innerHTML = "<p class=\"muted\">Colours</p><div class=\"mgrid\">" + COLORS.map(c => cell("c", c[0], c[1])).join("") + "</div>" +
+    (owned.length ? "<p class=\"muted\">Your flag marbles</p><div class=\"mgrid\">" + owned.map(c => cell("f", c, islandName(c))).join("") + "</div>" : "<p class=\"muted\">Win levels to unlock flag marbles for every island.</p>");
+  $("#dlgActs").innerHTML = ""; const close = document.createElement("button"); close.type = "button"; close.className = "btn alt"; close.textContent = "Close"; close.addEventListener("click", () => dlg.close()); $("#dlgActs").append(close);
+  $("#dlgBody").onclick = e => { const b = e.target.closest(".mcell"); if (!b || !b.dataset.k) return; bag.sel[i] = {k: b.dataset.k, v: b.dataset.v}; saveBag(); dlg.close(); renderMarbleChoices(); if (currentScreen === "bag") showBag(); };
+  if (!dlg.open) dlg.showModal();
+}
+
+/* ----- the My marbles screen ----- */
+function showBag(){
+  $("#bagSummary").innerHTML = "<b>" + bag.owned.length + " of 28</b> flag marbles collected. " + (bag.home ? "Home island: <b>" + esc(islandName(bag.home)) + "</b> " : "") + "<button class=\"linkbtn\" type=\"button\" id=\"btnHome\">" + (bag.home ? "Change" : "Choose your home island") + "</button>";
+  $("#btnHome").addEventListener("click", () => askHome(() => showBag(), true));
+  $("#bagLevels").innerHTML = Object.entries(LEVELS).map(([k, L]) => { const n = bag.lv[k] || 0, next = L.at[n];
+    return "<div class=\"lvl\"><b>" + L.name + "</b><span>Level " + n + " of 7. " + (next ? "Next: " + L.hint(next) + "." : "All levels won!") + "</span><i class=\"bar\" style=\"width:" + Math.max(3, Math.round(n / 7 * 100)) + "%\"></i></div>"; }).join("");
+  const cells = ISLANDS.map(([c, n]) => bag.owned.includes(c)
+    ? "<button class=\"mcell\" type=\"button\" data-code=\"" + c + "\" aria-label=\"" + esc(n) + " flag marble. Tap to play with it.\"><img src=\"" + marbleURL({flag: c}, 56) + "\" alt=\"\" width=\"56\" height=\"56\"><span>" + esc(n) + "</span></button>"
+    : "<div class=\"mcell locked\" aria-label=\"Locked marble\"><span class=\"lockdot\" aria-hidden=\"true\">?</span><span>Locked</span></div>");
+  $("#bagGrid").innerHTML = cells.join("");
+  $$("#bagGrid .mcell[data-code]").forEach(b => b.addEventListener("click", () => {
+    const code = b.dataset.code; $("#dlgTitle").textContent = islandName(code);
+    $("#dlgBody").innerHTML = "<div style=\"text-align:center\"><img src=\"" + marbleURL({flag: code}, 120) + "\" alt=\"" + esc(islandName(code)) + " flag marble\" width=\"120\" height=\"120\"></div><p>This marble is yours. Play with it as your shooter, and it will show next to your name on the scoreboard.</p>"; $("#dlgBody").onclick = null;
+    const acts = $("#dlgActs"); acts.innerHTML = ""; const use = document.createElement("button"); use.type = "button"; use.className = "btn"; use.textContent = "Play with this marble"; use.addEventListener("click", () => { bag.sel[0] = {k: "f", v: code}; saveBag(); dlg.close(); });
+    const no = document.createElement("button"); no.type = "button"; no.className = "btn alt"; no.textContent = "Close"; no.addEventListener("click", () => dlg.close()); acts.append(use, no); dlg.showModal(); }));
+}
+
+/* =====================================================================
+   PITCHING MARBLES
+   ===================================================================== */
+const MW = 600, MH = 800, EDGE = 28;
+const RING = {x: 300, y: 292, r: 160}, START = {x: 300, y: 706};
+const PLAYER_STYLE = [
+  {name: "Player 1", color: "#d9263f", swirl: "rgba(255,255,255,.6)"},
+  {name: "Player 2", color: "#1f6fd1", swirl: "rgba(255,230,120,.7)"}
+];
+const TARGET_COLORS = ["#2a9d8f", "#f4a261", "#8338ec", "#ffb703", "#06d6a0", "#ef476f", "#3a86ff", "#fb5607", "#9ef01a", "#f15bb5", "#00b4d8", "#ff8fab", "#80b918"];
+const HOLE_ROUNDS = [{y: 560, x: 300, r: 25}, {y: 500, x: 215, r: 24}, {y: 430, x: 385, r: 23}, {y: 360, x: 250, r: 22}, {y: 290, x: 345, r: 21}];
+const FRICTION = 1.1, DECEL = 24, MIN_V = 6, MAX_DRAG = 130;
+
+let yardImg = null;
+function makeYard(){
+  if (yardImg) return yardImg;
+  const s = 2, c = document.createElement("canvas"); c.width = MW * s; c.height = MH * s; const x = c.getContext("2d"); x.scale(s, s);
+  let seed = 90210; const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const g = x.createRadialGradient(MW / 2, MH * .45, 60, MW / 2, MH * .5, MH * .75); g.addColorStop(0, "#e3bd88"); g.addColorStop(1, "#c79860"); x.fillStyle = g; x.fillRect(0, 0, MW, MH);
+  for (let i = 0; i < 46; i++) { x.fillStyle = "rgba(" + (rnd() < .5 ? "120,80,40" : "255,236,205") + "," + (.03 + rnd() * .05) + ")"; x.beginPath(); x.ellipse(rnd() * MW, rnd() * MH, 30 + rnd() * 90, 20 + rnd() * 60, rnd() * 3, 0, 7); x.fill(); }
+  for (let i = 0; i < 1500; i++) { const r = .6 + rnd() * 2.2; x.fillStyle = rnd() < .5 ? "rgba(90,60,30," + (.15 + rnd() * .25) + ")" : "rgba(255,240,215," + (.12 + rnd() * .25) + ")"; x.beginPath(); x.arc(rnd() * MW, rnd() * MH, r, 0, 7); x.fill(); }
+  x.strokeStyle = "#69411f"; x.lineWidth = EDGE * 2; x.strokeRect(0, 0, MW, MH);
+  x.strokeStyle = "rgba(0,0,0,.2)"; x.lineWidth = 6; x.strokeRect(EDGE, EDGE, MW - EDGE * 2, MH - EDGE * 2);
+  for (let i = 0; i < 420; i++) { const side = rnd(), px = side < .5 ? rnd() * MW : (rnd() < .5 ? rnd() * EDGE : MW - rnd() * EDGE), py = side < .5 ? (rnd() < .5 ? rnd() * EDGE : MH - rnd() * EDGE) : rnd() * MH; x.fillStyle = "rgba(255,225,190," + (.1 + rnd() * .2) + ")"; x.beginPath(); x.arc(px, py, .8 + rnd() * 2, 0, 7); x.fill(); }
+  return (yardImg = c);
+}
+function scratchCircle(x, cx, cy, r, seed){
+  let s = seed; const rnd = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+  for (let pass = 0; pass < 2; pass++) {
+    x.beginPath();
+    for (let i = 0; i <= 120; i++) { const a = i / 120 * Math.PI * 2, rr = r + (rnd() - .5) * (pass ? 4 : 2.5); const px = cx + Math.cos(a) * rr, py = cy + Math.sin(a) * rr; i ? x.lineTo(px, py) : x.moveTo(px, py); }
+    x.closePath(); x.strokeStyle = pass ? "rgba(255,238,210,.45)" : "rgba(92,56,22,.85)"; x.lineWidth = pass ? 3 : 6; x.stroke();
+  }
+}
+function drawMarble(c, m){
+  const a = m.alpha == null ? 1 : m.alpha, sc = m.scale == null ? 1 : m.scale, r = m.r; if (a <= 0 || sc <= 0) return;
+  c.save(); c.globalAlpha = a;
+  if (!m.sunk) { c.fillStyle = "rgba(45,22,6,.3)"; c.beginPath(); c.ellipse(m.x + r * .22, m.y + r * .38, r * sc * .95, r * sc * .72, 0, 0, 7); c.fill(); }
+  c.translate(m.x, m.y); c.scale(sc, sc);
+  if (m.flag) {
+    c.save(); c.beginPath(); c.arc(0, 0, r, 0, 7); c.clip();
+    c.rotate((m.vx || m.vy) ? Math.sin(m.ang || 0) * .5 : 0); const k = r * 2.1 / 120; c.translate(-r * 1.05, -r * 1.05); c.scale(k, k); drawFlagArt(c, m.flag);
+    c.restore();
+    const g = c.createRadialGradient(-r * .35, -r * .4, r * .1, 0, 0, r * 1.05); g.addColorStop(0, "rgba(255,255,255,.4)"); g.addColorStop(.45, "rgba(255,255,255,0)"); g.addColorStop(1, "rgba(0,0,0,.5)");
+    c.fillStyle = g; c.beginPath(); c.arc(0, 0, r, 0, 7); c.fill();
+  } else {
+    const g = c.createRadialGradient(-r * .35, -r * .4, r * .1, 0, 0, r * 1.05); g.addColorStop(0, lighten(m.color, .6)); g.addColorStop(.45, m.color); g.addColorStop(1, darken(m.color, .5));
+    c.fillStyle = g; c.beginPath(); c.arc(0, 0, r, 0, 7); c.fill();
+    c.save(); c.beginPath(); c.arc(0, 0, r - .5, 0, 7); c.clip(); c.rotate(m.ang || 0);
+    c.fillStyle = m.swirl || "rgba(255,255,255,.5)"; c.beginPath(); c.ellipse(0, 0, r * .96, r * .26, 0, 0, 7); c.fill();
+    c.fillStyle = "rgba(0,0,0,.18)"; c.beginPath(); c.ellipse(0, 0, r * .26, r * .96, 0, 0, 7); c.fill(); c.restore();
+  }
+  c.fillStyle = "rgba(255,255,255,.8)"; c.beginPath(); c.ellipse(-r * .38, -r * .45, r * .22, r * .13, -.6, 0, 7); c.fill();
+  c.restore();
+}
+
+function createMarbles(cfg){
+  const canvas = $("#mgCanvas"), stage = $("#mgStage"), ctx = canvas.getContext("2d");
+  const isRing = cfg.mode === "ring", nPlayers = cfg.players;
+  const TURNS = 5;
+  const G = {marbles: [], players: [], cur: 0, state: "aim", drag: null, aim: {ang: -Math.PI / 2, pow: .55}, shooter: null, still: 0, fx: [], round: 0, hole: null, pitched: 0, over: false, bg: null, k: 1, timer: 0, targetsLeft: 0};
+  for (let i = 0; i < nPlayers; i++) G.players.push({...PLAYER_STYLE[i], ...playerSpec(i), id: i, score: 0, turns: TURNS});
+  const mk = (x, y, r, color, extra) => ({x, y, vx: 0, vy: 0, r, m: r * r, color, ang: Math.random() * 6, alpha: 1, scale: 1, ...extra});
+  const cur = () => G.players[G.cur];
+  const say = t => { $("#mgStatus").textContent = t; };
+
+  /* backdrop: yard plus the scratched ring or the pitch line */
+  function backdrop(){
+    const c = document.createElement("canvas"); c.width = MW * 2; c.height = MH * 2; const x = c.getContext("2d"); x.scale(2, 2); x.drawImage(makeYard(), 0, 0, MW, MH);
+    if (isRing) scratchCircle(x, RING.x, RING.y, RING.r, 77);
+    x.strokeStyle = "rgba(92,56,22,.75)"; x.lineWidth = 5; x.setLineDash([16, 10]); x.lineCap = "round"; x.beginPath(); x.moveTo(EDGE + 40, START.y + 30); x.lineTo(MW - EDGE - 40, START.y + 30); x.stroke(); x.setLineDash([]);
+    return c;
+  }
+  G.bg = backdrop();
+
+  function hud(){
+    $("#mgHud").innerHTML = G.players.map(p => "<div class=\"pbadge\" data-active=\"" + (p.id === G.cur && !G.over) + "\"><img class=\"mdot\" alt=\"\" src=\"" + marbleURL(p.flag ? {flag: p.flag} : {color: p.color}, 44) + "\"><div><b>" + (nPlayers === 1 ? (isRing ? "Marbles won" : "Points") : p.name) + "</b><small>" +
+      (isRing ? "Turn " + Math.min(TURNS, TURNS - p.turns + 1) + " of " + TURNS : "Pitch " + Math.min(5, G.round + 1) + " of 5") + "</small></div><span class=\"sc\">" + p.score + "</span></div>").join("");
+  }
+
+  function setupRound(){
+    if (isRing) {
+      G.marbles = []; const cx = RING.x, cy = RING.y; let n = 0;
+      const place = (dx, dy) => G.marbles.push(mk(cx + dx, cy + dy, 13, TARGET_COLORS[n++ % TARGET_COLORS.length], {target: true}));
+      place(0, 0); for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; place(Math.cos(a) * 29, Math.sin(a) * 29); }
+      for (let i = 0; i < 6; i++) { const a = (i + .5) / 6 * Math.PI * 2; place(Math.cos(a) * 56, Math.sin(a) * 56); }
+      G.targetsLeft = G.marbles.length;
+    } else {
+      G.marbles.forEach(m => { m.fade = true; });
+      G.hole = {...HOLE_ROUNDS[G.round], t: 0}; G.pitched = 0;
+    }
+  }
+
+  function beginTurn(){
+    G.over = false; G.state = "aim";
+    const p = cur();
+    const s = mk(START.x, START.y, isRing ? 15 : 14, p.color, {swirl: p.swirl, flag: p.flag, shooter: true, owner: p.id, alpha: 0});
+    G.shooter = s; G.marbles.push(s); G.aim = {ang: -Math.PI / 2, pow: .55, shown: false}; G.drag = null; hud();
+    say(isRing ? (nPlayers === 2 ? p.name + ": pull back anywhere, then let go." : "Pull back anywhere on the yard, then let go to shoot.")
+               : (nPlayers === 2 ? p.name + ": pitch toward the hole." : "Pull back and let go to pitch your marble toward the hole."));
+  }
+
+  function shoot(){
+    if (G.state !== "aim" || !G.shooter) return;
+    const {ang, pow} = G.aim; if (pow < .05) return;
+    const v = 80 + 820 * Math.pow(pow, 1.6);
+    G.shooter.vx = Math.cos(ang) * v; G.shooter.vy = Math.sin(ang) * v; G.state = "moving"; G.still = 0; G.drag = null; Snd.clack(.35); say("");
+  }
+
+  /* ---- physics ---- */
+  let lastClack = 0;
+  function step(h){
+    const ms = G.marbles;
+    for (const m of ms) {
+      if (m.gone || m.sunk || m.fade) continue;
+      m.x += m.vx * h; m.y += m.vy * h;
+      let sp = Math.hypot(m.vx, m.vy);
+      if (sp > 0) {
+        const ns = Math.max(0, sp * (1 - FRICTION * h) - DECEL * h);
+        const f = ns / sp; m.vx *= f; m.vy *= f; sp = ns; if (sp < MIN_V) { m.vx = m.vy = 0; sp = 0; }
+        m.ang += sp * h / m.r * .6;
+      }
+      const lo = EDGE + m.r, hiX = MW - EDGE - m.r, hiY = MH - EDGE - m.r;
+      if (m.x < lo) { m.x = lo; if (m.vx < -80) Snd.wall(); m.vx = -m.vx * .55; } else if (m.x > hiX) { m.x = hiX; if (m.vx > 80) Snd.wall(); m.vx = -m.vx * .55; }
+      if (m.y < lo) { m.y = lo; if (m.vy < -80) Snd.wall(); m.vy = -m.vy * .55; } else if (m.y > hiY) { m.y = hiY; if (m.vy > 80) Snd.wall(); m.vy = -m.vy * .55; }
+    }
+    for (let i = 0; i < ms.length; i++) {
+      const a = ms[i]; if (a.gone || a.sunk || a.fade) continue;
+      for (let j = i + 1; j < ms.length; j++) {
+        const b = ms[j]; if (b.gone || b.sunk || b.fade) continue;
+        const dx = b.x - a.x, dy = b.y - a.y, min = a.r + b.r, d2 = dx * dx + dy * dy;
+        if (d2 >= min * min || d2 === 0) continue;
+        const d = Math.sqrt(d2), nx = dx / d, ny = dy / d, ov = min - d, tm = a.m + b.m;
+        a.x -= nx * ov * (b.m / tm); a.y -= ny * ov * (b.m / tm); b.x += nx * ov * (a.m / tm); b.y += ny * ov * (a.m / tm);
+        const rel = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+        if (rel < 0) {
+          const jn = -(1 + .93) * rel / (1 / a.m + 1 / b.m);
+          a.vx -= jn * nx / a.m; a.vy -= jn * ny / a.m; b.vx += jn * nx / b.m; b.vy += jn * ny / b.m;
+          const now = performance.now(); if (-rel > 60 && now - lastClack > 45) { lastClack = now; Snd.clack(clamp(-rel / 700, .1, 1)); if (navigator.vibrate && -rel > 300) { try { navigator.vibrate(8); } catch {} } }
+        }
+      }
+    }
+    if (G.hole) {
+      for (const m of ms) {
+        if (m.gone || m.sunk || m.fade) continue;
+        const dx = G.hole.x - m.x, dy = G.hole.y - m.y, d = Math.hypot(dx, dy), sp = Math.hypot(m.vx, m.vy);
+        if (d < G.hole.r * 1.5 && sp < 240 && sp > 0) { m.vx += dx / d * 380 * h; m.vy += dy / d * 380 * h; }
+        if (d < G.hole.r - 3 && sp < 280) { m.sunk = true; m.sinkT = 0; m.vx = m.vy = 0; m.x = G.hole.x; m.y = G.hole.y; Snd.drop(); }
+      }
+    }
+  }
+
+  const anyMoving = () => G.marbles.some(m => !m.gone && !m.sunk && (m.vx || m.vy));
+
+  function floatText(x, y, text, color){ G.fx.push({x, y, text, color: color || "#fff", t: 0, life: 1.4}); }
+
+  /* ---- end of a shot ---- */
+  function settled(){
+    const p = cur();
+    if (isRing) {
+      let outs = 0;
+      for (const m of G.marbles) if (m.target && !m.gone && !m.out && Math.hypot(m.x - RING.x, m.y - RING.y) > RING.r) { m.out = true; m.outT = 0; outs++; }
+      const inRing = Math.hypot(G.shooter.x - RING.x, G.shooter.y - RING.y) <= RING.r;
+      p.score += outs; G.targetsLeft -= outs;
+      let msg, bonus = false;
+      if (outs > 0) Snd.pop();
+      if (outs > 0 && !inRing) { bonus = true; msg = (outs === 1 ? "Out it goes! " : outs + " out! ") + "Shoot again."; floatText(G.shooter.x, G.shooter.y - 30, "+" + outs, "#fff"); Snd.good(); }
+      else if (outs > 0) { msg = "You got " + outs + ", but your shooter stayed in the ring. Turn over."; floatText(G.shooter.x, G.shooter.y - 30, "+" + outs, "#fff"); }
+      else { msg = "No luck this time."; }
+      if (!bonus) p.turns--;
+      hud(); say(msg);
+      G.state = "between";
+      if (G.targetsLeft <= 0) { Snd.cheer(); say("The ring is clear!"); return after(1100, endGame); }
+      const done = G.players.every(q => q.turns <= 0);
+      if (done) return after(1300, endGame);
+      after(1100, () => { retireShooter(); if (!bonus) G.cur = (G.cur + 1) % nPlayers; while (cur().turns <= 0) G.cur = (G.cur + 1) % nPlayers; beginTurn(); });
+    } else {
+      G.pitched++; G.state = "between";
+      if (G.pitched < nPlayers) {
+        say("Pitched. Next player.");
+        after(900, () => { G.cur = (G.cur + 1) % nPlayers; G.shooter.keep = true; G.shooter = null; beginTurn(); });
+      } else {
+        /* round over: every marble scores by how close it is to the hole */
+        let best = -1;
+        for (const m of G.marbles) {
+          if (!m.shooter || m.fade || m.gone) continue;
+          const d = m.sunk ? 0 : Math.hypot(m.x - G.hole.x, m.y - G.hole.y), R = G.hole.r;
+          const pts = m.sunk ? 3 : d <= R * 2.6 ? 2 : d <= R * 5.2 ? 1 : 0;
+          G.players[m.owner].score += pts; best = Math.max(best, pts);
+          floatText(m.x, m.y - 28, pts ? "+" + pts : "+0", pts === 3 ? "#ffe066" : "#fff");
+        }
+        hud(); if (best === 3) { Snd.cheer(); say("In the hole! Three points."); } else if (best > 0) { Snd.good(); say("So close."); } else { Snd.bad(); say("Too far away. Try again next round."); }
+        G.round++;
+        if (G.round >= 5) return after(1500, endGame);
+        after(1600, () => { G.cur = 0; G.shooter = null; setupRound(); beginTurn(); });
+      }
+    }
+  }
+  function retireShooter(){ if (G.shooter) { G.shooter.fade = true; G.shooter = null; } }
+  function after(ms, fn){ clearTimeout(G.timer); G.timer = setTimeout(fn, ms); }
+
+  function endGame(){
+    G.over = true; G.state = "over"; hud(); const [a, b] = G.players;
+    let title, body;
+    if (nPlayers === 1) {
+      const key = isRing ? "ring-1p" : "hole-1p", {best, isNew} = bestOf(key, a.score);
+      title = isRing ? "You won " + a.score + " marble" + (a.score === 1 ? "" : "s") : "You scored " + a.score + " out of 15";
+      body = "<p>" + (a.score === 0 ? "Everyone starts somewhere. Pull back a little less and aim for the middle." : isRing && a.score === 13 ? "You cleared the whole ring!" : "Nice shooting.") + "</p><p>Your best: " + best + (isNew && a.score === best && best > 0 ? " (new best)" : "") + "</p>";
+      if (a.score > 0) Snd.cheer();
+    } else {
+      const w = a.score === b.score ? null : (a.score > b.score ? a : b);
+      title = w ? w.name + " wins" : "It is a tie";
+      body = "<p>" + a.name + ": " + a.score + (isRing ? " marbles" : " points") + "</p><p>" + b.name + ": " + b.score + (isRing ? " marbles" : " points") + "</p>"; Snd.cheer();
+    }
+    const btns = [{label: "Play again", fn: () => start()}, {label: "Change game", alt: true, fn: () => show("setup")}];
+    if (nPlayers === 1) {
+      const mode = isRing ? "ring" : "hole";
+      withPrizes(mode, a.score, (got, reached) => finishWithBoard(mode, a.score, title, body + prizeBlock(got, mode, reached), btns.concat(seeMarbles(got))));
+    } else if (a.score !== b.score) {
+      bag.wins2p = (bag.wins2p | 0) + 1; saveBag();
+      withPrizes("wins", bag.wins2p, (got, reached) => openDialog(title, body + prizeBlock(got, "wins", reached), btns.concat(seeMarbles(got))));
+    } else openDialog(title, body, btns);
+  }
+
+  /* ---- drawing ---- */
+  function draw(dt){
+    const k = G.k; ctx.setTransform(k, 0, 0, k, 0, 0); ctx.clearRect(0, 0, MW, MH); ctx.drawImage(G.bg, 0, 0, MW, MH);
+    if (G.hole) {
+      const h = G.hole, g = ctx.createRadialGradient(h.x, h.y, 2, h.x, h.y, h.r + 4); g.addColorStop(0, "#1e1006"); g.addColorStop(.7, "#3b2310"); g.addColorStop(1, "#6a4522");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(h.x, h.y, h.r + 3, 0, 7); ctx.fill();
+      ctx.strokeStyle = "rgba(255,236,205,.5)"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(h.x, h.y, h.r + 3, .2, Math.PI * .8); ctx.stroke();
+    }
+    for (const m of G.marbles) {
+      if (m.fade) { m.alpha = Math.max(0, m.alpha - dt * 2.2); if (m.alpha <= 0) m.gone = true; }
+      else if (m.alpha < 1) m.alpha = Math.min(1, m.alpha + dt * 4);
+      if (m.out) { m.outT += dt; m.scale = 1 + Math.sin(Math.min(1, m.outT / .5) * Math.PI) * .25; m.alpha = Math.max(0, 1 - m.outT / .7); if (m.outT > .7) m.gone = true; }
+      if (m.sunk) { m.sinkT += dt; m.scale = Math.max(.72, 1 - m.sinkT * 1.2); }
+    }
+    G.marbles = G.marbles.filter(m => !m.gone);
+    const order = G.marbles.slice().sort((a, b) => (a.sunk ? 0 : 1) - (b.sunk ? 0 : 1)); order.forEach(m => drawMarble(ctx, m));
+    /* aiming guide */
+    if (G.state === "aim" && G.shooter && G.shooter.alpha > .9) {
+      const s = G.shooter, {ang, pow} = G.aim;
+      if (G.aim.shown || G.drag) {
+        const len = 30 + pow * 190, dx = Math.cos(ang), dy = Math.sin(ang);
+        for (let d = s.r + 12; d < len; d += 15) { ctx.fillStyle = "rgba(255,255,255," + (.95 - d / len * .55) + ")"; ctx.beginPath(); ctx.arc(s.x + dx * d, s.y + dy * d, 3.6 - d / len * 1.4, 0, 7); ctx.fill(); }
+        const ex = s.x + dx * len, ey = s.y + dy * len; ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.moveTo(ex + dx * 14, ey + dy * 14); ctx.lineTo(ex - dy * 9, ey + dx * 9); ctx.lineTo(ex + dy * 9, ey - dx * 9); ctx.closePath(); ctx.fill();
+        ctx.strokeStyle = pow > .85 ? "#ff5a7e" : "#ffe066"; ctx.lineWidth = 5; ctx.lineCap = "round"; ctx.beginPath(); ctx.arc(s.x, s.y, s.r + 8, -Math.PI / 2, -Math.PI / 2 + Math.max(.05, pow) * Math.PI * 2); ctx.stroke();
+      } else {
+        const t = performance.now() / 1000, bob = REDUCED ? 0 : Math.sin(t * 3) * 4; ctx.fillStyle = "rgba(255,255,255,.9)"; ctx.font = "700 20px 'Atkinson Hyperlegible', system-ui, sans-serif"; ctx.textAlign = "center";
+        ctx.fillText("Pull back and let go", s.x, s.y + 52 + bob); ctx.strokeStyle = "rgba(255,255,255,.8)"; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(s.x, s.y, s.r + 7 + bob / 2, 0, 7); ctx.stroke();
+      }
+    }
+    /* floating scores */
+    ctx.textAlign = "center"; ctx.font = "34px 'Lilita One', 'Arial Rounded MT Bold', system-ui, sans-serif";
+    G.fx = G.fx.filter(f => (f.t += dt) < f.life);
+    for (const f of G.fx) { ctx.globalAlpha = Math.max(0, 1 - f.t / f.life); ctx.lineWidth = 6; ctx.strokeStyle = "rgba(60,30,8,.8)"; ctx.strokeText(f.text, f.x, f.y - f.t * 36); ctx.fillStyle = f.color; ctx.fillText(f.text, f.x, f.y - f.t * 36); }
+    ctx.globalAlpha = 1;
+  }
+
+  /* ---- loop ---- */
+  let raf = 0, last = performance.now(), acc = 0, running = true;
+  function loop(now){
+    if (!running) return; const dt = Math.min(.05, (now - last) / 1000); last = now;
+    if (G.state === "moving") {
+      acc += dt; const H = 1 / 120;
+      while (acc >= H) { step(H); acc -= H; }
+      if (!anyMoving()) { G.still += dt; if (G.still > .35) { G.state = "resolving"; settled(); } } else G.still = 0;
+    } else if (G.state === "between" || G.state === "aim") { for (const m of G.marbles) if (m.sunk) { /* keep sunk marbles resting */ } }
+    draw(dt); raf = requestAnimationFrame(loop);
+  }
+
+  /* ---- input ---- */
+  const onDown = e => {
+    Snd.unlock(); if (G.state !== "aim" || !G.shooter) return; e.preventDefault();
+    try { canvas.setPointerCapture(e.pointerId); } catch {}
+    const p = toWorld(canvas, e, MW, MH); G.drag = {sx: p.x, sy: p.y}; G.aim.shown = false;
+  };
+  const onMove = e => {
+    if (!G.drag) return; const p = toWorld(canvas, e, MW, MH), vx = G.drag.sx - p.x, vy = G.drag.sy - p.y, len = Math.hypot(vx, vy);
+    if (len > 5) { G.aim.ang = Math.atan2(vy, vx); G.aim.pow = clamp(len / MAX_DRAG, 0, 1); G.aim.shown = true; }
+    else { G.aim.pow = 0; G.aim.shown = false; }
+  };
+  const onUp = () => { if (!G.drag) return; const had = G.aim.pow >= .06 && G.aim.shown; G.drag = null; if (had) shoot(); else { G.aim.shown = false; } };
+  const onKey = e => {
+    if (currentScreen !== "marbles" || dlg.open || G.state !== "aim") return;
+    const A = G.aim; let used = true;
+    if (e.key === "ArrowLeft") A.ang -= .05; else if (e.key === "ArrowRight") A.ang += .05;
+    else if (e.key === "ArrowUp") A.pow = clamp(A.pow + .05, 0, 1); else if (e.key === "ArrowDown") A.pow = clamp(A.pow - .05, 0, 1);
+    else if (e.key === " " || e.key === "Enter") { if (A.shown) { shoot(); } else { A.shown = true; } }
+    else used = false;
+    if (used) { A.shown = true; e.preventDefault(); }
+  };
+  canvas.addEventListener("pointerdown", onDown); canvas.addEventListener("pointermove", onMove); canvas.addEventListener("pointerup", onUp); canvas.addEventListener("pointercancel", onUp);
+  document.addEventListener("keydown", onKey);
+  const ro = new ResizeObserver(() => { G.k = fitCanvas(canvas, stage, MW, MH).k; }); ro.observe(stage);
+
+  function start(){
+    clearTimeout(G.timer); G.players.forEach(p => { p.score = 0; p.turns = TURNS; }); G.cur = 0; G.round = 0; G.fx = []; G.marbles = []; G.hole = null; G.shooter = null; G.over = false;
+    setupRound(); beginTurn();
+  }
+  G.k = fitCanvas(canvas, stage, MW, MH).k;
+  start(); raf = requestAnimationFrame(loop);
+  window.__yg = {marbles: () => G.marbles, state: () => G.state, players: () => G.players, aim: () => G.aim, shoot, endGame, G};
+  return { stop(){ running = false; cancelAnimationFrame(raf); clearTimeout(G.timer); ro.disconnect(); document.removeEventListener("keydown", onKey);
+    canvas.removeEventListener("pointerdown", onDown); canvas.removeEventListener("pointermove", onMove); canvas.removeEventListener("pointerup", onUp); canvas.removeEventListener("pointercancel", onUp); } };
+}
+
+/* ----- setup screen ----- */
+const setup = {mode: "ring", players: 1};
+const RULES = {
+  ring: "<p><b>How it works.</b> Thirteen marbles sit in a ring scratched in the dirt. Pull back anywhere, then let go to shoot. Knock a marble out of the ring and you shoot again, as long as your shooter ends up outside the ring.</p><p>You get five turns. The player with the most marbles wins.</p>",
+  hole: "<p><b>How it works.</b> Pitch your marble from the line toward the hole. In the hole scores 3 points, close scores 2, and near scores 1.</p><p>You pitch five times, and the hole moves farther away each round. With two players, you can knock your friend’s marble away from the hole!</p>"
+};
+function syncSetup(){
+  $$("#modeChoices .choice").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.mode === setup.mode)));
+  $$("#playerChoices .choice").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.players === String(setup.players))));
+  renderMarbleChoices();
+  $("#rulesBox").innerHTML = RULES[setup.mode] + (setup.players === 2 ? "<p>Two-player games are just for fun. They do not go on the scoreboard.</p>" : "");
+}
+$$("#modeChoices .choice").forEach(b => b.addEventListener("click", () => { setup.mode = b.dataset.mode; syncSetup(); }));
+$$("#playerChoices .choice").forEach(b => b.addEventListener("click", () => { setup.players = Number(b.dataset.players); syncSetup(); }));
+$("#startMarbles").addEventListener("click", () => { Snd.unlock(); show("marbles"); const g = createMarbles({mode: setup.mode, players: setup.players}); stopCurrent = () => g.stop(); });
+syncSetup();
+
+/* =====================================================================
+   RING GAME: watch the leader, copy the moves, pick the next leader
+   ===================================================================== */
+const RW = 600, RH = 620, RC = {x: 300, y: 292}, RR = 205;
+const MOVES = [
+  {id: "clap", e: "👏", label: "Clap", freq: 523},
+  {id: "stamp", e: "👣", label: "Stamp", freq: 196},
+  {id: "spin", e: "🌀", label: "Spin", freq: 330},
+  {id: "jump", e: "⬆️", label: "Jump", freq: 440}
+];
+const SKINS = ["#8d5524", "#c68642", "#e0ac69", "#f1c27d", "#5a3825", "#a9744f", "#7a4a2a", "#d49a62"];
+const SHIRTS = ["#c81f47", "#f6a21d", "#2b78c2", "#5da130", "#8338ec", "#0c8f8f", "#e76f51", "#ff6fa5"];
+const HAIRS = ["#1b1b1b", "#2b1b10", "#3b2a1a", "#141414"];
+const VERSES = {
+  watch: ["Round we go, round we go, watch the leader, nice and slow.", "Clap your hands and stamp your feet, find the rhythm, feel the beat."],
+  copy: ["Leader’s done, now it’s you, show us all the moves you knew."],
+  choose: ["Pick a friend, the ring is wide, step on in and be our guide."]
+};
+
+function startRing(){
+  const canvas = $("#rgCanvas"), stage = $("#rgStage"), ctx = canvas.getContext("2d");
+  const R = {k: 1, phase: "intro", seq: [], idx: 0, lives: 2, round: 0, token: 0, kids: [], leader: 0, bpm: 96, t0: performance.now(), pulse: 0, over: false};
+  for (let i = 0; i < 8; i++) R.kids.push({skin: SKINS[i], shirt: SHIRTS[i], hair: HAIRS[i % 4], style: i % 3, slot: i, x: 0, y: 0, tx: 0, ty: 0, phase: Math.random() * 6, act: null});
+  const slotPos = s => s < 0 ? {x: RC.x, y: RC.y} : {x: RC.x + Math.cos(-Math.PI / 2 + s * Math.PI / 4) * RR, y: RC.y + Math.sin(-Math.PI / 2 + s * Math.PI / 4) * RR};
+  const place = snap => R.kids.forEach(k => { const p = slotPos(k.slot); k.tx = p.x; k.ty = p.y; if (snap) { k.x = p.x; k.y = p.y; } });
+  R.leader = 0; R.kids[0].slot = -1; for (let i = 1; i < 8; i++) R.kids[i].slot = i; place(true);
+  const say = t => { $("#rgStatus").textContent = t; };
+  const beatMs = () => 60000 / R.bpm;
+  const live = tok => tok === R.token && !R.over;
+
+  /* buttons */
+  const movesBox = $("#rgMoves"); movesBox.innerHTML = MOVES.map((m, i) => "<button class=\"move\" type=\"button\" data-m=\"" + m.id + "\" disabled><span class=\"e\" aria-hidden=\"true\">" + m.e + "</span>" + m.label + "<small>" + (i + 1) + "</small></button>").join("");
+  const mbtn = id => $("[data-m=\"" + id + "\"]", movesBox);
+  const enable = on => $$(".move", movesBox).forEach(b => { b.disabled = !on; });
+  const light = (id, on) => { const b = mbtn(id); if (b) b.dataset.lit = String(on); };
+  const hearts = () => { $("#rgLives").textContent = "❤️".repeat(R.lives) + "🤍".repeat(2 - R.lives); $("#rgLives").setAttribute("aria-label", R.lives + " lives left"); };
+  const dots = () => { $("#rgDots").innerHTML = R.seq.map((_, i) => "<i class=\"" + (i < R.idx ? "on" : "") + "\"></i>").join(""); };
+  const act = (k, type, dur = .55) => { k.act = {type, t0: performance.now() / 1000, dur}; };
+
+  async function watch(){
+    const tok = ++R.token; R.phase = "watch"; R.idx = 0; enable(false); dots(); hearts(); $("#rgRound").textContent = "Round " + (R.round + 1);
+    const verse = VERSES.watch[R.round % VERSES.watch.length]; say("Watch the leader. " + verse);
+    await sleep(900); if (!live(tok)) return;
+    for (let i = 0; i < R.seq.length; i++) {
+      if (!live(tok)) return; const mv = MOVES.find(m => m.id === R.seq[i]);
+      act(R.kids[R.leader], mv.id); light(mv.id, true); Snd.blip(mv.freq); i % 2 ? Snd.clap() : Snd.kick(); R.pulse = performance.now();
+      R.kids.forEach((k, j) => { if (j !== R.leader && !REDUCED) act(k, "clap", .3); });
+      await sleep(beatMs() * .8); light(mv.id, false); await sleep(beatMs() * .45);
+    }
+    if (!live(tok)) return; await sleep(250);
+    R.phase = "copy"; R.idx = 0; enable(true); dots(); say("Your turn. Copy the leader, one move at a time. " + VERSES.copy[0]);
+  }
+
+  function pressed(id){
+    if (R.phase !== "copy" || R.over) return; Snd.unlock();
+    const mv = MOVES.find(m => m.id === id);
+    R.kids.forEach((k, j) => { if (j !== R.leader) act(k, id, .5); }); Snd.blip(mv.freq); R.pulse = performance.now();
+    if (R.seq[R.idx] === id) {
+      R.idx++; dots();
+      if (R.idx >= R.seq.length) { R.phase = "choose"; enable(false); R.round++; Snd.cheer(); act(R.kids[R.leader], "jump", .6); $("#rgRound").textContent = "Round " + R.round + " done"; say("Well copied! " + VERSES.choose[0] + " Tap a friend to lead next."); showPick(true); }
+    } else {
+      R.lives--; hearts(); Snd.bad(); enable(false);
+      if (R.lives <= 0) return gameOver();
+      say("Not quite. Watch again."); setTimeout(() => { if (!R.over && R.phase === "copy") watch(); }, 1200);
+    }
+  }
+  $$(".move", movesBox).forEach(b => b.addEventListener("click", () => pressed(b.dataset.m)));
+  const onKey = e => { if (currentScreen !== "ring" || dlg.open) return; const i = "1234".indexOf(e.key); if (i >= 0) { pressed(MOVES[i].id); e.preventDefault(); } else if (R.phase === "choose" && (e.key === " " || e.key === "Enter")) { chooseLeader(nextKid()); e.preventDefault(); } };
+  document.addEventListener("keydown", onKey);
+
+  /* picking the next leader */
+  let pickBtn = null;
+  function showPick(on){
+    if (!pickBtn) { pickBtn = document.createElement("button"); pickBtn.type = "button"; pickBtn.className = "btn alt"; pickBtn.textContent = "Pick for me"; pickBtn.style.margin = "0 auto .7rem"; pickBtn.addEventListener("click", () => chooseLeader(nextKid())); $("#rgDots").after(pickBtn); }
+    pickBtn.hidden = !on;
+  }
+  const nextKid = () => { const order = R.kids.filter((k, j) => j !== R.leader); return R.kids.indexOf(order[Math.floor(Math.random() * order.length)]); };
+  function chooseLeader(j){
+    if (R.phase !== "choose" || j === R.leader || j < 0) return; showPick(false); Snd.pop();
+    const old = R.kids[R.leader], nk = R.kids[j]; const s = nk.slot; nk.slot = -1; old.slot = s; R.leader = j; place(false); act(nk, "jump", .6);
+    R.seq.push(MOVES[Math.floor(Math.random() * 4)].id); R.bpm = Math.min(150, R.bpm + 4); R.phase = "swap"; say("Here comes the new leader.");
+    setTimeout(() => { if (!R.over) watch(); }, 1100);
+  }
+  const onTap = e => { if (R.phase !== "choose") return; const p = toWorld(canvas, e, RW, RH); let best = -1, bd = 52; R.kids.forEach((k, j) => { if (j === R.leader) return; const d = Math.hypot(k.x - p.x, k.y - (p.y + 14)); if (d < bd) { bd = d; best = j; } }); if (best >= 0) chooseLeader(best); };
+  canvas.addEventListener("pointerdown", onTap);
+
+  function gameOver(){
+    R.over = true; R.phase = "over"; enable(false); showPick(false); const {best, isNew} = bestOf("ring-game", R.round);
+    say("The ring is done for now."); if (R.round > 0) Snd.cheer();
+    const ttl = R.round ? "You led the ring through " + R.round + " round" + (R.round === 1 ? "" : "s") : "Good try";
+    const bdy = "<p>" + (R.round ? "The ring copied every move you taught it." : "Watch the leader closely and take it one move at a time.") + "</p><p>Your best: " + Math.max(best, R.round) + (isNew && R.round === best && best > 0 ? " (new best)" : "") + "</p>";
+    const rbtns = [{label: "Play again", fn: () => { stopCurrent && stopCurrent(); stopCurrent = null; startRing(); }}, {label: "Back to the menu", alt: true, fn: () => show("menu")}];
+    withPrizes("follow", R.round, (got, reached) => finishWithBoard("follow", R.round, ttl, bdy + prizeBlock(got, "follow", reached), rbtns.concat(seeMarbles(got))));
+  }
+
+  /* ---- drawing the children ---- */
+  function drawKid(c, k, scale, now, isLeader){
+    let dx = 0, dy = 0, sx = 1, clap = 0, up = 0, back = false;
+    const a = k.act;
+    if (a) { const u = (now - a.t0) / a.dur; if (u >= 1) k.act = null; else if (u >= 0) {
+      if (a.type === "jump") { dy = -38 * Math.sin(u * Math.PI); up = 1; }
+      else if (a.type === "stamp") dy = -6 * Math.abs(Math.sin(u * Math.PI * 3));
+      else if (a.type === "spin") { sx = Math.cos(u * Math.PI * 4); back = sx < 0; sx = Math.max(.12, Math.abs(sx)); }
+      else if (a.type === "clap") clap = Math.abs(Math.sin(u * Math.PI * 3));
+    } }
+    const idle = REDUCED ? 0 : Math.sin(now * 3 + k.phase) * 1.6;
+    c.save(); c.translate(k.x, k.y + 36 * scale);
+    const air = Math.max(0, -dy) / 38;
+    c.fillStyle = "rgba(60,32,8,.28)"; c.beginPath(); c.ellipse(0, 4, 24 * scale * (1 - air * .35), 7 * scale * (1 - air * .3), 0, 0, 7); c.fill();
+    c.translate(0, dy + idle); c.scale(scale * sx, scale);
+    c.lineCap = "round";
+    c.strokeStyle = "#22313a"; c.lineWidth = 7; c.beginPath(); c.moveTo(-6, -22); c.lineTo(-7, -2); c.moveTo(6, -22); c.lineTo(7, -2); c.stroke();
+    c.fillStyle = "#1b1b1b"; [-8, 8].forEach(fx => { c.beginPath(); c.ellipse(fx, 0, 7, 4, 0, 0, 7); c.fill(); });
+    c.fillStyle = k.shirt; c.beginPath(); c.roundRect(-14, -52, 28, 34, 9); c.fill();
+    c.strokeStyle = k.skin; c.lineWidth = 6;
+    c.beginPath();
+    if (up) { c.moveTo(-13, -46); c.lineTo(-19, -66); c.moveTo(13, -46); c.lineTo(19, -66); }
+    else if (clap > 0 || (a && a.type === "clap")) { const hx = 3 + 13 * (1 - clap); c.moveTo(-13, -46); c.lineTo(-hx, -34); c.moveTo(13, -46); c.lineTo(hx, -34); }
+    else { c.moveTo(-14, -46); c.lineTo(-20, -26); c.moveTo(14, -46); c.lineTo(20, -26); }
+    c.stroke();
+    c.fillStyle = k.skin; c.beginPath(); c.arc(0, -64, 15, 0, 7); c.fill();
+    c.fillStyle = k.hair;
+    if (k.style === 0) { [[-11, -76, 8], [11, -76, 8], [0, -79, 10]].forEach(([hx, hy, hr]) => { c.beginPath(); c.arc(hx, hy, hr, 0, 7); c.fill(); }); }
+    else if (k.style === 1) { c.beginPath(); c.arc(0, -66, 15.5, Math.PI, 0); c.closePath(); c.fill(); }
+    else { c.beginPath(); c.arc(0, -68, 15.5, Math.PI * 1.02, Math.PI * 1.98); c.fill(); c.lineWidth = 4; c.strokeStyle = k.hair; c.beginPath(); c.moveTo(-14, -66); c.lineTo(-17, -46); c.moveTo(14, -66); c.lineTo(17, -46); c.stroke(); }
+    if (back) { c.fillStyle = k.hair; c.beginPath(); c.arc(0, -64, 15.5, 0, 7); c.fill(); }
+    else { c.fillStyle = "#1c1410"; [-5.5, 5.5].forEach(ex => { c.beginPath(); c.arc(ex, -64, 1.9, 0, 7); c.fill(); }); c.strokeStyle = "#1c1410"; c.lineWidth = 1.8; c.beginPath(); c.arc(0, -61, 5, .2 * Math.PI, .8 * Math.PI); c.stroke(); }
+    c.restore();
+  }
+
+  let raf = 0, last = performance.now(), running = true;
+  function frame(now){
+    if (!running) return; const dt = Math.min(.05, (now - last) / 1000); last = now; const t = now / 1000;
+    const k = R.k; ctx.setTransform(k, 0, 0, k, 0, 0); ctx.clearRect(0, 0, RW, RH);
+    const g = ctx.createRadialGradient(RC.x, RC.y, 30, RC.x, RC.y, 330); g.addColorStop(0, "#f1d9a6"); g.addColorStop(1, "#d9b077"); ctx.fillStyle = g; ctx.fillRect(0, 0, RW, RH);
+    ctx.strokeStyle = "rgba(120,78,36,.55)"; ctx.lineWidth = 5; ctx.setLineDash([2, 14]); ctx.lineCap = "round"; ctx.beginPath(); ctx.arc(RC.x, RC.y, RR, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+    const since = (performance.now() - R.pulse) / 1000; if (since < .5 && !REDUCED) { ctx.strokeStyle = "rgba(246,162,29," + (.55 - since) + ")"; ctx.lineWidth = 8; ctx.beginPath(); ctx.arc(RC.x, RC.y, 40 + since * 120, 0, 7); ctx.stroke(); }
+    const f = 1 - Math.exp(-dt * 9); R.kids.forEach(kid => { kid.x += (kid.tx - kid.x) * f; kid.y += (kid.ty - kid.y) * f; });
+    ctx.fillStyle = "rgba(246,162,29,.35)"; ctx.beginPath(); ctx.ellipse(RC.x, RC.y + 40, 52, 16, 0, 0, 7); ctx.fill();
+    const order = R.kids.map((kid, j) => ({kid, j})).sort((a, b) => a.kid.y - b.kid.y);
+    order.forEach(({kid, j}) => {
+      if (R.phase === "choose" && j !== R.leader) { const pulse = REDUCED ? 1 : 1 + Math.sin(t * 6 + j) * .06; ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(kid.x, kid.y - 14, 46 * pulse, 0, 7); ctx.stroke(); }
+      drawKid(ctx, kid, j === R.leader ? 1.3 : 1, t, j === R.leader);
+    });
+    raf = requestAnimationFrame(frame);
+  }
+  const ro = new ResizeObserver(() => { R.k = fitCanvas(canvas, stage, RW, RH).k; }); ro.observe(stage);
+  R.k = fitCanvas(canvas, stage, RW, RH).k; raf = requestAnimationFrame(frame);
+  hearts(); showPick(false); enable(false); $("#rgDots").innerHTML = ""; $("#rgRound").textContent = "Round 1";
+  stopCurrent = () => { running = false; R.over = true; R.token++; cancelAnimationFrame(raf); ro.disconnect(); document.removeEventListener("keydown", onKey); canvas.removeEventListener("pointerdown", onTap); if (pickBtn) pickBtn.remove(); };
+  window.__yg = Object.assign(window.__yg || {}, {ring: R, pressed, chooseLeader, gameOver});
+  say("The leader will show you two moves. Watch closely, then copy them.");
+  openDialog("How the ring game works", "<p>The children stand in a ring with a leader in the middle. The leader shows some moves. Then it is your turn to copy them, in the same order.</p><p>Copy them right and you pick who leads next. Every round adds one more move. You have two lives.</p>",
+    [{label: "Start", fn: () => { Snd.unlock(); R.seq = [MOVES[Math.floor(Math.random() * 4)].id, MOVES[Math.floor(Math.random() * 4)].id]; watch(); }}, {label: "Back to the menu", alt: true, fn: () => show("menu")}]);
+}
+</script>
+</body>
+</html>
