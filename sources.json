@@ -1,0 +1,128 @@
+{
+  "defaults": {
+    "max_new_per_source": 25,
+    "max_age_days": 60,
+    "max_detail_fetches": 15,
+    "request_delay_seconds": 3
+  },
+  "sources": [
+    {
+      "id": "lc-jobs",
+      "enabled": true,
+      "country_code": "lc",
+      "category": "Jobs",
+      "name": "Government of Saint Lucia - Job Opportunities",
+      "type": "rss",
+      "url": "https://www.govt.lc/jobs/rss",
+      "note": "Official RSS feed published by the Government of Saint Lucia portal. Empty when no vacancies are listed."
+    },
+    {
+      "id": "lc-scholarships",
+      "enabled": true,
+      "country_code": "lc",
+      "category": "Education",
+      "name": "Government of Saint Lucia - Scholarships",
+      "type": "rss",
+      "url": "https://www.govt.lc/scholarships/rss",
+      "note": "Official RSS feed published by the Government of Saint Lucia portal. Empty when no scholarships are listed."
+    },
+    {
+      "id": "bb-mes-scholarships",
+      "enabled": true,
+      "country_code": "bb",
+      "category": "Education",
+      "name": "Barbados Ministry of Education",
+      "type": "html_links",
+      "urls": [
+        "https://mes.gov.bb/News/Latest/?y={year}"
+      ],
+      "link_include": "/News/Latest/[^/?#]+\\.aspx",
+      "title_keywords": "scholarship|bursar|exhibition|grant|award|fellowship",
+      "fetch_details": true,
+      "note": "Ministry of Education news list, filtered to scholarship-type notices. Only notices with a future closing date (or published in the last 60 days) are kept."
+    },
+    {
+      "id": "bb-mps-jobs",
+      "enabled": false,
+      "country_code": "bb",
+      "category": "Jobs",
+      "name": "Barbados Ministry of the Public Service - Job Opportunities",
+      "type": "html_links",
+      "render": true,
+      "urls": [
+        "https://mps.gov.bb/People_Resourcing/jobs.php"
+      ],
+      "link_include": ".",
+      "title_keywords": "vacan|officer|manager|clerk|director|analyst|engineer|teacher|coordinator|assistant|specialist|technician|nurse|inspector|supervisor|accountant|secretary|attendant|driver|administrator",
+      "fetch_details": true,
+      "note": "OFF by default. This page builds its job list with JavaScript, so it needs a real browser (Playwright). Run the workflow manually with dry run on first and check the titles look right before turning this on."
+    },
+    {
+      "id": "gd-now-notices",
+      "enabled": false,
+      "third_party": true,
+      "country_code": "gd",
+      "category": "auto",
+      "name": "NOW Grenada (publishes Ministry of Education and government notices)",
+      "type": "rss",
+      "url": "https://nowgrenada.com/feed/",
+      "title_keywords": "scholarship|vacanc|career opportunit|job opportunit|recruit",
+      "note": "OFF by default. NOW Grenada is a private news site, not a government site, and Grenada's own government sites had no vacancy or scholarship list. Read nowgrenada.com's Terms of Use (or ask them for permission) before setting enabled to true. Only the headline and a link back are stored."
+    },
+    {
+      "id": "jm-opm-news",
+      "enabled": false,
+      "unverified": true,
+      "country_code": "jm",
+      "category": "Major news",
+      "name": "Office of the Prime Minister, Jamaica",
+      "type": "rss",
+      "url": "https://opm.gov.jm/feed/",
+      "title_keywords": "drought|rain|water|flood|hurricane|storm|earthquake|tsunami|volcan|dengue|health|vaccin|budget|tax|electric|energy|fuel|school|exam|scholarship|holiday|curfew|warning|advisory|alert|shortage|strike|minimum wage|employment|jobs",
+      "max_age_days": 21,
+      "max_new_per_source": 6,
+      "note": "OFF by default. This is the standard WordPress feed address for the site. It could not be checked from where this file was written, so run the workflow with dry run ticked first and read the list. Turn it on (enabled: true) only if the headlines look right. Items arrive as Pending: open each one, read the source and write your own short summary before you approve it."
+    },
+    {
+      "id": "gy-dpi-news",
+      "enabled": false,
+      "unverified": true,
+      "country_code": "gy",
+      "category": "Major news",
+      "name": "Department of Public Information, Guyana",
+      "type": "rss",
+      "url": "https://dpi.gov.gy/feed/",
+      "title_keywords": "drought|rain|water|flood|hurricane|storm|earthquake|tsunami|volcan|dengue|health|vaccin|budget|tax|electric|energy|fuel|school|exam|scholarship|holiday|curfew|warning|advisory|alert|shortage|strike|minimum wage|employment|jobs",
+      "max_age_days": 14,
+      "max_new_per_source": 6,
+      "note": "OFF by default. This is the standard WordPress feed address for the site. It could not be checked from where this file was written, so run the workflow with dry run ticked first and read the list. Turn it on (enabled: true) only if the headlines look right. Items arrive as Pending: open each one, read the source and write your own short summary before you approve it."
+    },
+    {
+      "id": "gy-dpi-vacancies",
+      "enabled": false,
+      "unverified": true,
+      "country_code": "gy",
+      "category": "Jobs",
+      "name": "Department of Public Information, Guyana (government vacancy notices)",
+      "type": "rss",
+      "url": "https://dpi.gov.gy/category/government-adverts/vacancies/feed/",
+      "max_age_days": 21,
+      "max_new_per_source": 10,
+      "note": "OFF by default. This is the standard WordPress feed address for the site. It could not be checked from where this file was written, so run the workflow with dry run ticked first and read the list. Turn it on (enabled: true) only if the headlines look right. Items arrive as Pending: open each one, read the source and write your own short summary before you approve it. Closing dates are usually printed in the advert image, so these items expire 21 days after they were published unless the notice text gives a date."
+    },
+    {
+      "id": "bb-gis-news",
+      "enabled": false,
+      "unverified": true,
+      "country_code": "bb",
+      "category": "Major news",
+      "name": "Government Information Service, Barbados",
+      "type": "rss",
+      "url": "https://gisbarbados.gov.bb/feed/",
+      "title_keywords": "drought|rain|water|flood|hurricane|storm|earthquake|tsunami|volcan|dengue|health|vaccin|budget|tax|electric|energy|fuel|school|exam|scholarship|holiday|curfew|warning|advisory|alert|shortage|strike|minimum wage|employment|jobs",
+      "max_age_days": 14,
+      "max_new_per_source": 6,
+      "note": "OFF by default. This is the standard WordPress feed address for the site. It could not be checked from where this file was written, so run the workflow with dry run ticked first and read the list. Turn it on (enabled: true) only if the headlines look right. Items arrive as Pending: open each one, read the source and write your own short summary before you approve it."
+    }
+  ]
+}
