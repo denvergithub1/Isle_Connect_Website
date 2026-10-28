@@ -469,7 +469,7 @@ $("#btnAbout").addEventListener("click", () => openDialog("About and credits",
    Paste the same two values you use in Isle Connect (the Supabase URL and the anon key).
    Leave them empty and the game still works, with scores kept on this device only.
    ===================================================================== */
-const CONFIG = { SUPABASE_URL: "", SUPABASE_ANON_KEY: "" };
+const CONFIG = { SUPABASE_URL: "https://gbsxezbqvtsdljiehfpw.supabase.co", SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdic3hlemJxdnRzZGxqaWVoZnB3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1ODk0ODYsImV4cCI6MjEwNzE2NTQ4Nn0.xea-XyckCRIfbbcfR4xExQ__AnDc0TJusv6WtoGqooc" };
 const NET_ON = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
 async function rpc(fn, args){
   const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 9000);
